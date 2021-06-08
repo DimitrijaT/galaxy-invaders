@@ -1,4 +1,0 @@
-
-# SpaceInvadersClone
-
-what.
