@@ -5,13 +5,6 @@
     canvas.height = canvas.scrollHeight;
 
     const image =  document.getElementById('Player');
-    const enemy =  document.getElementById('Enemy');
-    const laser = document.getElementById('Laser');
-    const enemyLaser = document.getElementById('EnemyLaser');
-    const invic = document.getElementById('InviciBubble');
-    const lifeUP = document.getElementById('LifeUP');
-    const fireUP = document.getElementById('FirePower');
-    const background = document.getElementById( 'Space');
 
     let points = 0;
     let lives = 3;
