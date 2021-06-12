@@ -1,0 +1,132 @@
+#gridContainer{
+display: grid;
+    grid-template-areas:
+    'header'
+    'game'
+    'footer';
+
+}
+
+body{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+header{
+
+    background-color: mediumpurple;
+    background-image: linear-gradient(mediumpurple, #6f49b6);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    grid-area: header;
+    height: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: 'VT323', monospace;
+    font-size: 2em;
+    font-weight: bold;
+
+
+}
+header > h1{
+    margin: 0;
+    display: inline-block;
+    color: #00fa0c;
+    text-align: center;
+    user-select: none;
+}
+
+nav a{
+    display: inline-block;
+    text-decoration: none;
+    border: 3px solid #5a008d;
+    background-color: #095dbe;
+    margin: 0;
+    padding: 4px;
+    border-radius:  30px;
+    text-align: center;
+    user-select: none;
+    transition: 0.5s;
+}
+
+nav a:hover{
+    background-color: #00ff28;
+}
+
+section{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background-color: #200054;
+    background-image: linear-gradient(#200054, #4c00ff);
+    grid-area: game;
+    height: 88.7vh;
+    overflow: hidden;
+
+}
+.MainMenu{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+
+}
+
+footer{
+    background-color: darkmagenta;
+    background-image: linear-gradient( #ce00ce, darkmagenta);
+    grid-area: footer;
+    text-align: center;
+    overflow: hidden;
+}
+
+canvas{
+    border: 3px dashed black;
+}
+
+#StartGame{
+    display: block;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+}
+#Options{
+    display: block;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+}
+#Easy, #Medium, #Hard{
+    display: none;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+}
+
+
+#Enemy, #Player, #Laser, #EnemyLaser, #InviciBubble, #FirePower,#LifeUP, #Space , #EnemyExplode1 , #EnemyExplode2, #MotherShip,#BossLaser,#ShipUP,#MotherShipHurt,#EnemyShooting,#EnemyHurt,#PlayerLevel2,#PlayerLevel3, #LaserPiercing1, #LaserPiercing2,#SpaceNuked,#BombUP,#MotherShip2,#MotherShip2Angry,#MotherShip2Hurt,#Boss2Fire, #MotherShip2Heal{
+    display: none;
+}
+
+article{
+    background-color: #5CDB95;
+    color: #EDF5E1;
+    border-radius: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5%;
+    font-size: 1.5em;
+    font-family: 'VT323', monospace;
+    overflow: auto;
+}
+
+article > p , h1 , h2{
+    text-align: center;
+}
+
