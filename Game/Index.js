@@ -45,6 +45,7 @@
     let BossHealthBoost = 20;
     let startingLaserHealth = 1;
     let nukes = 3;
+    let isNuked = false;
 
 
     //SOUNDS
@@ -400,13 +401,16 @@
 
     }
 
-    let isNuked = false;
-
     function nukeTheMap(){
 
         if (nukes !== 0){
             nukes--;
             isNuked = true;
+            
+            LaserShot = 0;
+            EnemyShots = 0;
+            InactiveShots = 0;
+            BossShots = 0;
 
             if (Level%waveTillBoss === 0){
                 Boss.isDamaged = true;
