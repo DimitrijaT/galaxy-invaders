@@ -227,17 +227,17 @@
         }
         PowerUP[amountOfPowerUPs].x = Enemy[eX].x + Enemy[eX].w / 2 - 5;
         PowerUP[amountOfPowerUPs].y = Enemy[eX].y;
-        if (Math.ceil(Math.random() * 6) === 1){
-            PowerUP[amountOfPowerUPs].typeOfPower = 1
+       if (Math.ceil(Math.random() * 6) === 1){
+            PowerUP[amountOfPowerUPs].typeOfPower = 1 //lifeUP
         }
-        else if (Math.ceil(Math.random() * 5) === 1){
-            PowerUP[amountOfPowerUPs].typeOfPower = 3;
+        else if (Math.ceil(Math.random() * 6) === 1){
+            PowerUP[amountOfPowerUPs].typeOfPower = 3;  //shipUP
         }
         else if (Math.ceil(Math.random() * 15) === 1){
-            PowerUP[amountOfPowerUPs].typeOfPower = 4;
+            PowerUP[amountOfPowerUPs].typeOfPower = 4;  //bombUP
         }
         else{
-            PowerUP[amountOfPowerUPs].typeOfPower = 2;
+            PowerUP[amountOfPowerUPs].typeOfPower = 2;  //fireUP
         }
         amountOfPowerUPs++;
     }
@@ -823,7 +823,7 @@
         EnemyHealth = 1;
         BossHealthBoost = 5;
         startingLaserHealth = 2;
-        chanceOfPower = 60;
+        chanceOfPower = 65;
 
         Easy.style.display = "none";
         Medium.style.display = "none";
@@ -842,7 +842,7 @@
         gainLifePerStage = 0;
         EnemyHealth = 1;
         BossHealthBoost = 10;
-        chanceOfPower = 50;
+        chanceOfPower = 60;
         Easy.style.display = "none";
         Medium.style.display = "none";
         Hard.style.display = "none";
@@ -860,7 +860,7 @@
         gainLifePerStage = 0;
         EnemyHealth = 2;
         BossHealthBoost = 15;
-        chanceOfPower = 40;
+        chanceOfPower = 55;
         Easy.style.display = "none";
         Medium.style.display = "none";
         Hard.style.display = "none";
