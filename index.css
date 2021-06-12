@@ -13,6 +13,7 @@ body{
     padding: 0;
 }
 
+
 header{
 
     background-color: mediumpurple;
@@ -65,7 +66,7 @@ section{
     background-color: #200054;
     background-image: linear-gradient(#200054, #4c00ff);
     grid-area: game;
-    height: 87.5vh;
+    height: 88.7vh;
     overflow: hidden;
 
 }
@@ -109,17 +110,23 @@ canvas{
 }
 
 
-#Enemy, #Player, #Laser, #EnemyLaser, #InviciBubble, #FirePower,#LifeUP, #Space , #EnemyExplode1 , #EnemyExplode2, #MotherShip,#BossLaser,#ShipUP,#MotherShipHurt,#EnemyShooting,#EnemyHurt,#PlayerLevel2,#PlayerLevel3, #LaserPiercing1, #LaserPiercing2,#SpaceNuked,#BombUP{
+#Enemy, #Player, #Laser, #EnemyLaser, #InviciBubble, #FirePower,#LifeUP, #Space , #EnemyExplode1 , #EnemyExplode2, #MotherShip,#BossLaser,#ShipUP,#MotherShipHurt,#EnemyShooting,#EnemyHurt,#PlayerLevel2,#PlayerLevel3, #LaserPiercing1, #LaserPiercing2,#SpaceNuked,#BombUP,#MotherShip2,#MotherShip2Angry,#MotherShip2Hurt,#Boss2Fire, #MotherShip2Heal{
     display: none;
 }
 
 article{
-    background-color: lightgreen;
+    background-color: #5CDB95;
+    color: #EDF5E1;
     border-radius: 20px;
     margin-left: auto;
     margin-right: auto;
+    padding: 5%;
+    font-size: 1.5em;
+    font-family: 'VT323', monospace;
+    overflow: auto;
+}
+
+article > p , h1 , h2{
     text-align: center;
-
-
 }
 

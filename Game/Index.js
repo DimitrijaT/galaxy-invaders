@@ -9,9 +9,17 @@
     const image3 =  document.getElementById('PlayerLevel3');
     const enemy =  document.getElementById('Enemy');
     const enemyHurt =  document.getElementById('EnemyHurt');
+
     const motherShip =  document.getElementById('MotherShip');
     const motherShipHurt =  document.getElementById('MotherShipHurt');
     const bossLaser =  document.getElementById('BossLaser');
+    const motherShip2 =  document.getElementById('MotherShip2');
+    const motherShip2Hurt =  document.getElementById('MotherShip2Hurt');
+    const motherShip2Heal =  document.getElementById('MotherShip2Heal');
+    const motherShip2Angry =  document.getElementById('MotherShip2Angry');
+    const boss2Fire =  document.getElementById('Boss2Fire');
+
+
     const enemyshoots =  document.getElementById('EnemyShooting');
     const laser = document.getElementById('Laser');
     const laserPiercing1 = document.getElementById('LaserPiercing1');
@@ -47,13 +55,11 @@
     let nukes = 3;
     let isNuked = false;
 
-
     //SOUNDS
     let StartTheGame = new Audio();
     StartTheGame.src = 'Sounds/SpaceAmbience.mp3';
     let BossMusic = new Audio();
     BossMusic.src = 'Sounds/BossMusic.mp3';
-
 
     let deathSound = new Audio();
     deathSound.src = 'Sounds/death.wav';
@@ -70,7 +76,13 @@
     let shootLaser2  = [];
     let enemyExplode = [];
     let enemyHurtSound = [];
+    let motherShipHit = [];
+    let motherShipHeal = [];
     for (let i=0;i<5;i++){
+        motherShipHit[i] = new Audio();
+        motherShipHit[i].src = 'Sounds/MotherShipHit.mp3';
+        motherShipHeal[i] = new Audio();
+        motherShipHeal[i].src = 'Sounds/MotherShipHeal.mp3';
         shootLaser[i] = new Audio();
         shootLaser[i].src = 'Sounds/shootLaser.mp3';
         shootLaser2[i] = new Audio();
@@ -206,14 +218,8 @@
                         powerUPSound.play();
                         nukes++;
                         PowerUP[i].Active = false;
-
-
                 }
-
             }
-
-
-
         }
     }
     function generatePower(eX){
@@ -228,7 +234,7 @@
         }
         PowerUP[amountOfPowerUPs].x = Enemy[eX].x + Enemy[eX].w / 2 - 5;
         PowerUP[amountOfPowerUPs].y = Enemy[eX].y;
-       if (Math.ceil(Math.random() * 6) === 1){
+        if (Math.ceil(Math.random() * 6) === 1){
             PowerUP[amountOfPowerUPs].typeOfPower = 1 //lifeUP
         }
         else if (Math.ceil(Math.random() * 6) === 1){
@@ -314,14 +320,11 @@
                 ctx.drawImage(enemyLaser, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
             }
         }
-
-
     }
     function newEnemyLaserPosition(){
         for (let i=InactiveShots;i<EnemyShots;i++){
             EnemyFire[i].y+=EnemyFire[i].speed;
         }
-
     }
 
     function isPlayerHIT(){
@@ -339,12 +342,8 @@
                 }
                 else{
                     youLOST();
-
-
                 }
-
             }
-
         }
 
         for (let i=0;i<numOfEnemies;i++){
@@ -398,7 +397,6 @@
                 }
             }
         }
-
     }
 
     function nukeTheMap(){
@@ -406,7 +404,7 @@
         if (nukes !== 0){
             nukes--;
             isNuked = true;
-            
+
             LaserShot = 0;
             EnemyShots = 0;
             InactiveShots = 0;
@@ -473,7 +471,6 @@
                 doesPierce: false,
                 Health: startingLaserHealth
             }
-
 
             Laser[LaserShot].h = 25;
             Laser[LaserShot].x = Player.x + Player.w / 2 - 5;
@@ -886,6 +883,7 @@
         EnemyShots = 0;
         InactiveShots = 0;
         amountOfShots = 1;
+        nukes = 3;
         myButton.style.display = "none";
         myOptions.style.display = "none";
 
@@ -957,10 +955,16 @@
         drawBoss();
         newBossPosition();
         isBossDamaged();
-        BossShoot();
-        drawBossLaser();
-        newBossLaserPosition();
-        isPlayerHITbyBoss();
+        if (Boss.typeBoss === 1 ){
+            BossShoot();
+        }
+        else{
+            Boss2Shoot();
+        }
+            drawBossLaser();
+            newBossLaserPosition();
+            isPlayerHITbyBoss();
+
         isBossBeaten();
     }
 
@@ -968,6 +972,7 @@
     let bossMode = false;
     let bossRateOfFire = 250;
     let fasterDecent = 0;
+    let startingHealth;
     function createBoss() {
          Boss = {
             w: 237,
@@ -975,25 +980,62 @@
             x: 135,
             y: 50,
             speed: 3,
-            descent: 0.1,
+            descent: 0.08,
             isDead: false,
             DirectionBias: 0,
             isDamaged: false,
-            Health: 5
+            isHealing: false,
+            Health: 5,
+             typeBoss: 2
         }
-        Boss.descent += fasterDecent;
+
+        if(Math.ceil(Math.random() * 2) === 1){
+            Boss.typeBoss = 1;
+            Boss.Health = BossHealthBoost + Level*3;
+            Boss.descent += fasterDecent;
+        }
+        else{
+            Boss.typeBoss = 2;
+            Boss.Health = BossHealthBoost + Level*5;
+        }
+
+        startingHealth = Boss.Health;
         bossMode = true;
-        Boss.Health = BossHealthBoost + Level*3;
 
 
     }
     function  drawBoss(){
-        if (Boss.isDamaged === true){
-            ctx.drawImage(motherShipHurt,Boss.x,Boss.y,Boss.w,Boss.h);
-            setTimeout(function(){ Boss.isDamaged = false; }, 100);
+        if (Boss.typeBoss === 1) {
+            if (Boss.isDamaged === true) {
+                ctx.drawImage(motherShipHurt, Boss.x, Boss.y, Boss.w, Boss.h);
+                setTimeout(function () {
+                    Boss.isDamaged = false;
+                }, 100);
+            } else {
+                ctx.drawImage(motherShip, Boss.x, Boss.y, Boss.w, Boss.h);
+            }
         }
-        else{
-            ctx.drawImage(motherShip,Boss.x,Boss.y,Boss.w,Boss.h);
+        else if (Boss.typeBoss === 2) {
+            if(Boss.isHealing === true) {
+                ctx.drawImage(motherShip2Heal, Boss.x, Boss.y, Boss.w, Boss.h);
+                setTimeout(function () {
+                    Boss.isHealing = false;
+                }, 300);
+            }
+            else if (Boss.isDamaged === true) {
+                ctx.drawImage(motherShip2Hurt, Boss.x, Boss.y, Boss.w, Boss.h);
+                setTimeout(function () {
+                    Boss.isDamaged = false;
+                }, 100);
+            }
+            else{
+                if (Boss.Health <= startingHealth/3){
+                    ctx.drawImage(motherShip2Angry, Boss.x, Boss.y, Boss.w, Boss.h);
+                }
+                else {
+                    ctx.drawImage(motherShip2, Boss.x, Boss.y, Boss.w, Boss.h);
+                }
+            }
         }
 
     }
@@ -1048,7 +1090,14 @@
 
                     createExplosion(0);
                     points += 100 * scoreMultiplier;
-                    enemyExplode[j%5].play();
+
+                    if (Boss.typeBoss === 1){
+                        enemyExplode[j%5].play();
+                    }
+                    else{
+                        motherShipHit[j%5].play();
+                    }
+
                 }
             }
     }
@@ -1058,26 +1107,25 @@
     let BossFire = [];
 
     function BossShoot(){
-
-        if ((Math.ceil(Math.random() * bossRateOfFire - (Boss.y / 20)) <= 1)  && Boss.isDead===false) {
+        if ((Math.ceil(Math.random() * bossRateOfFire - (Boss.y / 20) - Level) <= 1)  && Boss.isDead===false) {
 
             BossFire[BossShots] = {
                 w: 10,
-                h: 40,
+                h: Level+20,
                 x: 0,
                 y: 0,
-                speed: 2.5,
-                Active: false,
+                speed: enemyProjectileSpeed,
+                Active: true,
                 redLaser: true,
             }
 
             BossFire[BossShots+1] = {
                 w: 10,
-                h: 40,
+                h: Level+20,
                 x: 0,
                 y: 0,
-                speed: 2.5,
-                Active: false,
+                speed: enemyProjectileSpeed,
+                Active: true,
                 redLaser: true
             }
 
@@ -1087,7 +1135,7 @@
                 x: 0,
                 y: 0,
                 speed: enemyProjectileSpeed,
-                Active: false,
+                Active: true,
                 redLaser: false
             }
 
@@ -1097,26 +1145,23 @@
                 x: 0,
                 y: 0,
                 speed: enemyProjectileSpeed,
-                Active: false,
+                Active: true,
                 redLaser: false
             }
 
 
             BossFire[BossShots].x = Boss.x + Boss.w / 2 + 80;
             BossFire[BossShots].y = Boss.y+60;
-            BossFire[BossShots].Active = true;
 
             BossFire[BossShots+1].x = Boss.x + Boss.w / 2 - 90;
             BossFire[BossShots+1].y = Boss.y+60;
-            BossFire[BossShots+1].Active = true;
 
-            BossFire[BossShots+2].x = Boss.x + Boss.w / 2 + 70;
+            BossFire[BossShots+2].x = Boss.x + Boss.w / 2 + 90;
             BossFire[BossShots+2].y = Boss.y+60;
-            BossFire[BossShots+2].Active = true;
 
-            BossFire[BossShots+3].x = Boss.x + Boss.w / 2 - 80;
+            BossFire[BossShots+3].x = Boss.x + Boss.w / 2 - 100;
             BossFire[BossShots+3].y = Boss.y+60;
-            BossFire[BossShots+3].Active = true;
+
 
             BossShots+=4;
         }
@@ -1124,56 +1169,157 @@
 
     }
 
+    let BossRadialShots = 0;
+    let BossRadialFire = [];
+    let AngryBoost;
+
+    function Boss2Shoot(){
+
+        if (Boss.Health <= startingHealth/3){
+            AngryBoost = Level*2;
+        }
+        else{
+            AngryBoost = Level/2;
+        }
+
+        if ((Math.ceil(Math.random() * bossRateOfFire) <= AngryBoost)  && Boss.isDead===false) {
+
+            for (let i=BossRadialShots;i<BossRadialShots+5;i++) {
+
+                BossRadialFire[i] = {
+                    w: 18,
+                    h: 22,
+                    x: 0,
+                    y: 0,
+                    speed: 4,
+                    Active: true
+                }
+
+                BossRadialFire[i].x = Boss.x + Boss.w / 2;
+                BossRadialFire[i].y = Boss.y;
+            }
+
+            BossRadialShots+=5;
+        }
+
+    }
+
 
     function  drawBossLaser(){
 
-        for (let i=0;i<BossShots;i++) {
-            if (BossFire[i].y === 500) {
-                BossFire[i].Active = false;
+        if (Boss.typeBoss === 1) {
+            for (let i = 0; i < BossShots; i++) {
+                if (BossFire[i].y === 500) {
+                    BossFire[i].Active = false;
+                }
+                if (BossFire[i].Active === true) {
+                    if (Boss.typeBoss === 1) {
+                        if (BossFire[i].redLaser === true) {
+                            ctx.drawImage(bossLaser, BossFire[i].x, BossFire[i].y, BossFire[i].w, BossFire[i].h);
+                        } else {
+                            ctx.drawImage(enemyLaser, BossFire[i].x, BossFire[i].y, BossFire[i].w, BossFire[i].h);
+                        }
+                    }
+                }
             }
-            if (BossFire[i].Active === true) {
-                if (BossFire[i].redLaser === true){
-                    ctx.drawImage(bossLaser, BossFire[i].x, BossFire[i].y, BossFire[i].w, BossFire[i].h);
-                }
-                else{
-                    ctx.drawImage(enemyLaser, BossFire[i].x, BossFire[i].y, BossFire[i].w, BossFire[i].h);
-                }
+        }
+        else if (Boss.typeBoss === 2){
+            for (let i = 0; i < BossRadialShots; i+=5) {
 
+                ctx.drawImage(boss2Fire, BossRadialFire[i].x, BossRadialFire[i].y, BossRadialFire[i].w, BossRadialFire[i].h);
+
+
+                ctx.drawImage(boss2Fire, BossRadialFire[i+1].x, BossRadialFire[i+1].y, BossRadialFire[i+1].w, BossRadialFire[i+1].h);
+
+
+                ctx.drawImage(boss2Fire, BossRadialFire[i+2].x, BossRadialFire[i+2].y, BossRadialFire[i+2].w, BossRadialFire[i+2].h);
+
+
+                ctx.drawImage(boss2Fire, BossRadialFire[i+3].x, BossRadialFire[i+3].y, BossRadialFire[i+3].w, BossRadialFire[i+3].h);
+
+
+                ctx.drawImage(boss2Fire, BossRadialFire[i+4].x, BossRadialFire[i+4].y, BossRadialFire[i+4].w, BossRadialFire[i+4].h);
             }
+
         }
 
     }
 
     function newBossLaserPosition(){
-        for (let i=0;i<BossShots;i++){
-            BossFire[i].y+=BossFire[i].speed;
+        if (Boss.typeBoss === 1) {
+            for (let i = 0; i < BossShots; i++) {
+                BossFire[i].y += BossFire[i].speed;
+            }
+        }
+        else if (Boss.typeBoss === 2) {
+            for (let i = 0; i < BossRadialShots; i+=5) {
+                BossRadialFire[i].y += BossRadialFire[i].speed;
+                BossRadialFire[i].x -= BossRadialFire[i].speed;
+
+                BossRadialFire[i+1].y += BossRadialFire[i].speed;
+                BossRadialFire[i+1].x -= BossRadialFire[i].speed/2;
+
+                BossRadialFire[i+2].y += BossRadialFire[i].speed;
+
+                BossRadialFire[i+3].y += BossRadialFire[i].speed;
+                BossRadialFire[i+3].x += BossRadialFire[i].speed/2;
+
+                BossRadialFire[i+4].y += BossRadialFire[i].speed;
+                BossRadialFire[i+4].x += BossRadialFire[i].speed;
+
+            }
         }
     }
 
 
     function isPlayerHITbyBoss(){
+        if (Boss.typeBoss === 1) {
+            for (let i = 0; i < BossShots; i++) {
 
-        for (let i=0;i<BossShots;i++){
-            if (
-                BossFire[i].x >= Player.x &&
-                BossFire[i].x <= Player.x + Player.w &&
-                BossFire[i].y >= Player.y &&
-                BossFire[i].y <= Player.y + Player.h &&
-                BossFire[i].Active === true &&
-                unkillable === false){
-                if (lives-1 >= 0) {
-                    takeDamage();
+                if (Boss.typeBoss === 1) {
 
+                    if (
+                        BossFire[i].x >= Player.x &&
+                        BossFire[i].x  <= Player.x + Player.w &&
+                        BossFire[i].y +  BossFire[i].h - 3 >= Player.y &&
+                        BossFire[i].y + BossFire[i].h - 3<= Player.y + Player.h &&
+                        BossFire[i].Active === true &&
+                        unkillable === false) {
+                        if (lives - 1 >= 0) {
+                            BossFire[i].Active = false;
+                            takeDamage();
+
+                        } else {
+                            youLOST();
+                        }
+
+                    }
                 }
-                else{
-                    youLOST();
-
-
+            }
+        }
+        else if (Boss.typeBoss === 2) {
+            for (let i = 0; i < BossRadialShots; i++) {
+                if (
+                    BossRadialFire[i].x >= Player.x &&
+                    BossRadialFire[i].x <= Player.x + Player.w &&
+                    BossRadialFire[i].y >= Player.y &&
+                    BossRadialFire[i].y <= Player.y + Player.h &&
+                    BossRadialFire[i].Active === true &&
+                    unkillable === false) {
+                    if (lives - 1 >= 0) {
+                        motherShipHeal[i%5].play();
+                        Boss.Health+=10;
+                        Boss.isHealing = true;
+                        BossRadialFire[i].Active = false;
+                        takeDamage();
+                    } else {
+                        youLOST();
+                    }
                 }
 
             }
-
         }
+
 
         for (let i=0;i<numOfEnemies;i++){
             if (Enemy[i].y >= canvas.height-30 && Enemy[i].isDead === false){
@@ -1210,6 +1356,7 @@
             EnemyShots = 0;
             InactiveShots = 0;
             BossShots = 0;
+            BossRadialShots = 0;
 
             if (Level % 10 === 0){
                 EnemyHealth++;
