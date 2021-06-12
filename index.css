@@ -122,6 +122,9 @@ canvas{
     top: 300px;
 }
 
+#PlayerLevel2{
+    display: none;
+
 #Enemy, #Player, #PlayerLevel2, #Laser, #EnemyLaser, #InviciBubble, #FirePower,#LifeUP, #Space , #EnemyExplode1 , #EnemyExplode2, #MotherShip,#BossLaser,#ShipUP,#MotherShipHurt,#EnemyShooting,#EnemyHurt{
     display: none;
 }
