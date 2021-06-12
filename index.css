@@ -1,0 +1,127 @@
+#gridContainer{
+display: grid;
+    grid-template-areas:
+    'header'
+    'game'
+    'footer';
+
+}
+
+body{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+header{
+
+    background-color: mediumpurple;
+    background-image: linear-gradient(mediumpurple, #6f49b6);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    grid-area: header;
+    height: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: 'VT323', monospace;
+    font-size: 2em;
+    font-weight: bold;
+
+
+}
+header > h1{
+    margin: 0;
+    display: inline-block;
+    color: #00fa0c;
+    text-align: center;
+    user-select: none;
+}
+
+nav a{
+    display: inline-block;
+    text-decoration: none;
+    border: 3px solid #5a008d;
+    background-color: #095dbe;
+    margin: 0;
+    padding: 4px;
+    border-radius:  30px;
+    text-align: center;
+    user-select: none;
+    transition: 0.5s;
+}
+
+nav a:hover{
+    background-color: #00ff28;
+}
+
+section{
+    position: relative;
+    background-color: #200054;
+    background-image: linear-gradient(#200054, #4c00ff);
+    grid-area: game;
+    height: 87.5vh;
+    overflow: hidden;
+
+}
+footer{
+    background-color: darkmagenta;
+    background-image: linear-gradient( #ce00ce, darkmagenta);
+    grid-area: footer;
+    text-align: center;
+    overflow: hidden;
+}
+
+canvas{
+    display: block;
+    margin: 30px auto 50px auto ;
+    border: 3px dashed black;
+    z-index: 2;
+}
+
+
+
+#StartGame{
+    display: block;
+    position: absolute;
+    top: 200px;
+    left: 650px;
+    z-index: 1;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+}
+#Options{
+    display: block;
+    position: absolute;
+    top: 250px;
+    left: 660px;
+    z-index: 1;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+}
+#Easy, #Medium, #Hard{
+    display: none;
+    position: absolute;
+    left: 660px;
+    z-index: 1;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+}
+
+#Easy{
+    top: 200px;
+}
+#Medium{
+    top: 250px;
+}
+#Hard{
+    top: 300px;
+}
+
+#Enemy, #Player, #Laser, #EnemyLaser, #InviciBubble, #FirePower,#LifeUP, #Space , #EnemyExplode1 , #EnemyExplode2, #MotherShip,#BossLaser,#ShipUP,#MotherShipHurt,#EnemyShooting,#EnemyHurt,#PlayerLevel2{
+    display: none;
+}
