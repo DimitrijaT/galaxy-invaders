@@ -1854,7 +1854,7 @@
     let direction; // 1 left 2 right 3 bomb
 
 
-        canvas.addEventListener('mousedown', e => {
+        canvas.addEventListener('touchstart', e => {
 
             console.log(e.offsetX);
             if (e.offsetX <= 250) {
@@ -1872,8 +1872,8 @@
 
         });
 
-        window.addEventListener('mouseup', e => {
-
+        window.addEventListener('touchend', e => {
+            direction = 0;
         });
 
 
