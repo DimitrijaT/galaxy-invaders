@@ -8,7 +8,6 @@ display: grid;
 }
 
 body{
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
@@ -32,7 +31,7 @@ header{
 
 
 }
-header > h1{
+header h1,img{
     margin: 0;
     display: inline-block;
     color: #00fa0c;
@@ -89,6 +88,7 @@ footer{
 
 canvas{
     border: 3px dashed black;
+
 }
 
 #StartGame,#Options,#Easy, #Medium, #Hard, #FullScreen, #Continue{
@@ -129,7 +129,6 @@ article{
     font-family: 'VT323', monospace;
 }
 
-article > p , h1 , h2{
+article p , h1 , h2{
     text-align: center;
 }
-
