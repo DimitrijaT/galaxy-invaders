@@ -1861,56 +1861,41 @@
                 case 1:
                     touch = e.touches[0];
 
-                   // console.log(touch.clientX + "  " + touch.clientY + "   " + canvas.scrollWidth + "-" + canvas.scrollHeight + " " + (canvas.scrollHeight  -  canvas.scrollHeight/4));
-/*
+                    console.log(touch.clientX + "  " + touch.clientY + "   " + canvas.scrollWidth + "-" + canvas.scrollHeight + " " + (canvas.scrollHeight  -  canvas.scrollHeight/4));
+
                     if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight/3){
                         nukeTheMap();
                     }
-
- */
-                    if (touch.clientX <= canvas.scrollWidth/2) {
+                    else if (touch.clientX <= canvas.scrollWidth/2) {
                         direction = 1;
                     }
                     else if (touch.clientX > canvas.scrollWidth/2) {
                         direction = 2;
                     }
-                    /*
-                    if(touch.clientY > (canvas.scrollHeight  -  canvas.scrollHeight/4.5)){
+                    if (touch.clientY > (canvas.scrollHeight  -  canvas.scrollHeight/4.5)){
                         Shoot();
                     }
-
-                     */
 
                     break;
                 case 2:
                     touch = e.touches[0];
                     shoot = e.touches[1];
 
-                    //console.log(touch.clientX + "  " + touch.clientY );
+                    console.log(touch.clientX + "  " + touch.clientY );
 
-                        if (touch.clientX <= canvas.scrollWidth/2) {
-                            direction = 1;
-                        }
-                        else if (touch.clientX > canvas.scrollWidth/2) {
-                            direction = 2;
-                        }
-
-                        if (shoot.clientY > (canvas.scrollHeight  -  canvas.scrollHeight/4)) {
-                            Shoot();
-                        }
-                        else if (
-                            shoot.clientY >= 0 && shoot.clientY < canvas.scrollHeight / 3
-                        ){
-                            nukeTheMap();
-                        }
-                        /*
-                        else if (touch.clientX <= canvas.scrollWidth / 2 ) {
-                            direction = 1;
-                        } else if (touch.clientX > canvas.scrollWidth / 2 ) {
-                            direction = 2;
-                        }
-                         */
-
+                    if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight/3 ||
+                        shoot.clientY >= 0 && shoot.clientY < canvas.scrollHeight/3
+                    ){
+                        nukeTheMap();
+                    }
+                    else if (touch.clientX <= canvas.scrollWidth/2 || shoot.clientX <= canvas.scrollWidth/2) {
+                        direction = 1;
+                    } else if (touch.clientX > canvas.scrollWidth/2  || shoot.clientX > canvas.scrollWidth/2 ) {
+                        direction = 2;
+                    }
+                    if (touch.clientY >  canvas.scrollHeight  -  canvas.scrollHeight/4.5|| shoot.clientY > canvas.scrollHeight  -  canvas.scrollHeight/4.5) {
+                        Shoot();
+                    }
 
                     break;
             }
