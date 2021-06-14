@@ -1861,18 +1861,18 @@
                 case 1:
                     touch = e.touches[0];
 
-                    console.log(touch.clientX + "  " + touch.clientY );
+                    console.log(touch.pageX + "  " + touch.pageY );
 
-                    if (touch.clientY >= 0 && touch.clientY < 60){
+                    if (touch.pageY >= 0 && touch.pageY < 100){
                         nukeTheMap();
                     }
-                    else if (touch.clientX <= 250) {
+                    else if (touch.pageX <= 250) {
                         direction = 1;
                     }
-                    else if (touch.clientX > 250 && touch.clientX <= 500) {
+                    else if (touch.pageX > 250 && touch.pageX <= 500) {
                         direction = 2;
                     }
-                    if (touch.clientY > 400 ){
+                    if (touch.pageY > 400 ){
                         Shoot();
                     }
 
@@ -1881,19 +1881,19 @@
                     touch = e.touches[0];
                     shoot = e.touches[1];
 
-                    console.log(touch.clientX + "  " + touch.clientY );
+                    console.log(touch.pageX + "  " + touch.pageY );
 
-                    if (touch.clientY >= 0 && touch.clientY < 60 ||
-                        shoot.clientY >= 0 && shoot.clientY < 60
+                    if (touch.pageY >= 0 && touch.pageY < 100 ||
+                        shoot.pageY >= 0 && shoot.pageY < 100
                     ){
                         nukeTheMap();
                     }
-                    else if (touch.clientX <= 250 || shoot.clientX <= 250) {
+                    else if (touch.pageX <= 250 || shoot.pageX <= 250) {
                         direction = 1;
-                    } else if (touch.clientX > 250 && touch.clientX <= 500 || shoot.clientX > 250 && shoot.clientX <= 500) {
+                    } else if (touch.pageX > 250 && touch.pageX <= 500 || shoot.pageX > 250 && shoot.pageX <= 500) {
                         direction = 2;
                     }
-                    if (touch.clientY > 400|| shoot.clientY > 400) {
+                    if (touch.pageY > 400|| shoot.pageY > 400) {
                         Shoot();
                     }
 
