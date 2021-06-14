@@ -1863,13 +1863,17 @@
 
                     console.log(touch.clientX + "  " + touch.clientY );
 
-                    if (touch.clientX >= 400   && touch.clientX <= 450 && touch.clientY >= 30 && touch.clientY < 40){
+                    if (touch.clientY >= 0 && touch.clientY < 60){
                         nukeTheMap();
                     }
                     else if (touch.clientX <= 250) {
                         direction = 1;
-                    } else if (touch.clientX > 250 && touch.clientX <= 500) {
+                    }
+                    else if (touch.clientX > 250 && touch.clientX <= 500) {
                         direction = 2;
+                    }
+                    if (touch.clientY > 400 ){
+                        Shoot();
                     }
 
                     break;
@@ -1879,8 +1883,8 @@
 
                     console.log(touch.clientX + "  " + touch.clientY );
 
-                    if (touch.clientX >= 400   && touch.clientX <= 450 && touch.clientY >= 30 && touch.clientY < 40 ||
-                        shoot.clientX >= 400   && shoot.clientX <= 450 && shoot.clientY >= 30 && shoot.clientY < 40
+                    if (touch.clientY >= 0 && touch.clientY < 60 ||
+                        shoot.clientY >= 0 && shoot.clientY < 60
                     ){
                         nukeTheMap();
                     }
@@ -1889,7 +1893,7 @@
                     } else if (touch.clientX > 250 && touch.clientX <= 500 || shoot.clientX > 250 && shoot.clientX <= 500) {
                         direction = 2;
                     }
-                    if ( touch.clientX > 500 || shoot.clientX > 500) {
+                    if (touch.clientY > 400|| shoot.clientY > 400) {
                         Shoot();
                     }
 
