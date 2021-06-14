@@ -15,27 +15,28 @@
 <div id="gridContainer">
 <header>
 
-        <h1>SPACE INVADERS</h1>
+        <h1>SPACE INVADERS 3.0</h1>
         <nav>
             <a href="#" id="ChosenSetting">Play Now</a>
             <a href="HowToPlay.html">How To Play</a>
             <a href="About.html">About</a>
-
-
         </nav>
 
 </header>
 
 <section>
 
-    <canvas id="canvas" width="500" height="500"></canvas>
+    <canvas id="canvas" width="500" height="500">This shows up if Canvas is not supported by your browser :(</canvas>
     <div class="MainMenu">
+        <button onclick="Continue()" id="Continue"></button>
         <button onclick="beginGame()" id="StartGame"> Start Game</button>
+        <button onclick="fullScreen()" id="FullScreen"> Full Screen - OFF</button>
         <button onclick="Settings()" id="Options">Difficulty</button>
         <button onclick="EasyMode()" id="Easy">Easy</button>
         <button onclick="MediumMode()" id="Medium">Medium</button>
         <button onclick="HardMode()" id="Hard">Hard</button>
     </div>
+
     <img src="Images/ship.png" alt="" id="Player">
     <img src="Images/ship2.png" alt="" id="PlayerLevel2">
     <img src="Images/ship3.png" alt="" id="PlayerLevel3">
@@ -52,6 +53,15 @@
     <img src="Images/motherShip2Heal.png" alt="" id="MotherShip2Heal">
     <img src="Images/boss2Fire.png" alt="" id="Boss2Fire">
 
+
+    <img src="Images/motherShip3.png" alt="" id="MotherShip3">
+    <img src="Images/motherShip3Hurt.png" alt="" id="MotherShip3Hurt">
+    <img src="Images/motherShip3Heal.png" alt="" id="MotherShip3Heal">
+    <img src="Images/motherShip3Angry.png" alt="" id="MotherShip3Angry">
+    <img src="Images/motherShip3Closed.png" alt="" id="MotherShip3Protected">
+    <img src="Images/boss3Wave.png" alt="" id="Boss3Fire">
+    <img src="Images/boss3SummonHurt.png" alt="" id="Boss3FireHurt">
+    <img src="Images/boss3WaveSleep.png" alt="" id="Boss3FireSleep">
 
     <img src="Images/laser.png" alt="" id="Laser">
     <img src="Images/laserPiercing1.png" alt="" id="LaserPiercing1">
@@ -72,7 +82,6 @@
 
 <footer>
     Dimitrija Timeski &copy;FINKI 2021
-
 </footer>
 
 </div>
