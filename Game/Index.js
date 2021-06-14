@@ -744,7 +744,7 @@
 
 
 
-    function MovePlayer(direction){
+    function MovePlayer(){
 
         if (keys[37] || direction === 1){
             Player.dx=Player.speed*-1;
@@ -752,6 +752,7 @@
         else if (keys[39] || direction === 2){
             Player.dx=Player.speed;
         }
+
 
         if (Player.x + Player.w >= canvas.width){
             Player.x -= 0.3;
@@ -1835,17 +1836,7 @@
 
  */
 
-    canvas.addEventListener('mousedown', e => {
-        if (e.offsetX <= 250){
-            MovePlayer(1);
-            Shoot();
-        }
-        else if(e.offsetX > 250){
-            MovePlayer(2);
-            Shoot();
-        }
-    });
-
+    /*
     canvas.addEventListener('mousemove', e => {
         if (e.offsetX <= 250){
             MovePlayer(1);
@@ -1856,17 +1847,36 @@
             Shoot();
         }
     });
+     */
 
 
-    window.addEventListener('mouseup', e => {
-        if (e.offsetX <= 250){
-            MovePlayer(1);
-        }
-        else if(e.offsetX > 250){
-            MovePlayer(2);
 
-        }
-    });
+    let direction; // 1 left 2 right 3 bomb
+
+
+        canvas.addEventListener('mousedown', e => {
+            if (e.offsetX <= 250 && e.offsetX >= 0) {
+                direction = 1;
+            } else if (e.offsetX > 250 && e.offsetX <= 500) {
+                direction = 2;
+            }
+            else if (e.offsetX < 0){
+                nukeTheMap();
+            }
+            else if ( e.offsetX > 500){
+                Shoot();
+            }
+        });
+
+        window.addEventListener('mouseup', e => {
+            if (e.offsetX <= 250) {
+                direction = 0;
+            } else if (e.offsetX > 250) {
+                direction = 0
+
+            }
+        });
+
 
 
 
@@ -1896,6 +1906,7 @@
             MovePlayer();
             drawPlayer();
             drawLaser();
+
 
             newLaserPosition();
 
