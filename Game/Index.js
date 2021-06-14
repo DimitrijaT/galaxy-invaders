@@ -1854,25 +1854,25 @@
     let direction; // 1 left 2 right 3 bomb
 
 
-        canvas.addEventListener('touchstart', e => {
-
-            console.log(e.offsetX);
-            if (e.offsetX <= 250) {
+        canvas.addEventListener('touchstart', function (e){
+            let touch = e.touches[0];
+            console.log(touch.clientX);
+            if (touch.clientX <= 250) {
                 direction = 1;
-            } else if (e.offsetX > 250 && e.offsetX <= 500) {
+            } else if (touch.clientX > 250 && touch.clientX <= 500) {
                 direction = 2;
             }
 
-            if (e.offsetX < 0){
+            if (touch.clientX < 0){
                 nukeTheMap();
             }
-            else if ( e.offsetX > 500){
+            else if (touch.clientX > 500){
                 Shoot();
             }
 
         });
 
-        window.addEventListener('touchend', e => {
+        window.addEventListener('touchend', (e) {
             direction = 0;
         });
 
