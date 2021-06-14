@@ -115,7 +115,7 @@ canvas{
 }
 
 
-#Enemy, #Player, #Laser, #EnemyLaser, #InviciBubble, #FirePower,#LifeUP, #Space , #EnemyExplode1 , #EnemyExplode2, #MotherShip,#BossLaser,#ShipUP,#MotherShipHurt,#EnemyShooting,#EnemyHurt,#PlayerLevel2,#PlayerLevel3, #LaserPiercing1, #LaserPiercing2,#SpaceNuked,#BombUP,#MotherShip2,#MotherShip2Angry,#MotherShip2Hurt,#Boss2Fire, #MotherShip2Heal , #MotherShip3Protected , #MotherShip3, #MotherShip3Angry, #MotherShip3Hurt, #Boss3Fire, #Boss3FireHurt,#MotherShip3Heal,#Boss3FireSleep{
+#Enemy, #Player, #Laser, #EnemyLaser, #InviciBubble, #FirePower,#LifeUP, #Space , #EnemyExplode1 , #EnemyExplode2, #MotherShip,#BossLaser,#ShipUP,#MotherShipHurt,#EnemyShooting,#EnemyHurt,#PlayerLevel2,#PlayerLevel3, #LaserPiercing1, #LaserPiercing2,#SpaceNuked,#BombUP,#MotherShip2,#MotherShip2Angry,#MotherShip2Hurt,#Boss2Fire, #MotherShip2Heal , #MotherShip3Protected , #MotherShip3, #MotherShip3Angry, #MotherShip3Hurt, #Boss3Fire, #Boss3FireHurt,#MotherShip3Heal,#Boss3FireSleep,#Boss3FireAngry{
     display: none;
 }
 

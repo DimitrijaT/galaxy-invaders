@@ -29,6 +29,7 @@
     const boss3Fire =  document.getElementById('Boss3Fire');
     const boss3FireHurt =  document.getElementById('Boss3FireHurt');
     const boss3FireSleep =  document.getElementById('Boss3FireSleep');
+    const boss3FireAngry =  document.getElementById('Boss3FireAngry');
 
     const enemyshoots =  document.getElementById('EnemyShooting');
     const laser = document.getElementById('Laser');
@@ -76,6 +77,8 @@
     StartTheGame.src = 'Sounds/SpaceAmbience.mp3';
     let BossMusic = new Audio();
     BossMusic.src = 'Sounds/BossMusic.mp3';
+    let Boss3Music = new Audio();
+    Boss3Music.src = 'Sounds/MotherShip3Theme.mp3';
 
     let deathSound = new Audio();
     deathSound.src = 'Sounds/death.wav';
@@ -479,7 +482,8 @@
             else {
 
                 for (let i = 0; i < numOfEnemies; i++) {
-                     if ((Enemy[i].Health <= 1  && Enemy[i].isDead === false) || (difficulty === 1 && Enemy[i].isDead === false)) {
+                    if ((Enemy[i].Health <= 1  && Enemy[i].isDead === false) || (difficulty === 1 && Enemy[i].isDead === false)) {
+
                             createExplosion(i);
                             Enemy[i].isDead = true;
                             points += 100 * scoreMultiplier;
@@ -829,10 +833,24 @@
 
                 Level++;
                 if (Level%waveTillBoss === 0 ){
-                    BossMusic.currentTime = 0;
-                    BossMusic.play();
-                    StartTheGame.pause();
+
                     createBoss();
+
+                    if (Boss.typeBoss === 3) {
+                        BossMusic = new Audio();
+                        BossMusic.src = 'Sounds/MotherShip3Theme.mp3';
+                    }
+                    else{
+                        BossMusic = new Audio();
+                        BossMusic.src = 'Sounds/BossMusic.mp3';
+                    }
+
+
+                        BossMusic.currentTime = 0;
+                        BossMusic.play();
+
+
+                    StartTheGame.pause();
                 }
                 else {
 
@@ -1042,7 +1060,7 @@
         EnemyShots = 0;
         InactiveShots = 0;
         amountOfShots = 1;
-        nukes = 3;
+        nukes = 9999;
 
         Player.x = canvas.width / 2 - 30;
         Player.y = canvas.height - 30;
@@ -1283,8 +1301,10 @@
                         }, 300);
                     } else {
                         if (Boss.Health <= startingHealth / 3) {
+                            Boss.isAngry = true;
                             ctx.drawImage(motherShip3Angry, Boss.x, Boss.y, Boss.w, Boss.h);
                         } else {
+                            Boss.isAngry = false;
                             ctx.drawImage(motherShip3, Boss.x, Boss.y, Boss.w, Boss.h);
                         }
                     }
@@ -1384,15 +1404,16 @@
                             Laser[i].Active === true  &&
                             BossWave[j].Active === true){
 
-                                if (Math.ceil(Math.random() * chanceOfPower) === 1){
-                                     generatePower(j,true);
-                                }
+
                                 points += 25;
 
                                 summonHit[j%5].play();
                                 BossWave[j].isDamaged = true;
 
                                 if (BossWave[j].Health <= 1) {
+                                    if (Math.ceil(Math.random() * chanceOfPower/2) < 4){
+                                        generatePower(j,true);
+                                    }
                                     BossWave[j].Active = false;
                                 }
                                 BossWave[j].Health--;
@@ -1514,13 +1535,13 @@
     function Boss3Shoot(){
 
         if (Boss.Health <= startingHealth/3){
-            AngryBoost = Level*1.5;
+            AngryBoost = Level/1.5;
         }
         else{
             AngryBoost = Level/2;
         }
 
-        if ((Math.ceil(Math.random() * bossRateOfFire*1.5 ) <= AngryBoost) && Boss.isDead === false) {
+        if ((Math.ceil(Math.random() * bossRateOfFire * 1.5 ) <= AngryBoost) && Boss.isDead === false) {
 
                 BossWave[BossWaveShots] = {
                     w: 40 ,
@@ -1595,11 +1616,14 @@
                         setTimeout(function () {
                             BossWave[i].isDamaged = false;
                         }, 300);
-                    } else if (Boss.isProtected === true) {
+                    } else if (Boss.isProtected === true && Boss.isAngry === false) {
                         ctx.drawImage(boss3FireSleep, BossWave[i].x, BossWave[i].y, BossWave[i].w, BossWave[i].h);
                     }
-                    else{
+                    else if(Boss.isAngry === false){
                         ctx.drawImage(boss3Fire, BossWave[i].x, BossWave[i].y, BossWave[i].w, BossWave[i].h);
+                    }
+                    else{
+                        ctx.drawImage(boss3FireAngry, BossWave[i].x, BossWave[i].y, BossWave[i].w, BossWave[i].h);
                     }
                 }
             }
@@ -1642,7 +1666,17 @@
                     } else if (Player.x > BossWave[i].x) {
                         BossWave[i].x += 0.8;
                     }
-                    BossWave[i].y += BossWave[i].speed;
+
+                    if (Boss.isAngry === false){
+                        BossWave[i].y += BossWave[i].speed;
+                    }
+                    else{
+                        BossWave[i].y += BossWave[i].speed*1.5;
+                    }
+
+                }
+                else if (Boss.isProtected === true && Boss.isAngry === true){
+                    BossWave[i].y += BossWave[i].speed/3.5;
                 }
             }
         }
@@ -1765,7 +1799,6 @@
             InactiveShots = 0;
             BossShots = 0;
             BossRadialShots = 0;
-            BossWaveShots = 0;
 
 
 
