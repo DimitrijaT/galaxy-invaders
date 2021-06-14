@@ -1855,20 +1855,54 @@
 
 
         canvas.addEventListener('touchstart', function (e){
-            let touch = e.touches[0];
-            console.log(touch.clientX);
-            if (touch.clientX <= 250) {
-                direction = 1;
-            } else if (touch.clientX > 250 && touch.clientX <= 500) {
-                direction = 2;
+            let touch;
+            let shoot;
+            switch (e.touches.length) {
+                case 1:
+                    touch = e.touches[0];
+
+                    console.log(touch.clientX + "  " + touch.clientY );
+
+                    if (touch.clientX >= 400   && touch.clientX <= 450 && touch.clientY >= 30 && touch.clientY < 40){
+                        nukeTheMap();
+                    }
+                    else if (touch.clientX <= 250) {
+                        direction = 1;
+                    } else if (touch.clientX > 250 && touch.clientX <= 500) {
+                        direction = 2;
+                    }
+
+                    break;
+                case 2:
+                    touch = e.touches[0];
+                    shoot = e.touches[1];
+
+                    console.log(touch.clientX + "  " + touch.clientY );
+
+                    if (touch.clientX >= 400   && touch.clientX <= 450 && touch.clientY >= 30 && touch.clientY < 40 ||
+                        shoot.clientX >= 400   && shoot.clientX <= 450 && shoot.clientY >= 30 && shoot.clientY < 40
+                    ){
+                        nukeTheMap();
+                    }
+                    else if (touch.clientX <= 250 || shoot.clientX <= 250) {
+                        direction = 1;
+                    } else if (touch.clientX > 250 && touch.clientX <= 500 || shoot.clientX > 250 && shoot.clientX <= 500) {
+                        direction = 2;
+                    }
+                    if ( touch.clientX > 500 || shoot.clientX > 500) {
+                        Shoot();
+                    }
+
+                    break;
             }
 
-            if (touch.clientX < 0){
-                nukeTheMap();
-            }
+
+            /*
             else if (touch.clientX > 500){
                 Shoot();
             }
+
+             */
 
         });
 
