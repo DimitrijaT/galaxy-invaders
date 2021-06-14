@@ -1222,7 +1222,7 @@
             Boss.Health = BossHealthBoost + Level*10;
         }
         else{
-            Boss.Health = BossHealthBoost + Level*4;
+            Boss.Health = BossHealthBoost*2 + Level*4;
             Boss.isProtected = true;
         }
 
