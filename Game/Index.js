@@ -1347,7 +1347,7 @@
                     }
                     else {
 
-                        if (Math.ceil(Math.random() * chanceOfPower) === 1) {
+                        if (Math.ceil(Math.random() * chanceOfPower-15) === 1) {
                             generatePower(Boss.x,false);
                         }
                         Boss.isDamaged = true;
