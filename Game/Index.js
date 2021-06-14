@@ -1861,18 +1861,18 @@
                 case 1:
                     touch = e.touches[0];
 
-                    console.log(touch.pageX + "  " + touch.pageY );
+                    console.log(touch.clientX + "  " + touch.clientY + "   " + canvas.scrollWidth + "-" + canvas.scrollHeight );
 
-                    if (touch.pageY >= 0 && touch.pageY < 100){
+                    if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight/3){
                         nukeTheMap();
                     }
-                    else if (touch.pageX <= 250) {
+                    else if (touch.clientX <= canvas.scrollWidth/2) {
                         direction = 1;
                     }
-                    else if (touch.pageX > 250 && touch.pageX <= 500) {
+                    else if (touch.clientX > canvas.scrollWidth/2) {
                         direction = 2;
                     }
-                    if (touch.pageY > 400 ){
+                    if (touch.clientY > canvas.scrollHeight  -  canvas.scrollHeight/1.5){
                         Shoot();
                     }
 
@@ -1881,19 +1881,19 @@
                     touch = e.touches[0];
                     shoot = e.touches[1];
 
-                    console.log(touch.pageX + "  " + touch.pageY );
+                    console.log(touch.clientX + "  " + touch.clientY );
 
-                    if (touch.pageY >= 0 && touch.pageY < 100 ||
-                        shoot.pageY >= 0 && shoot.pageY < 100
+                    if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight/3 ||
+                        shoot.clientY >= 0 && shoot.clientY < canvas.scrollHeight/3
                     ){
                         nukeTheMap();
                     }
-                    else if (touch.pageX <= 250 || shoot.pageX <= 250) {
+                    else if (touch.clientX <= canvas.scrollWidth/2 || shoot.clientX <= canvas.scrollWidth/2) {
                         direction = 1;
-                    } else if (touch.pageX > 250 && touch.pageX <= 500 || shoot.pageX > 250 && shoot.pageX <= 500) {
+                    } else if (touch.clientX > canvas.scrollWidth/2  || shoot.clientX > canvas.scrollWidth/2 ) {
                         direction = 2;
                     }
-                    if (touch.pageY > 400|| shoot.pageY > 400) {
+                    if (touch.clientY >  canvas.scrollHeight  -  canvas.scrollHeight/1.5|| shoot.clientY > canvas.scrollHeight  -  canvas.scrollHeight/2) {
                         Shoot();
                     }
 
