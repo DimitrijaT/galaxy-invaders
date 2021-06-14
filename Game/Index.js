@@ -1872,7 +1872,7 @@
 
         });
 
-        window.addEventListener('touchend', (e) {
+        window.addEventListener('touchend',function (e) {
             direction = 0;
         });
 
