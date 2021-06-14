@@ -1883,19 +1883,21 @@
 
                     console.log(touch.clientX + "  " + touch.clientY );
 
-                    if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight/3 ||
-                        shoot.clientY >= 0 && shoot.clientY < canvas.scrollHeight/3
-                    ){
-                        nukeTheMap();
-                    }
-                    else if (touch.clientX <= canvas.scrollWidth/2 || shoot.clientX <= canvas.scrollWidth/2) {
-                        direction = 1;
-                    } else if (touch.clientX > canvas.scrollWidth/2  || shoot.clientX > canvas.scrollWidth/2 ) {
-                        direction = 2;
-                    }
-                    if (touch.clientY >  (canvas.scrollHeight  -  canvas.scrollHeight/4)|| shoot.clientY > (canvas.scrollHeight  -  canvas.scrollHeight/4)) {
+                    if (shoot.clientY > (canvas.scrollHeight  -  canvas.scrollHeight/4)) {
                         Shoot();
                     }
+                        if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight / 3 ||
+                            shoot.clientY >= 0 && shoot.clientY < canvas.scrollHeight / 3
+                        )
+                        {
+                            nukeTheMap();
+                        } 
+                        else if (touch.clientX <= canvas.scrollWidth / 2 ) {
+                            direction = 1;
+                        } else if (touch.clientX > canvas.scrollWidth / 2 ) {
+                            direction = 2;
+                        }
+
 
                     break;
             }
