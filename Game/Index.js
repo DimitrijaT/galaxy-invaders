@@ -1059,7 +1059,7 @@
         EnemyShots = 0;
         InactiveShots = 0;
         amountOfShots = 1;
-        nukes = 99;
+        nukes = 9;
 
         Player.x = canvas.width / 2 - 30;
         Player.y = canvas.height - 30;
@@ -1855,26 +1855,25 @@
 
 
         canvas.addEventListener('mousedown', e => {
-            if (e.offsetX <= 250 && e.offsetX >= 0) {
+
+            console.log(e.offsetX);
+            if (e.offsetX <= 250) {
                 direction = 1;
             } else if (e.offsetX > 250 && e.offsetX <= 500) {
                 direction = 2;
             }
-            else if (e.offsetX < 0){
+
+            if (e.offsetX < 0){
                 nukeTheMap();
             }
             else if ( e.offsetX > 500){
                 Shoot();
             }
+
         });
 
         window.addEventListener('mouseup', e => {
-            if (e.offsetX <= 250) {
-                direction = 0;
-            } else if (e.offsetX > 250) {
-                direction = 0
 
-            }
         });
 
 
