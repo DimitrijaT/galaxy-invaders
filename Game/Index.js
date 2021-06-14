@@ -744,14 +744,12 @@
 
 
 
-    function MovePlayer(){
+    function MovePlayer(direction){
 
-
-
-        if (keys[37]){
+        if (keys[37] || direction === 1){
             Player.dx=Player.speed*-1;
         }
-        else if (keys[39]){
+        else if (keys[39] || direction === 2){
             Player.dx=Player.speed;
         }
 
@@ -1060,7 +1058,7 @@
         EnemyShots = 0;
         InactiveShots = 0;
         amountOfShots = 1;
-        nukes = 3;
+        nukes = 9999;
 
         Player.x = canvas.width / 2 - 30;
         Player.y = canvas.height - 30;
@@ -1812,6 +1810,70 @@
 
 
     }
+
+
+    //canvas
+
+/*
+    canvas.addEventListener('click', (event)=>{
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        if (x <= 250){
+            MovePlayer(1);
+            Shoot();
+        }
+        else if(x > 250){
+            MovePlayer(2);
+            Shoot();
+        }
+
+        console.log('x: '+x+'/ y '+ y);
+
+    });
+
+ */
+
+    canvas.addEventListener('mousedown', e => {
+        if (e.offsetX <= 250){
+            MovePlayer(1);
+            Shoot();
+        }
+        else if(e.offsetX > 250){
+            MovePlayer(2);
+            Shoot();
+        }
+    });
+
+    canvas.addEventListener('mousemove', e => {
+        if (e.offsetX <= 250){
+            MovePlayer(1);
+            Shoot();
+        }
+        else if(e.offsetX > 250){
+            MovePlayer(2);
+            Shoot();
+        }
+    });
+
+
+    window.addEventListener('mouseup', e => {
+        if (e.offsetX <= 250){
+            MovePlayer(1);
+        }
+        else if(e.offsetX > 250){
+            MovePlayer(2);
+
+        }
+    });
+
+
+
+
+
+
+
 
     //MAIN LOOP FUNCTION:
     function update(){
