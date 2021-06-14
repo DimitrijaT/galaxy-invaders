@@ -1059,7 +1059,7 @@
         EnemyShots = 0;
         InactiveShots = 0;
         amountOfShots = 1;
-        nukes = 9999;
+        nukes = 99;
 
         Player.x = canvas.width / 2 - 30;
         Player.y = canvas.height - 30;
