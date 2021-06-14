@@ -479,7 +479,7 @@
             else {
 
                 for (let i = 0; i < numOfEnemies; i++) {
-                    if (Enemy[i].Health <= 1  && Enemy[i].isDead === false) {
+                     if ((Enemy[i].Health <= 1  && Enemy[i].isDead === false) || (difficulty === 1 && Enemy[i].isDead === false)) {
                             createExplosion(i);
                             Enemy[i].isDead = true;
                             points += 100 * scoreMultiplier;
@@ -1765,6 +1765,7 @@
             InactiveShots = 0;
             BossShots = 0;
             BossRadialShots = 0;
+            BossWaveShots = 0;
 
 
 
