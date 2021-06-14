@@ -1883,10 +1883,17 @@
 
                     break;
                 case 2:
-                   // touch = e.touches[0];
+                    touch = e.touches[0];
                     shoot = e.touches[1];
 
                     //console.log(touch.clientX + "  " + touch.clientY );
+
+                        if (touch.clientX <= canvas.scrollWidth/2) {
+                            direction = 1;
+                        }
+                        else if (touch.clientX > canvas.scrollWidth/2) {
+                            direction = 2;
+                        }
 
                         if (shoot.clientY > (canvas.scrollHeight  -  canvas.scrollHeight/4)) {
                             Shoot();
