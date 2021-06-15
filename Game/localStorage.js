@@ -1,4 +1,6 @@
 
+
+
 let highScore = [];
 highScore[1] = {
     points:  (localStorage.getItem('Epoints')  == null)?'0':localStorage.getItem('Epoints'),
@@ -14,14 +16,29 @@ highScore[3] = {
 }
 
 
-document.getElementById('Epoints').innerHTML = highScore[1].points;
-document.getElementById('Elevel').innerHTML = highScore[1].level;
+let isEmpty = true;
+for (let i=1;i<=3;i++){
+    if (highScore[i].points !== '0' || highScore[i].level !== '0')
+    {
+        isEmpty= false;
+        break;
+    }
+}
+if (isEmpty === true){
+    myReset.style.background = 'gray';
+}
 
-document.getElementById('Mpoints').innerHTML = highScore[2].points;
-document.getElementById('Mlevel').innerHTML = highScore[2].level;
 
-document.getElementById('Hpoints').innerHTML = highScore[3].points;
-document.getElementById('Hlevel').innerHTML = highScore[3].level;
+    document.getElementById('Epoints').innerHTML = highScore[1].points;
+    document.getElementById('Elevel').innerHTML = highScore[1].level;
+
+    document.getElementById('Mpoints').innerHTML = highScore[2].points;
+    document.getElementById('Mlevel').innerHTML = highScore[2].level;
+
+    document.getElementById('Hpoints').innerHTML = highScore[3].points;
+    document.getElementById('Hlevel').innerHTML = highScore[3].level;
+
+
 
 function checkHighscore(pointsX,levelX,diffX){
     for (let i=1;i<=3;i++) {

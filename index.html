@@ -9,9 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
 
 </head>
-<body onload="localStorage">
+<body>
 
 <div id="gridContainer">
 <header>
@@ -19,17 +22,18 @@
 
         <aside>
             <img src="SiteImages/Logo.png" alt="" >
-            <h1>GALAXY INVADERS 3.1</h1>
+            <h1>GALAXY INVADERS</h1><sub><sub>3.2</sub></sub>
         </aside>
         <nav>
-            <a href="#" id="ChosenSetting">Play Now</a>
+            <a href="index.html" id="ChosenSetting">Play Now</a>
             <a href="HowToPlay.html">How To Play</a>
             <a href="About.html">About</a>
         </nav>
 
 </header>
 
-<section>
+<section id="GamePage">
+
 
     <div class="MainMenu">
         <button onclick="PauseResume()" id="PauseResume">Pause</button>
@@ -42,8 +46,9 @@
         <button onclick="HardMode()" id="Hard">Hard</button>
         <button onclick="Reset()" id="Reset">Reset Scoreboard</button>
     </div>
+
     <div class="backgroundDiv"><canvas id="canvas" width="500" height="500">This shows up if Canvas is not supported by your browser :(</canvas></div>
-    <article>
+    <article class="ScoreBoard">
         <h1> Scoreboard </h1>
 
         <dl>
@@ -75,10 +80,11 @@
                 Points: <br>
                 <span id="Mpoints"></span><br>
             </dd>
-            <dt>
+
 
             </div>
             <div class="Htext" >
+                <dt>
                Hard
             </dt>
             <dd>
@@ -146,7 +152,7 @@
 </section>
 
 <footer>
-    Dimitrija Timeski &copy;FINKI 2021
+    <p>Dimitrija Timeski &copy;FINKI 2021</p>
 </footer>
 
 </div>

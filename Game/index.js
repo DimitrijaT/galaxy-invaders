@@ -19,6 +19,7 @@
         myOptions.style.display = "block";
         myContinue.style.display = "block";
         myReset.style.display = 'block';
+        myPauseResume.style.display = 'none';
         if (Level === 1 || difficulty === 3) {
             myContinue.style.display = "none";
         }
@@ -220,6 +221,7 @@
 
             myFullScreen.style.background = "gray";
             myFullScreen.innerHTML = "Full Screen - OFF";
+            PauseResume(true);
 
             if(canvas.webkitRequestFullScreen) {
                 canvas.webkitRequestFullScreen();
@@ -390,15 +392,19 @@
 
 
 
-    function PauseResume(){
-        if (isGamePaused === true){
+    function PauseResume(goingFullScreen = false){
+
+
+        if (isGamePaused === true ){
             isGamePaused = false;
-            update()
-            myPauseResume.innerHTML = "Resume";
-        }
-        else if (isGamePaused === false){
-            isGamePaused = true;
             myPauseResume.innerHTML = "Pause";
+            update()
+
+        }
+        else if (isGamePaused === false && goingFullScreen === false){
+            myPauseResume.innerHTML = "Resume";
+            isGamePaused = true;
+
         }
 
     }

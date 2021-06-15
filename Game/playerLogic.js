@@ -270,12 +270,15 @@ const keys = [];
 
 document.addEventListener('keydown',function(e){
     if (e.keyCode !== 32) {
+        e.preventDefault();
         keys[e.keyCode] = true;
     }
     else if (e.keyCode === 32) {
+        e.preventDefault();
         Shoot();
     }
     if (e.keyCode === 13) {
+        e.preventDefault();
         nukeTheMap();
     }
 });

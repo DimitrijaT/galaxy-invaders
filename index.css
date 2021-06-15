@@ -25,13 +25,51 @@ header{
     height: auto;
     padding-left: 20px;
     padding-right: 20px;
-    font-family: 'VT323', monospace;
     font-size: 2em;
     font-weight: bold;
-
+    font-family: 'Open Sans', sans-serif;
+}
+aside{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 20px;
+    font-family: 'VT323', monospace;
 
 }
-header h1,img{
+aside > h1{
+    padding-left: 20px;
+    letter-spacing: 2px;
+    font-family: 'VT323', monospace;
+}
+sub:nth-child(1){
+    margin-left: 5px;
+}
+
+.ScoreBoard{
+    padding: 0;
+    flex-basis: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-content: stretch;
+    justify-content: center;
+}
+.ScoreBoard h1{
+    font-size: 1.3em;
+}
+
+
+dl dt{
+    text-align: center;
+}
+dl{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+header h1,img,sub{
     margin: 0;
     display: inline-block;
     color: #96ff00;
@@ -40,21 +78,33 @@ header h1,img{
 }
 
 nav a{
-    width: 150px;
     display: inline-block;
     text-decoration: none;
     border: 3px solid #5a008d;
     background-color: green;
     color: #EDF5E1;
-    padding: 4px;
-    margin: 5px;
+    padding: 3px;
+    margin: 5px 5px 5px 5px;
     border-radius:  15px;
     text-align: center;
     user-select: none;
+    flex-basis: 0;
+    flex-grow: 1;
+    font-size: 0.5em;
 }
 
 nav a:hover{
     background-color: #00ff28;
+}
+
+nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    min-width: 30%;
+    width: 450px;
+
+
 }
 
 section{
@@ -62,30 +112,49 @@ section{
     flex-wrap: wrap;
     justify-content: center;
     align-content: center;
+    flex-direction: column;
     background-color: #200054;
     background-image: linear-gradient(#200054, #4c00ff);
     grid-area: game;
     min-height: 88.6vh;
-
 }
+
+#GamePage{
+    flex-direction: row;
+}
+
+
 .MainMenu{
     margin: 1%;
-    height: 12%;
-    width: 180px;
+    min-height: 12%;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     align-self: center;
     justify-content: center;
+    min-width: 300px;
+    padding: 2% 0 2% 0;
+    font-size: 1.5em;
+    flex-basis: 0;
+    flex-grow: 1;
 }
 
 footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    height: 5vh;
     background-color: darkmagenta;
     background-image: linear-gradient( #ce00ce, darkmagenta);
     grid-area: footer;
     text-align: center;
-    overflow: hidden;
+    font-size: 1.2em;
+    font-family: 'Open Sans', sans-serif;
+
 }
+
+
 
 .backgroundDiv{
     width: 500px;
@@ -131,10 +200,6 @@ footer{
 #Continue , #PauseResume{
     display: none;
 }
-#ScrollableAbout{
-    flex-direction: column;
-}
-
 
 .LoadGameImages > img{
     display: none;
@@ -148,6 +213,7 @@ article{
     border-radius: 20px;
     padding: 2% 5% 2% 5%;
     font-size: 1.5em;
+    max-width: 600px;
     font-family: 'VT323', monospace;
 }
 
@@ -155,5 +221,14 @@ article p , h1 , h2{
     text-align: center;
 }
 article > h1{
-    font-size: 1.7em;
+    font-size: 1.4em;
+}
+
+button:hover{
+    box-shadow: 5px 5px #5309ff !important;
+}
+
+#AboutMainArticle{
+    font-size: 1.3em;
+    font-family: 'Open Sans', sans-serif;
 }
