@@ -6,11 +6,12 @@
     <title>Space Invaders</title>
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
 
 </head>
-<body>
+<body onload="localStorage">
 
 <div id="gridContainer">
 <header>
@@ -18,7 +19,7 @@
 
         <aside>
             <img src="SiteImages/Logo.png" alt="" >
-            <h1>SPACE INVADERS 3.0</h1>
+            <h1>GALAXY INVADERS 3.1</h1>
         </aside>
         <nav>
             <a href="#" id="ChosenSetting">Play Now</a>
@@ -30,8 +31,8 @@
 
 <section>
 
-    <canvas id="canvas" width="500" height="500">This shows up if Canvas is not supported by your browser :(</canvas>
     <div class="MainMenu">
+        <button onclick="PauseResume()" id="PauseResume">Pause</button>
         <button onclick="Continue()" id="Continue"></button>
         <button onclick="beginGame()" id="StartGame"> Start Game</button>
         <button onclick="fullScreen()" id="FullScreen"> Full Screen - OFF</button>
@@ -39,7 +40,65 @@
         <button onclick="EasyMode()" id="Easy">Easy</button>
         <button onclick="MediumMode()" id="Medium">Medium</button>
         <button onclick="HardMode()" id="Hard">Hard</button>
+        <button onclick="Reset()" id="Reset">Reset Scoreboard</button>
     </div>
+    <div class="backgroundDiv"><canvas id="canvas" width="500" height="500">This shows up if Canvas is not supported by your browser :(</canvas></div>
+    <article>
+        <h1> Scoreboard </h1>
+
+        <dl>
+
+            <div class="Etext" >
+            <dt>
+               Easy
+            </dt>
+            <dd>
+
+                Level: <br>
+                <span id="Elevel"></span><br>
+                Points: <br>
+                <span id="Epoints"></span><br>
+
+            </dd>
+            </div>
+
+
+            <div class="Mtext" >
+            <dt>
+               Medium
+            </dt>
+            <dd>
+
+
+                Level: <br>
+                <span id="Mlevel"></span><br>
+                Points: <br>
+                <span id="Mpoints"></span><br>
+            </dd>
+            <dt>
+
+            </div>
+            <div class="Htext" >
+               Hard
+            </dt>
+            <dd>
+
+
+                Level: <br>
+                <span id="Hlevel"></span><br>
+                Points: <br>
+                <span id="Hpoints"></span><br>
+            </dd>
+            </div>
+
+        </dl>
+
+
+
+    </article>
+
+    <div class="LoadGameImages">
+
 
     <img src="Images/ship.png" alt="" id="Player">
     <img src="Images/ship2.png" alt="" id="PlayerLevel2">
@@ -81,7 +140,8 @@
     <img src="Images/SPACENUKED.png" alt="" id="SpaceNuked">
     <img src="Images/Boom1.png" alt="" id="EnemyExplode1">
     <img src="Images/Boom2.png" alt="" id="EnemyExplode2">
-    <script src="Game/Index.js"></script>
+
+    </div>
 
 </section>
 
@@ -90,6 +150,18 @@
 </footer>
 
 </div>
+
+<!-- Javascript files below  -->
+
+<script src="Game/globalVar.js"></script>
+<script src="Game/index.js"></script>
+<script src="Game/enemies.js"></script>
+<script src="Game/playerLogic.js"></script>
+<script src="Game/bosses.js"></script>
+<script src="Game/powerUps.js"></script>
+<script src="Game/sounds.js"></script>
+
+<script src="Game/localStorage.js"></script>
 
 </body>
 </html>

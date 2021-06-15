@@ -4,7 +4,7 @@ display: grid;
     'header'
     'game'
     'footer';
-
+gap: 0;
 }
 
 body{
@@ -34,22 +34,23 @@ header{
 header h1,img{
     margin: 0;
     display: inline-block;
-    color: #00fa0c;
+    color: #96ff00;
     text-align: center;
     user-select: none;
 }
 
 nav a{
+    width: 150px;
     display: inline-block;
     text-decoration: none;
     border: 3px solid #5a008d;
-    background-color: #095dbe;
-    margin: 0;
+    background-color: green;
+    color: #EDF5E1;
     padding: 4px;
-    border-radius:  30px;
+    margin: 5px;
+    border-radius:  15px;
     text-align: center;
     user-select: none;
-    transition: 0.5s;
 }
 
 nav a:hover{
@@ -59,9 +60,8 @@ nav a:hover{
 section{
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
-    align-content: center;
     justify-content: center;
+    align-content: center;
     background-color: #200054;
     background-image: linear-gradient(#200054, #4c00ff);
     grid-area: game;
@@ -69,12 +69,13 @@ section{
 
 }
 .MainMenu{
-    margin-top: 1%;
-    margin-bottom: 1%;
+    margin: 1%;
     height: 12%;
+    width: 180px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    align-self: center;
     justify-content: center;
 }
 
@@ -86,49 +87,73 @@ footer{
     overflow: hidden;
 }
 
-canvas{
+.backgroundDiv{
+    width: 500px;
+    height: 500px;
+    margin: 3%;
+    align-self: center;
     border: 3px dashed black;
-
+    background: url("SiteImages/GalaxyInvaders.png") #8d50ff no-repeat;
 }
 
-#StartGame,#Options,#Easy, #Medium, #Hard, #FullScreen, #Continue{
+#StartGame,#Options,#Easy, #Medium, #Hard, #FullScreen, #Continue , #PauseResume, #Reset{
     display: block;
     border-radius: 5px;
     background-color: green;
-    color: white;
+    color: #EDF5E1;
     border: none;
-    margin-top: 1%;
-    padding: 0.5%;
+    margin: 1%;
+    padding: 6%;
+    font-size: 1.2em;
 }
 
-#Medium{
+.Etext, .Mtext, .Htext{
+    user-select: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 1%;
+
+}
+#Easy, .Etext{
+    background-color: green;
+}
+
+
+#Medium, .Mtext{
     background-color: #ffa200;
 }
-#Hard{
+#Hard, .Htext{
     background-color: #ff5100;
 }
 #FullScreen{
     background-color: gray;
 }
-#Continue{
+#Continue , #PauseResume{
     display: none;
+}
+#ScrollableAbout{
+    flex-direction: column;
 }
 
 
-#Enemy, #Player, #Laser, #EnemyLaser, #InviciBubble, #FirePower,#LifeUP, #Space , #EnemyExplode1 , #EnemyExplode2, #MotherShip,#BossLaser,#ShipUP,#MotherShipHurt,#EnemyShooting,#EnemyHurt,#PlayerLevel2,#PlayerLevel3, #LaserPiercing1, #LaserPiercing2,#SpaceNuked,#BombUP,#MotherShip2,#MotherShip2Angry,#MotherShip2Hurt,#Boss2Fire, #MotherShip2Heal , #MotherShip3Protected , #MotherShip3, #MotherShip3Angry, #MotherShip3Hurt, #Boss3Fire, #Boss3FireHurt,#MotherShip3Heal,#Boss3FireSleep,#Boss3FireAngry{
+.LoadGameImages > img{
     display: none;
 }
 
 article{
+    min-width: 300px;
     margin: 2%;
     background-color: #5CDB95;
     color: #EDF5E1;
     border-radius: 20px;
-    padding: 5%;
+    padding: 2% 5% 2% 5%;
     font-size: 1.5em;
     font-family: 'VT323', monospace;
 }
 
 article p , h1 , h2{
     text-align: center;
+}
+article > h1{
+    font-size: 1.7em;
 }
