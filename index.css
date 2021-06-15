@@ -14,17 +14,14 @@ body{
 
 
 header{
-
     background-color: mediumpurple;
     background-image: linear-gradient(mediumpurple, #6f49b6);
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     grid-area: header;
     height: auto;
-    padding-left: 20px;
-    padding-right: 20px;
     font-size: 2em;
     font-weight: bold;
     font-family: 'Open Sans', sans-serif;
@@ -42,9 +39,7 @@ aside > h1{
     letter-spacing: 2px;
     font-family: 'VT323', monospace;
 }
-sub:nth-child(1){
-    margin-left: 5px;
-}
+
 
 .ScoreBoard{
     padding: 0;
@@ -71,7 +66,6 @@ dl{
 }
 header h1,img,sub{
     margin: 0;
-    display: inline-block;
     color: #96ff00;
     text-align: center;
     user-select: none;
@@ -101,7 +95,6 @@ nav{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    min-width: 30%;
     width: 450px;
 
 
