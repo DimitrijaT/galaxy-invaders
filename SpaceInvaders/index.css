@@ -1,0 +1,159 @@
+#gridContainer{
+display: grid;
+    grid-template-areas:
+    'header'
+    'game'
+    'footer';
+gap: 0;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+
+header{
+
+    background-color: mediumpurple;
+    background-image: linear-gradient(mediumpurple, #6f49b6);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    grid-area: header;
+    height: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: 'VT323', monospace;
+    font-size: 2em;
+    font-weight: bold;
+
+
+}
+header h1,img{
+    margin: 0;
+    display: inline-block;
+    color: #96ff00;
+    text-align: center;
+    user-select: none;
+}
+
+nav a{
+    width: 150px;
+    display: inline-block;
+    text-decoration: none;
+    border: 3px solid #5a008d;
+    background-color: green;
+    color: #EDF5E1;
+    padding: 4px;
+    margin: 5px;
+    border-radius:  15px;
+    text-align: center;
+    user-select: none;
+}
+
+nav a:hover{
+    background-color: #00ff28;
+}
+
+section{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    background-color: #200054;
+    background-image: linear-gradient(#200054, #4c00ff);
+    grid-area: game;
+    min-height: 88.6vh;
+
+}
+.MainMenu{
+    margin: 1%;
+    height: 12%;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-self: center;
+    justify-content: center;
+}
+
+footer{
+    background-color: darkmagenta;
+    background-image: linear-gradient( #ce00ce, darkmagenta);
+    grid-area: footer;
+    text-align: center;
+    overflow: hidden;
+}
+
+.backgroundDiv{
+    width: 500px;
+    height: 500px;
+    margin: 3%;
+    align-self: center;
+    border: 3px dashed black;
+    background: url("SiteImages/GalaxyInvaders.png") #8d50ff no-repeat;
+}
+
+#StartGame,#Options,#Easy, #Medium, #Hard, #FullScreen, #Continue , #PauseResume, #Reset{
+    display: block;
+    border-radius: 5px;
+    background-color: green;
+    color: #EDF5E1;
+    border: none;
+    margin: 1%;
+    padding: 6%;
+    font-size: 1.2em;
+}
+
+.Etext, .Mtext, .Htext{
+    user-select: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 1%;
+
+}
+#Easy, .Etext{
+    background-color: green;
+}
+
+
+#Medium, .Mtext{
+    background-color: #ffa200;
+}
+#Hard, .Htext{
+    background-color: #ff5100;
+}
+#FullScreen{
+    background-color: gray;
+}
+#Continue , #PauseResume{
+    display: none;
+}
+#ScrollableAbout{
+    flex-direction: column;
+}
+
+
+.LoadGameImages > img{
+    display: none;
+}
+
+article{
+    min-width: 300px;
+    margin: 2%;
+    background-color: #5CDB95;
+    color: #EDF5E1;
+    border-radius: 20px;
+    padding: 2% 5% 2% 5%;
+    font-size: 1.5em;
+    font-family: 'VT323', monospace;
+}
+
+article p , h1 , h2{
+    text-align: center;
+}
+article > h1{
+    font-size: 1.7em;
+}
