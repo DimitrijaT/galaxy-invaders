@@ -12,7 +12,7 @@ highScore[2] = {
 }
 highScore[3] = {
     points:  (localStorage.getItem('Hpoints')  == null)?'0':localStorage.getItem('Hpoints'),
-    level:  (localStorage.getItem('Hlevel')  == null)?'0':localStorage.getItem('Mlevel')
+    level:  (localStorage.getItem('Hlevel')  == null)?'0':localStorage.getItem('Hlevel')
 }
 
 
