@@ -4,7 +4,7 @@
 let highScore = [];
 highScore[1] = {
     points:  (localStorage.getItem('Epoints')  == null)?'0':localStorage.getItem('Epoints'),
-    level:  (localStorage.getItem('Elevel')  == null)?'0':localStorage.getItem('Epoints')
+    level:  (localStorage.getItem('Elevel')  == null)?'0':localStorage.getItem('Elevel')
 }
 highScore[2] = {
     points:  (localStorage.getItem('Mpoints')  == null)?'0':localStorage.getItem('Mpoints'),
