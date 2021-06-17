@@ -1,32 +1,35 @@
 
 
-
 let highScore = [];
-highScore[1] = {
-    points:  (localStorage.getItem('Epoints')  == null)?'0':localStorage.getItem('Epoints'),
-    level:  (localStorage.getItem('Elevel')  == null)?'0':localStorage.getItem('Elevel')
-}
-highScore[2] = {
-    points:  (localStorage.getItem('Mpoints')  == null)?'0':localStorage.getItem('Mpoints'),
-    level:  (localStorage.getItem('Mlevel')  == null)?'0':localStorage.getItem('Mlevel')
-}
-highScore[3] = {
-    points:  (localStorage.getItem('Hpoints')  == null)?'0':localStorage.getItem('Hpoints'),
-    level:  (localStorage.getItem('Hlevel')  == null)?'0':localStorage.getItem('Hlevel')
-}
-
-
 let isEmpty = true;
-for (let i=1;i<=3;i++){
-    if (highScore[i].points !== '0' || highScore[i].level !== '0')
-    {
-        isEmpty= false;
-        break;
+
+function firstTimePointSetup() {
+
+    highScore[1] = {
+        points: (localStorage.getItem('Epoints') == null) ? '0' : localStorage.getItem('Epoints'),
+        level: (localStorage.getItem('Elevel') == null) ? '0' : localStorage.getItem('Elevel')
+    }
+    highScore[2] = {
+        points: (localStorage.getItem('Mpoints') == null) ? '0' : localStorage.getItem('Mpoints'),
+        level: (localStorage.getItem('Mlevel') == null) ? '0' : localStorage.getItem('Mlevel')
+    }
+    highScore[3] = {
+        points: (localStorage.getItem('Hpoints') == null) ? '0' : localStorage.getItem('Hpoints'),
+        level: (localStorage.getItem('Hlevel') == null) ? '0' : localStorage.getItem('Hlevel')
+    }
+
+    for (let i = 1; i <= 3; i++) {
+        if (highScore[i].points !== '0' || highScore[i].level !== '0') {
+            isEmpty = false;
+            break;
+        }
+    }
+    if (isEmpty === true) {
+        myReset.style.background = 'gray';
     }
 }
-if (isEmpty === true){
-    myReset.style.background = 'gray';
-}
+
+firstTimePointSetup();
 
 
     document.getElementById('Epoints').innerHTML = highScore[1].points;
@@ -57,16 +60,16 @@ function checkHighscore(pointsX,levelX,diffX){
             let levelString = "level";
 
             if (i === 1){
-                pointString = "E" + pointString;
-                levelString = "E" + levelString;
+                pointString = `E${pointString}`;
+                levelString = `E${levelString}`;
             }
             else if (i === 2){
-                pointString = "M" + pointString;
-                levelString = "M" + levelString;
+                pointString = `M${pointString}`;
+                levelString = `M${levelString}`;
             }
             else{
-                pointString = "H" + pointString;
-                levelString = "H" + levelString;
+                pointString = `H${pointString}`;
+                levelString = `H${levelString}`;
             }
 
             document.getElementById(pointString).innerHTML = highScore[i].points;

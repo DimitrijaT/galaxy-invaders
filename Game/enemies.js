@@ -1,7 +1,25 @@
 
 //CREATE ENEMIES
+
+
+
+function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,isDead)
+{
+    this.w = w;
+    this.h = h;
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.Direction = Direction;
+    this.firingMode = firingMode;
+    this.Health = Health;
+    this.isDamaged = isDamaged;
+    this.isDead = isDead;
+}
+
+
 let numOfEnemies = 10;
-let Enemy = [];
+let Enemy = [];  // new Array();
 function fillEnemies(){
     let offsetXaxis = 10;
     let offsetYaxis = 10;
@@ -10,25 +28,25 @@ function fillEnemies(){
             offsetXaxis = 10;
             offsetYaxis += 50;
         }
-        Enemy[i] = {
-            w:30,
-            h:30,
-            x:offsetXaxis,
-            y:offsetYaxis,
-            speed:enemySpeed,
-            Direction:true,
-            firingMode: false,
-            Health:EnemyHealth,
-            isDamaged:false,
-            isDead: false
-        }
+        Enemy[i] = new EnemyConstructor(
+            30,
+            30,
+            offsetXaxis,
+            offsetYaxis,
+            enemySpeed,
+            true,
+            false,
+            EnemyHealth,
+            false,
+            false
+        );
         offsetXaxis +=50;
 
     }
 }
 
 function drawEnemy(){
-    for (let i=0;i<numOfEnemies;i++)
+    for (let i in Enemy)
     {
         if(Enemy[i].isDead === false){
             if(Enemy[i].firingMode === true){
@@ -48,7 +66,7 @@ function drawEnemy(){
 }
 
 function newEnemyPosition(){
-    for (let i=0;i<numOfEnemies;i++) {
+    for (let i in Enemy) {
         if (Enemy[i].x + Enemy[i].w >= canvas.width) {
             Enemy[i].y += 30;
             Enemy[i].Direction = false;
@@ -67,37 +85,38 @@ function newEnemyPosition(){
 
 //ENEMY PROJECTILE
 let EnemyShots = 0;
-let InactiveShots = 0;
 let EnemyFire = [];
 
+function EnemyFireConstructor(w,h,x,y,speed,Active)
+{
+    this.w = w;
+    this.h = h;
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.Active = Active;
+}
+
 function enemyShoot() {
-    for (let i = 0; i < numOfEnemies; i++) {
+    for (let i in Enemy) {
 
         if ((Math.ceil(Math.random() * RateOfFire) <= 1)  && Enemy[i].isDead===false) {
 
-            EnemyFire[EnemyShots] = {
-                w: 10,
-                h: 20,
-                x: 0,
-                y: 0,
-                speed: enemyProjectileSpeed,
-                Active: false
-            }
-
-
-            EnemyFire[EnemyShots].x = Enemy[i].x + Enemy[i].w / 2 - 5;
-            EnemyFire[EnemyShots].y = Enemy[i].y;
-            EnemyFire[EnemyShots].Active = true;
+            EnemyFire[EnemyShots] = new EnemyFireConstructor(
+                10,
+                20,
+                Enemy[i].x + Enemy[i].w / 2 - 5,
+                Enemy[i].y,enemyProjectileSpeed,
+                true);
             Enemy[i].firingMode = true;
-
             EnemyShots++;
         }
 
     }
 }
-function drawEnemyLaser(){
 
-    for (let i=InactiveShots;i<EnemyShots;i++) {
+function drawEnemyLaser(){
+    for (let i in EnemyFire) {
         if (EnemyFire[i].y === 500) {
             EnemyFire[i].Active = false;
         }
@@ -106,26 +125,31 @@ function drawEnemyLaser(){
         }
     }
 }
+
 function newEnemyLaserPosition(){
-    for (let i=InactiveShots;i<EnemyShots;i++){
+    for (let i in EnemyFire){
         EnemyFire[i].y+=EnemyFire[i].speed;
     }
 }
 
 
 function isPlayerHIT(){
-    for (let i=InactiveShots;i<EnemyShots;i++){
+    for (let i in EnemyFire){  //let i=0;i<EnemyFire.length;i++
         if (
             EnemyFire[i].x >= Player.x &&
             EnemyFire[i].x <= Player.x + Player.w &&
-            EnemyFire[i].y +  EnemyFire[i].w >= Player.y &&
-            EnemyFire[i].y + EnemyFire[i].w <= Player.y + Player.h &&
-            EnemyFire[i].Active === true &&
-            unkillable === false){
-            if (lives - 1 >= 1) {
+            EnemyFire[i].y +  EnemyFire[i].h >= Player.y &&
+            EnemyFire[i].y <= Player.y + Player.h &&
+            EnemyFire[i].Active === true){
+
+            if (unkillable === true){
+                EnemyFire[i].Active=false;
+                deflectSound.currentTime = 0;
+                deflectSound.play();
+            }
+            else if (lives - 1 >= 1) {
                 EnemyFire[i].Active=false;
                 takeDamage();
-
             }
             else{
                 youLOST();
@@ -145,70 +169,61 @@ function isPlayerHIT(){
 
 //PROJECTILE
 function isHIT() {
-    for (let j=0;j<LaserShot;j++) {
-        for (let i = 0; i < numOfEnemies; i++) {
-            if (     Enemy[i].isDead === false &&
-                Laser[j].x >= Enemy[i].x &&
-                Laser[j].x <= Enemy[i].x + Enemy[i].w &&
-                Laser[j].y >= Enemy[i].y && Laser[j].y <= Enemy[i].y + Enemy[i].h &&
-                Laser[j].Active === true )
-            {
+    for (let j in Laser) {
+        for (let i in Enemy) {
+            if (Laser.hasOwnProperty(j)) {   //WEBSTORM COMPLAINS
+                if (Enemy[i].isDead === false &&
+                    Laser[j].x >= Enemy[i].x &&
+                    Laser[j].x <= Enemy[i].x + Enemy[i].w &&
+                    Laser[j].y + Laser[j].h >= Enemy[i].y &&
+                    Laser[j].y <= Enemy[i].y + Enemy[i].h &&
+                    Laser[j].Active === true) {
 
-                if (Enemy[i].Health <= 1){
-                    createExplosion(i);
-                    Enemy[i].isDead = true;
-                    points += 100 * scoreMultiplier;
+                    if (Enemy[i].Health <= 1) {
+                        //make random explosion at location of enemy
+                        createExplosion(i);
+                        Enemy[i].isDead = true;
+                        points += 100 * scoreMultiplier;
 
+                        //Laser lose health
+                        if (Laser[j].Health <= 1) {
+                            Laser[j].Active = false;
+                        }
+                        Laser[j].Health--;
 
-                    if (Laser[j].Health <= 1) {
-                        Laser[j].Active = false;
+                        //play death sound
+                        enemyExplode[j % 5].play();
+
+                        //generate powerup
+                        if (Math.ceil(Math.random() * chanceOfPower) <= 10) {
+                            generatePower(i, false);
+                        }
+                    } else {
+                        //Deal damage
+                        Enemy[i].Health--;
+                        Enemy[i].isDamaged = true;
+
+                        //Laser lose health
+                        if (Laser[j].Health <= 1) {
+                            Laser[j].Active = false;
+                        }
+                        Laser[j].Health--;
+
+                        //play damage sound
+                        enemyHurtSound[j % 5].play();
                     }
-                    Laser[j].Health--;
 
-                    enemyExplode[j%5].play();
-                    if (Math.ceil(Math.random() * chanceOfPower) <=10){
-                        generatePower(i,false);
-                    }
                 }
-                else{
-                    Enemy[i].Health--;
-                    Enemy[i].isDamaged = true;
-
-                    if (Laser[j].Health <= 1) {
-                        Laser[j].Active = false;
-                    }
-                    Laser[j].Health--;
-                    enemyHurtSound[j%5].play();
-                }
-
             }
         }
     }
 }
 
-function drawBoom(){
-
-    for (let i=0;i<numBooms;i++){
-        if (Boom[i].Active === true) {
-            if ( Boom[i].typeOfBoom === 1){
-                ctx.drawImage(enemyDeath1, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
-            }
-            else if
-            ( Boom[i].typeOfBoom === 2){
-                ctx.drawImage(enemyDeath2, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
-            }
-            setTimeout(function(){ Boom[i].Active = false; }, 300);
-
-        }
-    }
-
-
-}
 
 
 function ifLevelBeaten(){
     let checkIfAllDead = false;
-    for (let i=0;i<numOfEnemies;i++){
+    for (let i in Enemy){
         if (Enemy[i].isDead===false){
             checkIfAllDead = true;
         }
@@ -259,11 +274,12 @@ function ifLevelBeaten(){
             if (enemyProjectileSpeed < 3) {
                 enemyProjectileSpeed += 0.2;
             }
-            LaserShot = 0;
-            EnemyShots = 0;
-            InactiveShots = 0;
-            BossShots = 0;
-            BossRadialShots = 0;
+
+            Laser = [];
+            BossFire = [];
+            EnemyFire = [];
+            Enemy = [];
+
 
             fillEnemies();
 
@@ -277,33 +293,57 @@ function ifLevelBeaten(){
 
     }
 
-
-
-
 }
 
+//ENEMY DEATH EXPLOSIONS
 
 
 let numBooms = 0;
 let Boom = [];
-function createExplosion(eX){
-    Boom[numBooms] = {
-        w: 40,
-        h: 40,
-        x: 0,
-        y: 0,
-        Active: true,
-        typeOfBoom: 1
-    }
-    Boom[numBooms].x = Enemy[eX].x + Enemy[eX].w / 2 - 5;
-    Boom[numBooms].y = Enemy[eX].y;
-    if (Math.ceil(Math.random() * 2) <= 1){
-        Boom[numBooms].typeOfBoom = 1
-    }
-    else{
-        Boom[numBooms].typeOfBoom = 2;
-    }
-    numBooms++;
 
+function BoomConstructor(w,h,x,y,Active,typeOfBoom)
+{
+    this.w = w;
+    this.h = h;
+    this.x = x;
+    this.y = y;
+    this.Active = Active;
+    this.typeOfBoom = typeOfBoom;
+}
+
+function createExplosion(eX){
+    Boom[numBooms] = new BoomConstructor(
+        40,
+        40,
+        Enemy[eX].x + Enemy[eX].w / 2 - 5,
+        Enemy[eX].y,
+        true,
+        Math.ceil(Math.random() * 2));
+
+    numBooms++;
+}
+
+function drawBoom(){
+    for (let i in Boom){
+
+        if (Boom[i].Active === true) {
+
+            switch(Boom[i].typeOfBoom) {
+                case 1:
+                    ctx.drawImage(enemyDeath1, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
+                    break;
+                case 2:
+                    ctx.drawImage(enemyDeath2, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
+                    break;
+                default:
+                    ctx.drawImage(enemyDeath1, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
+            }
+
+            setTimeout(function(){
+                Boom[i].Active = false;
+            }, 300);
+
+        }
+    }
 }
 

@@ -225,3 +225,18 @@ button:hover{
     font-size: 1.3em;
     font-family: 'Open Sans', sans-serif;
 }
+
+
+
+/* HIDE SCROLLBAR BUT RETAIN FUNCTIONALITY
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+ Hide scrollbar for IE, Edge and Firefox
+body {
+    -ms-overflow-style: none;   IE and Edge
+    scrollbar-width: none;   Firefox
+}
+*/
