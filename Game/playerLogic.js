@@ -6,38 +6,67 @@ const Player = {
     y:canvas.height-30,
     speed:5,
     dx:0,
-    isDead: false
+    dy:0,
+    unkillable: false,
+    isDead: false,
+    amountOfShots: 1,
+    bulletCount: 1,
+    typeShip: 1,
+    sharpness: 0
 }
 
 function MovePlayer(){
 
-    if (keys[37] || direction === 1){
+    if (keys[37] || directionX === 1){
         Player.dx=Player.speed*-1;
     }
-    else if (keys[39] || direction === 2){
+    else if (keys[39] || directionX === 2){
         Player.dx=Player.speed;
+    }
+
+    if (keys[38] || directionY === 2){
+        Player.dy=Player.speed*-1;
+    }
+    else if (keys[40] || directionY === 1){
+        Player.dy=Player.speed;
     }
 
 
     if (Player.x + Player.w >= canvas.width){
-        Player.x -= 0.3;
+        Player.x -= 0.5;
     }
-    else if (Player.x <= 0){
-        Player.x +=0.3;
+    else if (Player.x <= 0 ){
+        Player.x +=0.5;
+    }
+    else if (Player.y <= 0 ){
+        Player.y +=0.5;
+    }
+    else if (Player.y + Player.h >= canvas.height ){
+        Player.y -=0.5;
     }
     else{
         Player.x += Player.dx;
+        Player.y += Player.dy;
     }
 
     Player.dx = 0;
+    Player.dy = 0;
+
+
 
 }
 
 
 function drawPlayer(){
 
-    switch(playerBulletCount){
-        case 4:
+    switch(Player.bulletCount){
+        case 7:
+            ctx.drawImage(image5,Player.x,Player.y,Player.w,Player.h);
+            break;
+        case 5:
+            ctx.drawImage(image4,Player.x,Player.y,Player.w,Player.h);
+            break;
+        case 3:
             ctx.drawImage(image3,Player.x,Player.y,Player.w,Player.h);
             break;
         case 2:
@@ -48,7 +77,7 @@ function drawPlayer(){
 
     }
 
-    if (unkillable === true) {
+    if (Player.unkillable === true) {
         ctx.drawImage(invic, Player.x - 10, Player.y - 10, Player.w + 20, 20);
     }
 }
@@ -57,10 +86,10 @@ function drawPlayer(){
 
 
 function takeDamage(x = 1){
-    unkillable = true;
+    Player.unkillable = true;
 
     setTimeout(function(){
-        unkillable = false;
+        Player.unkillable = false;
         }, 2100);
 
     lives -= x;
@@ -72,13 +101,19 @@ function takeDamage(x = 1){
         points -= 100;
     }
 
+    Player.sharpness --;
     deathSound.currentTime = 0;
     deathSound.play();
-    if (amountOfShots > 1){
-        amountOfShots=amountOfShots-1;
+    if (Player.amountOfShots > 1){
+        Player.amountOfShots--;
     }
-    if (playerBulletCount > 0){
-        playerBulletCount-=2;
+    if (Player.bulletCount >= 2){
+        if (Player.bulletCount === 2 || Player.bulletCount === 3) {
+            Player.bulletCount--;
+        }
+        else{
+            Player.bulletCount-=2;
+        }
     }
 }
 
@@ -139,24 +174,25 @@ let CoolDown = false;
 let Laser = [];
 let SoundCounter = 0;
 
-function LaserConstructor(w,h,x,y,speed,Active,doesPierce,Health){
+function LaserConstructor(w,h,x,y,speedY,speedX,Active,Health){
     this.w =  w;
     this.h = h;
     this.x = x;
     this.y = y;
-    this.speed = speed;
+    this.speedY = speedY;
+    this.speedX = speedX;
     this.Active = Active;
-    this.doesPierce = doesPierce;
     this.Health = Health;
-
 }
 
 function Shoot(){
     if (CoolDown === false) {
 
+        let sharpnessPointsToSpend = Player.sharpness;
+
         SoundCounter++;
 
-        if (playerBulletCount >= 4){
+        if (Player.bulletCount >= 6){
             shootLaser2[SoundCounter % 5].play();
         }
         else{
@@ -167,51 +203,80 @@ function Shoot(){
             10,
             25,
             Player.x + Player.w / 2 - 5,
-            Player.y,
-            4,
+             Player.y,
+             playerLaserSpeed,
+            0,
             true,
-            false,
             startingLaserHealth);
 
-        if (playerBulletCount >= 2){
+        if (sharpnessPointsToSpend <= 3){
+            Laser[LaserShot].Health += sharpnessPointsToSpend
+        }
+        else{
+            Laser[LaserShot].Health = 4;
+        }
 
-            Laser[LaserShot].Health = 2;
-
+        if (Player.bulletCount >= 2){
+            Laser[LaserShot].x -= 15;
             Laser[LaserShot+1] = new LaserConstructor(
                 10,
-                20,
-                Player.x + Player.w / 2 - 25,
-                Player.y+15,
-                4,
+                25,
+                Player.x + Player.w / 2 + 10,
+                Player.y,
+                playerLaserSpeed,
+                0,
                 true,
-                false,
-                1);
+                startingLaserHealth);
 
-            Laser[LaserShot+2] = new LaserConstructor(
-                10,
-                20,
-                Player.x + Player.w / 2 +15,
-                Player.y+15,
-                4,
-                true,
-                false,
-                1);
+
+            if (sharpnessPointsToSpend <= 3){
+                Laser[LaserShot+1].Health += sharpnessPointsToSpend
+            }
+            else{
+                Laser[LaserShot+1].Health = 4;
+            }
+
 
         }
-        if (playerBulletCount >= 4){
+        sharpnessPointsToSpend -= Laser[LaserShot].Health-1;
 
-            Laser[LaserShot].Health = 3;
-            Laser[LaserShot].h = 30;
-            Laser[LaserShot].w = 15;
-            Laser[LaserShot+1].Health = 2;
-            Laser[LaserShot+2].Health = 2;
+
+        if (Player.bulletCount >= 3){
+
+            Laser[LaserShot].speedX = 0.3;
+            Laser[LaserShot+1].speedX = -0.3;
+
+            Laser[LaserShot + 2] = new LaserConstructor(
+                15,
+                25,
+                Player.x + Player.w / 2 - 7,
+                Player.y-5,
+                playerLaserSpeed,
+                0,
+                true,
+                1);
+
+
+            if (sharpnessPointsToSpend <= 3){
+                Laser[LaserShot+2].Health += sharpnessPointsToSpend
+            }
+            else{
+                Laser[LaserShot+2].Health = 4;
+            }
+            sharpnessPointsToSpend -= Laser[LaserShot+2].Health-1;
+
+        }
+
+
+        if (Player.bulletCount >= 4){
 
             Laser[LaserShot+3] = new LaserConstructor(
                 10,
                 20,
-                Player.x + Player.w / 2 - 45,
-                Player.y+30,
-                4,
+                Player.x + Player.w / 2 - 25,
+                Player.y+15,
+                playerLaserSpeed,
+                0.3,
                 true,
                 false,
                 1);
@@ -219,21 +284,85 @@ function Shoot(){
             Laser[LaserShot+4] = new LaserConstructor(
                 10,
                 20,
-                Player.x + Player.w / 2 +35,
-                Player.y+30,
-                4,
+                Player.x + Player.w / 2 + 15,
+                Player.y+15,
+                playerLaserSpeed,
+                -0.3,
                 true,
                 false,
                 1);
 
+            if (sharpnessPointsToSpend <= 3){
+                Laser[LaserShot+3].Health += sharpnessPointsToSpend;
+                Laser[LaserShot+4].Health += sharpnessPointsToSpend;
+            }
+            else{
+                Laser[LaserShot+3].Health = 4;
+                Laser[LaserShot+4].Health = 4;
+            }
+            sharpnessPointsToSpend -= Laser[LaserShot+3].Health-1;
+
         }
-        LaserShot= LaserShot + 1 + playerBulletCount;
+
+
+
+        if (Player.bulletCount >= 6){
+
+            Laser[LaserShot+1].x -= 3;
+
+            Laser[LaserShot].h = 30;
+            Laser[LaserShot].w = 20;
+
+            Laser[LaserShot].h = 25;
+            Laser[LaserShot].w = 15;
+
+            Laser[LaserShot+1].h = 25;
+            Laser[LaserShot+1].w = 15;
+
+            Laser[LaserShot+5] = new LaserConstructor(
+                10,
+                20,
+                Player.x + Player.w / 2 - 35,
+                Player.y+30,
+                playerLaserSpeed,
+                0.3,
+                true,
+                false,
+                1);
+
+            Laser[LaserShot+6] = new LaserConstructor(
+                10,
+                20,
+                Player.x + Player.w / 2 + 25,
+                Player.y+30,
+                playerLaserSpeed,
+                -0.3,
+                true,
+                false,
+                1);
+
+            if (sharpnessPointsToSpend <= 3){
+                Laser[LaserShot+5].Health += sharpnessPointsToSpend;
+                Laser[LaserShot+6].Health += sharpnessPointsToSpend;
+            }
+            else{
+                Laser[LaserShot+5].Health = 4;
+                Laser[LaserShot+6].Health = 4;
+            }
+
+        }
+
+
+        LaserShot= LaserShot + Player.bulletCount;
 
     }
 
 }
+
+
 function drawLaser(){
-    let count =0;
+    let count = 0;
+    let countGroup = 0;
 
     for (let i in Laser) {
         if (Laser[i].y <= 0){
@@ -242,129 +371,188 @@ function drawLaser(){
         if (Laser[i].Active === true) {
 
             switch (Laser[i].Health){
-                case 1:
-                    ctx.drawImage(laser, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
+                case 4:
+                    ctx.drawImage(laserPiercing3, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
+                    break;
+                case 3:
+                    ctx.drawImage(laserPiercing2, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
                     break;
                 case 2:
                     ctx.drawImage(laserPiercing1, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
                     break;
                 default:
-                    ctx.drawImage(laserPiercing2, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
+                    ctx.drawImage(laser, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
                     break;
             }
 
-            count=count+1;
+            countGroup++;
+            if (countGroup === Player.bulletCount){
+                count++;
+                countGroup = 0;
+            }
+
+        /*
+            ctx.font = "25px VT323";
+            ctx.fillStyle= "red";
+            ctx.fillText(Player.bulletCount + "<-->" + countGroup + " " + Player.amountOfShots + "<-->" + count,100,200);
+           */
         }
     }
 
-    let countLimit;
-
-    if (amountOfShots*playerBulletCount === 0){
-        countLimit = amountOfShots;
-    }
-    else {
-        countLimit =  amountOfShots*playerBulletCount+1;
-    }
-
-
-
-    if (count >= countLimit ){
+    if (count >= Player.amountOfShots){
         CoolDown = true;
     }
     else{
         CoolDown = false;
     }
 
+
 }
 
 function newLaserPosition(){
     for (let i in Laser){
-        Laser[i].y-=5;
+        Laser[i].y-=Laser[i].speedY;
+        Laser[i].x-=Laser[i].speedX;
     }
 }
 
-const keys = [];
-let direction; // 1 left 2 right 3 bomb
+let keys = [];
+let directionX;
+let directionY;// 1 left 2 right 3 bomb
 
 function keyPressActions(){
 
-    //MOVEMENT
+    if (isGamePaused === false) {
 
-    document.addEventListener('keydown', function (e) {
-        if (e.keyCode !== 32) {
-            e.preventDefault();
-            keys[e.keyCode] = true;
-        } else if (e.keyCode === 32) {
-            e.preventDefault();
-            Shoot();
+        //MOVEMENT
+
+        document.addEventListener('keydown', function (e) {
+            if (e.keyCode !== 32) {
+                e.preventDefault();
+                keys[e.keyCode] = true;
+            } else if (e.keyCode === 32) {
+                e.preventDefault();
+                Shoot();
+            }
+            if (e.keyCode === 13) {
+                e.preventDefault();
+                nukeTheMap();
+            }
+        });
+        document.addEventListener('keyup', function (e) {
+            delete keys[e.keyCode];
+        });
+
+
+
+        //MOUSE CONTROLS
+
+        if (mouseControls === true) {
+            document.addEventListener('click', function (e){
+                e.preventDefault();
+                Shoot();
+            });
+
+            canvas.addEventListener("mousemove", function (e) {
+                let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
+                let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas
+                let canvasY = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make
+                ctx.clearRect(0, 0, canvas.width, canvas.height);  // (0,0) the top left of the canvas
+
+
+                Player.x = canvasX;
+                Player.y = canvasY;
+
+                /*
+                if (canvasX < Player.x){
+                    directionX = 1;
+                }
+                else if (canvasX > Player.x + Player.w){
+                    directionX = 2;
+
+                }
+                else{
+                    directionX = 0;
+                }
+
+                if (canvasY > Player.y + Player.h){
+                    directionY = 1;
+
+                }
+                else if (canvasY < Player.y){
+                    directionY = 2;
+                }
+                else{
+                    directionY = 0;
+                }
+
+                setTimeout(function (){
+                    directionY = 0;
+                    directionX = 0;
+                },1);
+
+
+                 */
+            });
+
         }
-        if (e.keyCode === 13) {
-            e.preventDefault();
-            nukeTheMap();
-        }
-    });
-    document.addEventListener('keyup', function (e) {
-        delete keys[e.keyCode];
-    });
 
 
 
+        //PHONE CONTROLS
 
-    //PHONE CONTROLS
+        canvas.addEventListener('touchstart', function (e) {
+            let touch;
+            let shoot;
+            switch (e.touches.length) {
+                case 1:
+                    touch = e.touches[0];
 
-    canvas.addEventListener('touchstart', function (e){
-        let touch;
-        let shoot;
-        switch (e.touches.length) {
-            case 1:
-                touch = e.touches[0];
+                    console.log(touch.clientX + "  " + touch.clientY + "   " + canvas.scrollWidth + "-" + canvas.scrollHeight + " " + (canvas.scrollHeight - canvas.scrollHeight / 4));
 
-                console.log(touch.clientX + "  " + touch.clientY + "   " + canvas.scrollWidth + "-" + canvas.scrollHeight + " " + (canvas.scrollHeight  -  canvas.scrollHeight/4));
+                    if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight / 3) {
+                        nukeTheMap();
+                    } else if (touch.clientX <= canvas.scrollWidth / 2) {
+                        directionX = 1;
+                    } else if (touch.clientX > canvas.scrollWidth / 2) {
+                        directionX = 2;
+                    }
+                    if (touch.clientY > (canvas.scrollHeight - canvas.scrollHeight / 4.5)) {
+                        Shoot();
+                    }
 
-                if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight/3){
-                    nukeTheMap();
-                }
-                else if (touch.clientX <= canvas.scrollWidth/2) {
-                    direction = 1;
-                }
-                else if (touch.clientX > canvas.scrollWidth/2) {
-                    direction = 2;
-                }
-                if (touch.clientY > (canvas.scrollHeight  -  canvas.scrollHeight/4.5)){
-                    Shoot();
-                }
+                    break;
+                case 2:
+                    touch = e.touches[0];
+                    shoot = e.touches[1];
 
-                break;
-            case 2:
-                touch = e.touches[0];
-                shoot = e.touches[1];
+                    console.log(touch.clientX + "  " + touch.clientY);
 
-                console.log(touch.clientX + "  " + touch.clientY );
-
-                if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight/3 ||
-                    shoot.clientY >= 0 && shoot.clientY < canvas.scrollHeight/3){
-                    nukeTheMap();
-                }
-                if (touch.clientY >  canvas.scrollHeight  -  canvas.scrollHeight/4.5|| shoot.clientY > canvas.scrollHeight  -  canvas.scrollHeight/4.5) {
-                    Shoot();
-                }
-                else if (touch.clientX <= canvas.scrollWidth/2 || shoot.clientX <= canvas.scrollWidth/2) {
-                    direction = 1;
-                } else if (touch.clientX > canvas.scrollWidth/2  || shoot.clientX > canvas.scrollWidth/2 ) {
-                    direction = 2;
-                }
+                    if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight / 3 ||
+                        shoot.clientY >= 0 && shoot.clientY < canvas.scrollHeight / 3) {
+                        nukeTheMap();
+                    }
+                    if (touch.clientY > canvas.scrollHeight - canvas.scrollHeight / 4.5 || shoot.clientY > canvas.scrollHeight - canvas.scrollHeight / 4.5) {
+                        Shoot();
+                    } else if (touch.clientX <= canvas.scrollWidth / 2 || shoot.clientX <= canvas.scrollWidth / 2) {
+                        directionX = 1;
+                    } else if (touch.clientX > canvas.scrollWidth / 2 || shoot.clientX > canvas.scrollWidth / 2) {
+                        directionX = 2;
+                    }
 
 
-                break;
-        }
+                    break;
+            }
 
-    });
+        });
 
-    window.addEventListener('touchend',function (e) {
-        direction = 0;
-    });
+        window.addEventListener('touchend', function () {
+            directionX = 0;
+        });
 
 
-
+    }
 
 }
+
+

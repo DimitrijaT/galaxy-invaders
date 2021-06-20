@@ -4,15 +4,14 @@
     canvas.width = canvas.scrollWidth;
     canvas.height = canvas.scrollHeight;
 
+    MediumMode();
+    myContinue.innerHTML = `Revives (${revives})`;
 
     //GAME OVER!
     function youLOST(){
         lives = 0;
-
         bossMode = false;
         isGameRunning = false;
-
-
         BossMusic.pause();
         StartTheGame.pause();
         StartTheGame.currentTime = 0;
@@ -28,9 +27,7 @@
 
     //ScoreBoard
     function scoreboard(){
-
         let color;
-
         if (difficulty === 1){
             color = "#00fa0c";
         }
@@ -63,11 +60,12 @@
         ctx.fillText(LiveBoard,385,40);
 
         if (bossMode === true){
-            let BossHealth = `Health: ${Boss.Health}`;
+            let BossHealth = `Health:${Boss.Health}`;
             ctx.font = "30px VT323";
             ctx.fillStyle= "red";
-            ctx.fillText(BossHealth,370,80);
+            ctx.fillText(BossHealth,365,80);
         }
+
     }
 
 
@@ -90,23 +88,6 @@
     }
 
 
-
-
-
-    myButton = document.getElementById('StartGame');
-    myOptions = document.getElementById('Options');
-    myFullScreen = document.getElementById('FullScreen');
-    myReset = document.getElementById('Reset');
-    myPauseResume = document.getElementById('PauseResume');
-
-    Easy = document.getElementById('Easy');
-    Medium = document.getElementById('Medium');
-    Hard = document.getElementById('Hard');
-
-    myContinue = document.getElementById('Continue');
-    myContinue.innerHTML = `Revives (${revives})`;
-
-
     function Settings(){
         Easy.style.display = "block";
         Medium.style.display = "block";
@@ -115,6 +96,7 @@
         myButton.style.display = "none";
         myOptions.style.display = "none";
     }
+
     function EasyMode(){
         points = 0;
         maxLives = 25;
@@ -149,7 +131,7 @@
         Level = 1;
         lives = 3;
         numOfEnemies = 8;
-        RateOfFire = 350;
+        RateOfFire = 400;
         enemySpeed = 1.2;
         scoreMultiplier = 1;
         enemyProjectileSpeed = 2;
@@ -173,7 +155,7 @@
         Level = 1;
         lives = 3;
         numOfEnemies = 8;
-        RateOfFire = 250;
+        RateOfFire = 350;
         enemySpeed = 1.5;
         scoreMultiplier = 2;
         enemyProjectileSpeed = 3;
@@ -203,12 +185,15 @@
             myFullScreen.innerHTML = "Full Screen - OFF";
         }
 
-
         if (fullScreenMode === true && isGameRunning === true){
 
             myFullScreen.style.background = "gray";
             myFullScreen.innerHTML = "Full Screen - OFF";
             PauseResume(true);
+
+            canvas.style.backgroundImage = 'none';
+            canvas.style.background = 'none';
+            canvas.style.border = 'none';
 
             if(canvas.webkitRequestFullScreen) {
                 canvas.webkitRequestFullScreen();
@@ -259,14 +244,11 @@
         drawBoom();
         drawEnemyLaser();
         enemyShoot();
-
         newEnemyLaserPosition();
         newEnemyPosition();
-
         isHIT();
         isPlayerHIT();
         ifLevelBeaten();
-
     }
 
 
@@ -288,6 +270,7 @@
         drawLaser();
         newLaserPosition();
     }
+
     //MAIN LOOP FUNCTION:
     function update(){
 
@@ -304,8 +287,6 @@
                 } else {
                     ctx.drawImage(background, 0, 0);
                 }
-
-                scoreboard();
                 checkHighscore(points, Level, difficulty);
 
                 drawPower();
@@ -338,18 +319,14 @@
                     }
                 },1000);
             }
-
+            scoreboard();
             requestAnimationFrame(update);
             }
 
 
     }
 
-
-    let yesContinue = false;
-
     function Continue() {
-
         if (revives >= 1){
             revives--;
             if (points-5000 < 0){
@@ -370,7 +347,6 @@
     }
 
 
-    MediumMode();
     function beginGame(){
 
         Player.isDead = false;
@@ -384,6 +360,11 @@
             fullScreenMode = false;
             myFullScreen.style.background = "gray";
             myFullScreen.innerHTML = "Full Screen - OFF";
+
+            canvas.style.backgroundImage = 'none';
+            canvas.style.background = 'none';
+            canvas.style.border = 'none';
+
             if(canvas.webkitRequestFullScreen) {
                 canvas.webkitRequestFullScreen();
             }
@@ -395,15 +376,20 @@
         StartTheGame.loop = true;
 
         lives = 3;
+        LaserShot = 0;
         isGameRunning = true;
+
 
         Laser = [];
         BossFire = [];
         EnemyFire = [];
         Enemy = [];
+        keys = [];
 
-        amountOfShots = 1;
         nukes = 3;
+        Player.amountOfShots = 1;
+        Player.sharpness = 0;
+        Player.bulletCount= 1;
 
         Player.x = canvas.width / 2 - 30;
         Player.y = canvas.height - 30;
@@ -423,9 +409,10 @@
         }
         else{
             yesContinue = false;
-            amountOfShots = rememberAmountOfShots;
+            Player.amountOfShots = rememberAmountOfShots;
             nukes = rememberNukes;
-            playerBulletCount = rememberPlayerBulletCount;
+            Player.sharpness = rememberSharpness;
+            Player.bulletCount = rememberPlayerBulletCount;
 
             if (Level %waveTillBoss === 0 ){
                 bossMode = true;
@@ -445,7 +432,37 @@
         myOptions.style.display = "none";
         myContinue.style.display = "none";
 
-        keyPressActions();
         fillEnemies();
+        if (firstTime === true)
+        {
+            firstTime = false;
+            keyPressActions();
+        }
+
         update();
+
+
+    }
+
+    function  secret(){
+        if (isGamePaused === true) {
+            if (mouseControls === false) {
+                canvas.style.cursor = "none";
+                mouseControls = true;
+            } else {
+                mouseControls = false;
+                canvas.style.cursor = "auto";
+            }
+            secretSound.setDuration = 0;
+            secretSound.play();
+
+            let logo = document.getElementById("SiteLogo");
+            logo.src = "SiteImages/LogoClicked.png"
+
+            setTimeout(function () {
+                let logo = document.getElementById("SiteLogo");
+                logo.src = "SiteImages/Logo.png";
+            }, 400);
+        }
+
     }

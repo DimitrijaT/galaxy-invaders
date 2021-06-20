@@ -512,7 +512,7 @@ function isPlayerHITbyBoss(){
                     BossFire[i].y + 5 <= Player.y + Player.h &&
                     BossFire[i].Active === true) {
 
-                    if (unkillable === true) {
+                    if (Player.unkillable === true) {
                         BossFire[i].Active = false;
                         deflectSound.currentTime = 0;
                         deflectSound.play();
@@ -545,22 +545,33 @@ function isPlayerHITbyBoss(){
 
         }
 
+    if (
+        Boss.x +  Boss.w - 5 >= Player.x &&
+        Boss.x  + 5  <= Player.x + Player.w &&
+        Boss.y +  Boss.h - 5 >= Player.y &&
+        Boss.y + 5 <= Player.y + Player.h &&
+        Boss.isDead === false &&
+        Boss.isProtected === false) {
 
-    for (let i in Enemy){
-        if (Enemy.hasOwnProperty(i)){
-            if (Enemy[i].y >= canvas.height-30 && Enemy[i].isDead === false){
-                youLOST();
-            }
+        if (Player.unkillable === true) {
+            deflectSound.play();
+        } else if (lives - 1 >= 1) {
+            Boss.Health -= 5;
+            takeDamage();
+        } else {
+            youLOST();
         }
+
     }
 
 }
 
 function isBossBeaten(){
     if (Boss.Health <= 0){
-        rememberAmountOfShots = amountOfShots;
+        rememberAmountOfShots = Player.amountOfShots;
         rememberNukes = nukes;
-        rememberPlayerBulletCount = playerBulletCount;
+        rememberPlayerBulletCount = Player.bulletCount;
+        rememberSharpness  = Player.sharpness;
 
         motherShipDeathSound.play();
         BossMusic.pause();
@@ -620,4 +631,4 @@ setInterval(function () {
         }
     }
 
-}, 3000);
+}, 3500);

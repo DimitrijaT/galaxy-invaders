@@ -19,6 +19,8 @@ let shipUPSound = new Audio();
 shipUPSound.src = 'Sounds/shipUP.mp3';
 let gameOverSound = new Audio();
 gameOverSound.src = 'Sounds/gameOver.mp3';
+let secretSound = new Audio();
+secretSound.src = 'Sounds/secret.mp3';
 
 let shootLaser  = [];
 let shootLaser2  = [];

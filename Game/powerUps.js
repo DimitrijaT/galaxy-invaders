@@ -30,8 +30,9 @@ function isPowerUP(){
 
                         powerUPSound.currentTime = 0;
                         powerUPSound.play();
-                        if (amountOfShots+1 <= 6){
-                            amountOfShots= amountOfShots +1;
+
+                        if (Player.amountOfShots !== 5){
+                            Player.amountOfShots++;
                             points+=100;
                         }
                         else{
@@ -45,9 +46,15 @@ function isPowerUP(){
                         points+=150;
                         shipUPSound.currentTime = 0;
                         shipUPSound.play();
-                        playerBulletCount +=2;
-                        if (playerBulletCount > 4){
-                            playerBulletCount = 4;
+                        if (Player.bulletCount === 1 || Player.bulletCount === 2){
+                            Player.bulletCount +=1;
+                        }
+                        else{
+                            Player.bulletCount +=2;
+                        }
+
+                        if (Player.bulletCount > 7){
+                            Player.bulletCount = 7;
                         }
                         PowerUP[i].Active = false;
 
@@ -59,6 +66,17 @@ function isPowerUP(){
                         powerUPSound.currentTime = 0;
                         powerUPSound.play();
                         nukes++;
+                        PowerUP[i].Active = false;
+
+                        break;
+                    case 5:
+
+                        points+=100;
+                        powerUPSound.currentTime = 0;
+                        powerUPSound.play();
+                        if (Player.sharpness <= 12){
+                            Player.sharpness++;
+                        }
                         PowerUP[i].Active = false;
 
                         break;
@@ -94,14 +112,18 @@ function generatePower(eX,isBossSummon){
         PowerUP[amountOfPowerUPs].y = Enemy[eX].y;
     }
 
-    if (Math.ceil(Math.random() * 5) === 1  && bossMode !== true){ //no lifeUPS when vs. Boss
+
+    if (Math.ceil(Math.random() * 6) === 1  && bossMode !== true){ //no lifeUPS when vs. Boss
         PowerUP[amountOfPowerUPs].typeOfPower = 1 //lifeUP
     }
-    else if (Math.ceil(Math.random() * 5) === 1){
+    else if (Math.ceil(Math.random() * 6) === 1){
         PowerUP[amountOfPowerUPs].typeOfPower = 3;  //shipUP
     }
     else if (Math.ceil(Math.random() * 15) === 1){
         PowerUP[amountOfPowerUPs].typeOfPower = 4;  //bombUP
+    }
+    else if (Math.ceil(Math.random() * 5) === 1){
+        PowerUP[amountOfPowerUPs].typeOfPower = 5;  //sharpnessPower
     }
     else{
         PowerUP[amountOfPowerUPs].typeOfPower = 2;  //fireUP
@@ -114,19 +136,28 @@ function drawPower(){
             PowerUP[i].Active = false;
         }
         if (PowerUP[i].Active === true) {
-            if ( PowerUP[i].typeOfPower === 1){
-                ctx.drawImage(lifeUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
-            }
-            else if ( PowerUP[i].typeOfPower === 2){
-                ctx.drawImage(fireUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
-            }
-            else if (PowerUP[i].typeOfPower === 3){
-                ctx.drawImage(shipUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
-            }
-            else if (PowerUP[i].typeOfPower === 4){
-                ctx.drawImage(bombUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
-            }
 
+            switch (PowerUP[i].typeOfPower){
+                case 1:
+                    ctx.drawImage(lifeUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
+                    break;
+
+                case 2:
+                    ctx.drawImage(fireUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
+                    break;
+
+                case 3:
+                    ctx.drawImage(shipUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
+                    break;
+
+                case 4:
+                    ctx.drawImage(bombUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
+                    break;
+
+                case 5:
+                    ctx.drawImage(sharpnessPower, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
+                    break;
+            }
         }
     }
 }

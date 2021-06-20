@@ -68,7 +68,7 @@ header h1,img,sub{
     margin: 0;
     color: #96ff00;
     text-align: center;
-    user-select: none;
+
 }
 
 nav a{
@@ -125,12 +125,13 @@ section{
     align-items: stretch;
     align-self: center;
     justify-content: center;
-    min-width: 300px;
     padding: 2% 0 2% 0;
     font-size: 1.5em;
     flex-basis: 0;
     flex-grow: 1;
 }
+
+
 
 footer{
     display: flex;
@@ -148,17 +149,19 @@ footer{
 }
 
 
-
-.backgroundDiv{
-    width: 500px;
+#canvas{
+    flex-shrink: 1;
+    flex-basis: 500px;
+    max-width: 500px;
+    min-width: 100px;
     height: 500px;
     margin: 3%;
     align-self: center;
     border: 3px dashed black;
-    background: url("SiteImages/GalaxyInvaders.png") #8d50ff no-repeat;
+    background: url("SiteImages/GalaxyInvaders.png") #8d50ff round;
 }
 
-#StartGame,#Options,#Easy, #Medium, #Hard, #FullScreen, #Continue , #PauseResume, #Reset{
+.MainMenu > button{
     display: block;
     border-radius: 5px;
     background-color: green;
@@ -166,6 +169,7 @@ footer{
     border: none;
     margin: 1%;
     padding: 6%;
+    min-width: 300px;
     font-size: 1.2em;
 }
 
@@ -213,6 +217,7 @@ article{
 article p , h1 , h2{
     text-align: center;
 }
+
 article > h1{
     font-size: 1.4em;
 }
