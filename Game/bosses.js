@@ -259,7 +259,7 @@ function BossShoot(){
     
                     BossFire[BossShots] = new BossFireConstructor(
                         10,
-                        Level+20,
+                        Level/2+30,
                         Boss.x + Boss.w / 2 + 80,
                         Boss.y+60,
                         enemyProjectileSpeed,
@@ -270,7 +270,7 @@ function BossShoot(){
     
                     BossFire[BossShots+1] = new BossFireConstructor(
                         10,
-                        Level+20,
+                        Level/2+30,
                         Boss.x + Boss.w / 2 - 90,
                         Boss.y+60,
                         enemyProjectileSpeed,
@@ -445,7 +445,7 @@ function newBossLaserPosition(){
 
             for (let i in BossFire) {
 
-                BossFire[i].y += BossFire[i].speed;
+                BossFire[i].y += BossFire[i].speed + (Math.ceil(Math.random() * 9))/5;
 
 
                 switch (i%5){

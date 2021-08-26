@@ -21,6 +21,11 @@ const enemy4 =  document.getElementById('Enemy4');
 const enemyHurt4 =  document.getElementById('EnemyHurt4');
 const enemyshoots4 =  document.getElementById('EnemyShooting4');
 
+const enemy5 =  document.getElementById('Enemy5');
+const enemyHurt5 =  document.getElementById('EnemyHurt5');
+const enemyshoots5 =  document.getElementById('EnemyShooting5');
+const enemyshield5 =  document.getElementById('EnemyShield5');
+
 
 const motherShip =  document.getElementById('MotherShip');
 const motherShipHurt =  document.getElementById('MotherShipHurt');
@@ -49,6 +54,7 @@ const laserPiercing2 = document.getElementById('LaserPiercing2');
 const laserPiercing3 = document.getElementById('LaserPiercing3');
 
 const enemyLaser = document.getElementById('EnemyLaser');
+const enemyLaser5 = document.getElementById('enemyFire5');
 
 const sharpnessPower = document.getElementById('SharpnessPower');
 const invic = document.getElementById('InviciBubble');

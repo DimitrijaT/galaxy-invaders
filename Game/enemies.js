@@ -1,7 +1,7 @@
 
 //CREATE ENEMIES
 
-function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,isDead,typeEnemy,lowerMode)
+function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,isDead,typeEnemy,lowerMode,shields)
 {
     this.w = w;
     this.h = h;
@@ -15,6 +15,7 @@ function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,is
     this.isDead = isDead;
     this.typeEnemy = typeEnemy;
     this.lowerMode = false;
+    this.shieldMode = false;
 }
 
 
@@ -23,7 +24,16 @@ let Enemy = [];  // new Array();
 function fillEnemies(){
     let offsetXaxis = 10;
     let offsetYaxis = 10;
-    let typeEnemy =  Math.ceil(Math.random() * 5);
+    let typeEnemy;
+    if (Level <= 15){
+        typeEnemy = Math.ceil(Math.random() * 5);
+
+    }
+    else{
+        typeEnemy = Math.ceil(Math.random() * 6);
+    }
+
+
     for (let i=0;i<numOfEnemies;i++){
         let TotalHealth = EnemyHealth;
         if (i%8 === 0){
@@ -65,8 +75,11 @@ function fillEnemies(){
             false,
             false,
             typeEnemy,
+            false,
             false
         );
+
+
 
         offsetXaxis +=50;
 
@@ -83,6 +96,11 @@ function drawEnemy(){
             let eE;
 
             switch (Enemy[i].typeEnemy){
+                case 6:
+                    fE = enemyshoots5;
+                    dE = enemyHurt5;
+                    eE = enemy5;
+                    break;
                 case 5:
                     fE = boss3FireSleep;
                     dE = boss3FireHurt;
@@ -110,8 +128,14 @@ function drawEnemy(){
                     break;
             }
 
+            if (Enemy[i].typeEnemy === 6 && Math.ceil(Math.random() * 380) === 1){
+                Enemy[i].shieldMode = true;
+                setTimeout(function () {
+                    Enemy[i].shieldMode = false;
+                }, 1900);
+            }
 
-                if
+            if
                     (Enemy[i].firingMode === true)
                 {
                     ctx.drawImage(fE, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
@@ -119,13 +143,16 @@ function drawEnemy(){
                         Enemy[i].firingMode = false;
                     }, 350);
                 }
-                else
-                    if (Enemy[i].isDamaged === true) {
+            else if (Enemy[i].shieldMode === true){
+                ctx.drawImage(enemyshield5, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
+            }
+            else if (Enemy[i].isDamaged === true) {
                         ctx.drawImage(dE, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
                         setTimeout(function () {
                             Enemy[i].isDamaged = false;
                         }, 200);
-                    } else {
+                    }
+            else{
                         ctx.drawImage(eE, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
                     }
 
@@ -140,7 +167,7 @@ function newEnemyPosition(){
 
 
         if (Enemy[i].x + Enemy[i].w > canvas.width && Enemy[i].Direction === true) {
-            if (Enemy[i].typeEnemy === 1 || Enemy[i].typeEnemy === 4 || Enemy[i].typeEnemy === 5){
+            if (Enemy[i].typeEnemy === 1 || Enemy[i].typeEnemy === 4 || Enemy[i].typeEnemy === 5 || Enemy[i].typeEnemy === 6){
 
                     Enemy[i].lowerMode = true;
                 setTimeout(function () {
@@ -152,7 +179,7 @@ function newEnemyPosition(){
 
             Enemy[i].Direction = false;
         } else if (Enemy[i].x < 0 && Enemy[i].Direction === false) {
-            if (Enemy[i].typeEnemy === 1 || Enemy[i].typeEnemy === 4 || Enemy[i].typeEnemy === 5){
+            if (Enemy[i].typeEnemy === 1 || Enemy[i].typeEnemy === 4 || Enemy[i].typeEnemy === 5 || Enemy[i].typeEnemy === 6){
 
                     Enemy[i].lowerMode = true;
                 setTimeout(function () {
@@ -165,6 +192,12 @@ function newEnemyPosition(){
 
         if (Enemy[i].Direction === true) {
             switch (Enemy[i].typeEnemy){
+                case 6:
+                    if (Enemy[i].lowerMode === true){
+                        Enemy[i].y += 3;
+                    }Enemy[i].x += Enemy[i].speed/3;
+                    break;
+
                 case 4:
                     Enemy[i].x += Enemy[i].speed/3;
                     if (Enemy[i].lowerMode === true){
@@ -185,12 +218,12 @@ function newEnemyPosition(){
                     }
                     Enemy[i].y += Enemy[i].speed/18;
 
-                case 1: case 5:
+                case 1:
+                case 5:
                     if (Enemy[i].lowerMode === true){
                         Enemy[i].y += 3;
                     }
                 default:
-
                     Enemy[i].x += Enemy[i].speed;
                     break;
 
@@ -198,12 +231,17 @@ function newEnemyPosition(){
             }
         } else {
             switch (Enemy[i].typeEnemy){
+                case 6:
+                    if (Enemy[i].lowerMode === true){
+                        Enemy[i].y += 3;
+                    }
+                    Enemy[i].x -= Enemy[i].speed/3;
+                    break;
                 case 4:
                     Enemy[i].x -= Enemy[i].speed/3;
                     if (Enemy[i].lowerMode === true){
                         Enemy[i].y += 3;
                     }
-
                     break;
                 case 3:
                     Enemy[i].x -= Enemy[i].speed*3;
@@ -221,9 +259,6 @@ function newEnemyPosition(){
                     if (Enemy[i].lowerMode === true){
                         Enemy[i].y += 3;
                     }
-
-
-
                 default:
                     Enemy[i].x -= Enemy[i].speed;
                     break;
@@ -250,7 +285,7 @@ function EnemyFireConstructor(w,h,x,y,speed,Active,typeFire)
 function enemyShoot() {
     for (let i in Enemy) {
 
-        if ((Math.ceil(Math.random() * RateOfFire) <= 1)  && Enemy[i].isDead===false) {
+        if ((Math.ceil(Math.random() * RateOfFire) <= 1)  && Enemy[i].isDead===false && Enemy[i].shieldMode === false) {
 
             EnemyFire[EnemyShots] = new EnemyFireConstructor(
                 10,
@@ -273,6 +308,9 @@ function drawEnemyLaser(){
         }
         if (EnemyFire[i].Active === true) {
             switch(EnemyFire[i].typeFire){
+                case 6:
+                    ctx.drawImage(enemyLaser5, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
+                    break;
                 case 5:
                     ctx.drawImage(boss3FireAttack, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
                     break;
@@ -370,7 +408,11 @@ function isHIT() {
                     Laser[j].y <= Enemy[i].y + Enemy[i].h &&
                     Laser[j].Active === true) {
 
-                    if (Enemy[i].Health <= 1) {
+                    if (Enemy[i].shieldMode === true){
+                        Laser[j].Active = false;
+                        enemyHurtSound[j % 5].play();
+                    }
+                    else if (Enemy[i].Health <= 1) {
                         //make random explosion at location of enemy
 
                         if (Enemy[i].typeEnemy === 5){
@@ -389,6 +431,13 @@ function isHIT() {
                         }
                         else{
                             createExplosion(i);
+                            if (Enemy[i].typeEnemy === 6){
+                                for (let i in Enemy){
+                                    if (Enemy[i].isDead===false){
+                                        Enemy[i].speed+=0.525;
+                                    }
+                                }
+                            }
                         }
 
 
@@ -434,6 +483,9 @@ function isHIT() {
 
                         //play damage sound
                         enemyHurtSound[j % 5].play();
+
+
+
                     }
 
                 }
