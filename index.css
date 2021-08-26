@@ -13,6 +13,7 @@ body{
 }
 
 
+
 section{
     display: flex;
     flex-wrap: wrap;
@@ -37,7 +38,7 @@ section{
 
     /* background-image: linear-gradient(#200054, #4c00ff) ;*/
     grid-area: game;
-    min-height: 88.6vh;
+    min-height: 85.3vh;
 }
 
 
@@ -131,10 +132,19 @@ a[href="BugReport.html"]:hover{
     color: #00ff28;
 
 
+
 }
 
 nav a:hover:not([href="BugReport.html"]){
     background-color: #00ff28;
+    border: 3px solid #ff4dce;
+}
+
+#ChosenSettingBug{
+    color: #00ff28;
+}
+i{
+    user-select: none;
 }
 
 nav{
@@ -197,6 +207,7 @@ footer{
     align-self: center;
 
     background: url("SiteImages/GalaxyInvaders.png") #740373 round;
+
 }
 
 .MainMenu > button{
@@ -211,6 +222,7 @@ footer{
     min-width: 300px;
     font-size: 1.2em;
     transition: 250ms ease-in;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .Etext, .Mtext, .Htext{
@@ -234,7 +246,7 @@ footer{
 #FullScreen{
     background-color: gray;
 }
-#Continue , #PauseResume{
+#Continue , #PauseResume, #Quit{
     display: none;
 }
 
@@ -294,16 +306,18 @@ header > aside > h1{
 
 
 form {
+    box-sizing: border-box;
     margin-top: 5%;
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
 }
 
 
+
 form input[type="submit"]:hover{
-    box-shadow: 2px 2px #9c5100;
+    box-shadow: 0 5px 0 0 rgb(116, 3, 115,0.2), 0 7px 5px 0 rgba(80, 3, 80, 0.19);
 
 }
 
@@ -332,10 +346,61 @@ footer a{
     color: #EDF5E1;
 }
 
+
+.labelWidth{
+    display: block;
+    width: 200%;
+    box-sizing: border-box;
+}
+
+input:not([type="radio"]),select,textarea{
+    display: block;
+    padding: 5px;
+    width: 200%;
+    box-sizing: border-box;
+}
+textarea{
+    resize: vertical;
+    width: 100%;
+}
+
+input[type="radio"]{
+    padding: 5px;
+}
+form, label,textarea,option,[type="text"] , select{
+    font-size: 1em;
+    font-family: 'VT323', monospace;
+}
+form input[type="submit"]{
+
+    border-radius: 15px;
+    background-color: green;
+    border: none;
+    color: whitesmoke;
+    align-self: center;
+    padding: 2%;
+    margin: 2%;
+    width: 15%;
+    min-width: 150px;
+    font-weight: bold;
+    flex-shrink: 0;
+    font-size: 1.3em;
+
+}
+
+.genderLabel{
+    display: block;
+    width: 100%;
+}
+
 @media only screen and (max-width: 600px) {
 
     sub{
         display: none;
     }
 
+}
+
+article,header,footer{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

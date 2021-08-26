@@ -26,8 +26,8 @@
         <nav>
             <a href="index.html">Play Now</a>
             <a href="HowToPlay.html">How To Play</a>
-            <a href="About.html" id="ChosenSetting">About</a>
-            <a href="BugReport.html"><i class="material-icons md-18">
+            <a href="About.html" >About</a>
+            <a href="BugReport.html" id="ChosenSettingBug"><i class="material-icons md-18">
                 bug_report
             </i></a>
         </nav>
@@ -36,9 +36,9 @@
 
     <section>
 
-        <article id="AboutMainArticle">
+        <article>
 
-        <h2>BUG REPORT</h2>
+        <h2>REPORT A BUG</h2>
         </article>
 
         <article>
@@ -47,22 +47,22 @@
 
                 <div class="LeftForm">
                     <label>
-                        <span class="labelWidth"  >Име*</span>
-                        <input type="text" required placeholder="Вашето име...">
+                        <span class="labelWidth"  >Name*</span>
+                        <input type="text" required placeholder="Your name...">
                     </label>
 
                     <label>
-                        <span class="labelWidth" >Презиме</span>
-                        <input type="text" placeholder="Вашето презиме...">
+                        <span class="labelWidth" >Surname</span>
+                        <input type="text" placeholder="Your surname...">
                     </label>
 
                     <label>
-                        <span class="labelWidth">E-пошта*</span>
-                        <input type="text" required placeholder="Вашата е-пошта...">
+                        <span class="labelWidth">Email*</span>
+                        <input type="text" required placeholder="Your email...">
                     </label>
 
                     <label>
-                        <span class="labelWidth">Држава</span>
+                        <span class="labelWidth">Country</span>
 
                         <select name="countryFrom" id="countryFrom">
                             <option value="blank">/</option>
@@ -317,25 +317,28 @@
                     </label>
 
 
-                    <label>
-                        <span class="labelWidth">Пол</span>
+                    <label class="genderLabel">
+                        <span class="labelWidth">Gender</span>
 
-                        <label><input type="radio" value="Male" name="Gender" id="Male">Машки</label>
-                        <label><input type="radio" value="Female" name="Gender" id="Female">Женски</label>
+                        <label><input type="radio" value="Male" name="Gender" id="Male">Male</label>
+                        <label><input type="radio" value="Female" name="Gender" id="Female">Female</label>
                     </label>
 
                 </div>
 
                 <div class="RightForm">
-                    <label><span class="labelWidth">Опис</span>
-                        <textarea name="complains" placeholder="Напишете нешто.."></textarea>
+                    <label><span class="labelWidth">Description</span>
+                        <textarea name="complains" placeholder="Explain what the bug is.." rows="4" cols="45">
+
+                        </textarea>
                     </label>
 
                 </div>
 
-                <input type="submit" value="Испрати" onclick="playSound()">
+                <input type="submit" value="Submit" onclick="pageclick()">
             </form>
         </article>
+
 
 
     </section>
