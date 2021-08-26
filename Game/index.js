@@ -144,14 +144,14 @@
     }
     function HardMode(){
         points = 0;
-        maxLives = 15;
+        maxLives = 10;
         revives = 0;
         difficulty = 3;
         Level = 1;
         lives = 3;
         numOfEnemies = 8;
         RateOfFire = 350;
-        enemySpeed = 1.5;
+        enemySpeed = 1.55;
         scoreMultiplier = 2;
         enemyProjectileSpeed = 3;
         gainLifePerStage = 0;
@@ -319,6 +319,9 @@
 
 
                     if (printing1 === true) {
+                        for (let i in PowerUP){
+                            PowerUP[i].speed += 0.05;
+                        }
                         readySetGo.play();
                         Ready();
                         setTimeout(function(){
@@ -329,7 +332,9 @@
 
                     }
                     else if (printing2 === true) {
-
+                        for (let i in PowerUP){
+                            PowerUP[i].speed += 0.05;
+                        }
                         Set();
                         setTimeout(function () {
                             printing2 = false;
@@ -338,8 +343,13 @@
                         }, 600);
                     }
                     else if (printing3 === true) {
+                        for (let i in PowerUP){
+                            PowerUP[i].speed += 0.05;
+                        }
                         Go();
+                        amountOfPowerUPs = 0;
                         setTimeout(function () {
+                            PowerUP = [];
                             printing3 = false;
 
                         }, 600);

@@ -42,7 +42,10 @@ function fillEnemies(){
         }
 
         if (difficulty === 3) {
-            if (i < 8) {
+            if (i < 4) {
+                typeEnemy = 6;
+            }
+            if (i >= 4 && i< 8){
                 typeEnemy = 1;
             }
             if (i >= 8 && i < 16) {
@@ -431,9 +434,9 @@ function isHIT() {
                         }
                         else{
                             createExplosion(i);
-                            if (Enemy[i].typeEnemy === 6){
+                            if (Enemy[i].typeEnemy === 6 || difficulty === 3){
                                 for (let i in Enemy){
-                                    if (Enemy[i].isDead===false){
+                                    if (Enemy[i].isDead===false && Enemy[i].typeEnemy === 6){
                                         Enemy[i].speed+=0.525;
                                     }
                                 }
