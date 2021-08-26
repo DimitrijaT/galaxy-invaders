@@ -1,7 +1,7 @@
 
 //CREATE ENEMIES
 
-function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,isDead,typeEnemy)
+function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,isDead,typeEnemy,lowerMode)
 {
     this.w = w;
     this.h = h;
@@ -14,6 +14,7 @@ function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,is
     this.isDamaged = isDamaged;
     this.isDead = isDead;
     this.typeEnemy = typeEnemy;
+    this.lowerMode = false;
 }
 
 
@@ -63,7 +64,8 @@ function fillEnemies(){
             TotalHealth,
             false,
             false,
-            typeEnemy
+            typeEnemy,
+            false
         );
 
         offsetXaxis +=50;
@@ -139,13 +141,24 @@ function newEnemyPosition(){
 
         if (Enemy[i].x + Enemy[i].w > canvas.width && Enemy[i].Direction === true) {
             if (Enemy[i].typeEnemy === 1 || Enemy[i].typeEnemy === 4 || Enemy[i].typeEnemy === 5){
-                Enemy[i].y += 30;
+
+                    Enemy[i].lowerMode = true;
+                setTimeout(function () {
+                    Enemy[i].lowerMode = false;
+                }, 150)
+
+
             }
 
             Enemy[i].Direction = false;
         } else if (Enemy[i].x < 0 && Enemy[i].Direction === false) {
             if (Enemy[i].typeEnemy === 1 || Enemy[i].typeEnemy === 4 || Enemy[i].typeEnemy === 5){
-                Enemy[i].y += 30;
+
+                    Enemy[i].lowerMode = true;
+                setTimeout(function () {
+                    Enemy[i].lowerMode = false;
+                }, 150)
+
             }
             Enemy[i].Direction = true;
         }
@@ -154,6 +167,10 @@ function newEnemyPosition(){
             switch (Enemy[i].typeEnemy){
                 case 4:
                     Enemy[i].x += Enemy[i].speed/3;
+                    if (Enemy[i].lowerMode === true){
+                        Enemy[i].y += 3;
+                    }
+
                     break;
                 case 3:
                     Enemy[i].y += Enemy[i].speed/10;
@@ -168,8 +185,10 @@ function newEnemyPosition(){
                     }
                     Enemy[i].y += Enemy[i].speed/18;
 
-                case 1:
-
+                case 1: case 5:
+                    if (Enemy[i].lowerMode === true){
+                        Enemy[i].y += 3;
+                    }
                 default:
 
                     Enemy[i].x += Enemy[i].speed;
@@ -181,6 +200,10 @@ function newEnemyPosition(){
             switch (Enemy[i].typeEnemy){
                 case 4:
                     Enemy[i].x -= Enemy[i].speed/3;
+                    if (Enemy[i].lowerMode === true){
+                        Enemy[i].y += 3;
+                    }
+
                     break;
                 case 3:
                     Enemy[i].x -= Enemy[i].speed*3;
@@ -194,6 +217,12 @@ function newEnemyPosition(){
                     }
                     Enemy[i].y += Enemy[i].speed/18;
                 case 1:
+                case 5:
+                    if (Enemy[i].lowerMode === true){
+                        Enemy[i].y += 3;
+                    }
+
+
 
                 default:
                     Enemy[i].x -= Enemy[i].speed;
@@ -431,6 +460,9 @@ function ifLevelBeaten(){
         rememberSharpness = Player.sharpness;
 
         Level++;
+
+
+
         if (Level%waveTillBoss === 0 ){
 
             createBoss();
@@ -485,7 +517,8 @@ function ifLevelBeaten(){
             numOfEnemies-=6;
         }
 
-
+        printing1 = true;
+        readySetGo.currentTime = 0;
     }
 
 }

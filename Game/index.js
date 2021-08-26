@@ -7,6 +7,9 @@
     MediumMode();
     myContinue.innerHTML = `Revives (${revives})`;
 
+
+
+
     //GAME OVER!
     function youLOST(){
         lives = 0;
@@ -27,17 +30,6 @@
 
     //ScoreBoard
     function scoreboard(){
-        let color;
-        if (difficulty === 1){
-            color = "#00fa0c";
-        }
-        else if (difficulty === 2){
-            color = "#fac400"
-        }
-        else{
-            color = "#fa4f00"
-        }
-
         //  OLD : let Result = "Score: " + points;
         let Result = `Score: ${points}`;   //ECMASCRIPT WAY!
         ctx.font = "25px VT323";
@@ -65,6 +57,7 @@
             ctx.fillStyle= "red";
             ctx.fillText(BossHealth,365,80);
         }
+
 
     }
 
@@ -241,6 +234,7 @@
 
     function EnemyLogic(){
         drawEnemy();
+        ifLevelBeaten();
         drawBoom();
         drawEnemyLaser();
         enemyShoot();
@@ -248,7 +242,7 @@
         newEnemyPosition();
         isHIT();
         isPlayerHIT();
-        ifLevelBeaten();
+
     }
 
 
@@ -274,54 +268,116 @@
     //MAIN LOOP FUNCTION:
     function update(){
 
-        if (isGamePaused === false) {
 
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if (isGamePaused === false) {
 
-                if (isNuked === true) {
-                    ctx.drawImage(backgroundNuked, 0, 0);
-                    setTimeout(function () {
-                        isNuked = false;
-                    }, 300);
 
-                } else {
-                    ctx.drawImage(background, 0, 0);
-                }
-                checkHighscore(points, Level, difficulty);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                drawPower();
-                isPowerUP();
-                newPowerPosition();
+                    if (isNuked === true) {
+                        ctx.drawImage(backgroundNuked, 0, 0);
+                        setTimeout(function () {
+                            isNuked = false;
+                        }, 300);
 
-                if (Level % waveTillBoss === 0) {
-                    BossLogic();
+                    } else {
+                        switch (Level % 5) {
+                            case 0:
+                                ctx.drawImage(background, 0, 0);
+                                break;
 
-                } else {
-                    EnemyLogic();
-                }
+                            case 1:
+                                ctx.drawImage(background1, 0, 0);
+                                break;
 
-            if (isGameRunning === true){
-                PlayerLogic();
-            }
-            else{
-                ctx.font = "40px VT323";
-                ctx.fillStyle= 'red';
-                ctx.fillText('GAME OVER',170,250);
-                setTimeout(function () {
-                    isGamePaused = true;
-                    myButton.style.display = "block";
-                    myOptions.style.display = "block";
-                    myContinue.style.display = "block";
-                    myReset.style.display = 'block';
-                    myPauseResume.style.display = 'none';
-                    if (Level === 1 || difficulty === 3) {
-                        myContinue.style.display = "none";
+                            case 2:
+                                ctx.drawImage(background2, 0, 0);
+                                break;
+                            case 3:
+                                ctx.drawImage(background3, 0, 0);
+                                break;
+                            case 4:
+                                ctx.drawImage(background5, 0, 0);
+                                break;
+                            default:
+
+                                ctx.drawImage(background, 0, 0);
+
+                        }
+                        if (Level % waveTillBoss === 0) {
+                            ctx.drawImage(background4, 0, 0);
+                        }
+
                     }
-                },1000);
-            }
-            scoreboard();
-            requestAnimationFrame(update);
-            }
+                    checkHighscore(points, Level, difficulty);
+
+                    drawPower();
+                    isPowerUP();
+                    newPowerPosition();
+
+
+                    if (printing1 === true) {
+                        readySetGo.play();
+                        Ready();
+                        setTimeout(function(){
+                            printing1 = false;
+                            printing2 = true;
+
+                        }, 650);
+
+                    }
+                    else if (printing2 === true) {
+
+                        Set();
+                        setTimeout(function () {
+                            printing2 = false;
+                            printing3 = true;
+
+                        }, 600);
+                    }
+                    else if (printing3 === true) {
+                        Go();
+                        setTimeout(function () {
+                            printing3 = false;
+
+                        }, 600);
+                    }
+                    else {
+
+                        if (Level % waveTillBoss === 0) {
+                            BossLogic();
+
+                        } else {
+                            EnemyLogic();
+                        }
+                    }
+
+                    if (isGameRunning === true) {
+                        PlayerLogic();
+                    } else {
+                        ctx.font = "40px VT323";
+                        ctx.fillStyle = 'red';
+                        ctx.fillText('GAME OVER', 170, 250);
+                        setTimeout(function () {
+                            isGamePaused = true;
+                            myButton.style.display = "block";
+                            myOptions.style.display = "block";
+                            myContinue.style.display = "block";
+                            myReset.style.display = 'block';
+                            myPauseResume.style.display = 'none';
+                            if (Level === 1 || difficulty === 3) {
+                                myContinue.style.display = "none";
+                            }
+                        }, 1000);
+                    }
+                    scoreboard();
+                    requestAnimationFrame(update);
+
+
+                }
+
+
+
 
 
     }
@@ -438,6 +494,17 @@
             firstTime = false;
             keyPressActions();
         }
+
+        if (difficulty === 1){
+            color = "#00fa0c";
+        }
+        else if (difficulty === 2){
+            color = "#fac400"
+        }
+        else{
+            color = "#fa4f00"
+        }
+
 
         update();
 

@@ -21,6 +21,8 @@ let gameOverSound = new Audio();
 gameOverSound.src = 'Sounds/gameOver.mp3';
 let secretSound = new Audio();
 secretSound.src = 'Sounds/secret.mp3';
+let readySetGo = new Audio();
+readySetGo.src = 'Sounds/ReadySetGo.mp3';
 
 let shootLaser  = [];
 let shootLaser2  = [];

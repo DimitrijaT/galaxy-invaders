@@ -609,7 +609,10 @@ function isBossBeaten(){
         }
 
         fillEnemies();
+        printing1 = true;
+        readySetGo.currentTime = 0;
     }
+
 
 
 }

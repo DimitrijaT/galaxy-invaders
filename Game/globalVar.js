@@ -59,6 +59,13 @@ const shipUP = document.getElementById('ShipUP');
 const enemyDeath1 = document.getElementById('EnemyExplode1');
 const enemyDeath2 = document.getElementById('EnemyExplode2');
 const background = document.getElementById( 'Space');
+const background1 = document.getElementById( 'Space1');
+const background2 = document.getElementById( 'Space2');
+const background3 = document.getElementById( 'Space3');
+const background4 = document.getElementById( 'Space4');
+const background5 = document.getElementById( 'Space5');
+
+
 const backgroundNuked = document.getElementById( 'SpaceNuked');
 
 let maxLives;
@@ -91,6 +98,9 @@ let firstTime = true;
 let playerLaserSpeed = 4;
 let mouseControls = false;
 let rememberSharpness;
+let printing1, printing2, printing3 = false;
+let color;
+
 
 myButton = document.getElementById('StartGame');
 myOptions = document.getElementById('Options');
@@ -101,3 +111,22 @@ Easy = document.getElementById('Easy');
 Medium = document.getElementById('Medium');
 Hard = document.getElementById('Hard');
 myContinue = document.getElementById('Continue');
+
+let Ready = function(){
+    let Result = `READY?`;
+    ctx.font = "40px VT323";
+    ctx.fillStyle= color;
+    ctx.fillText(Result,210,200)};
+
+let Set = function(){
+    let Result = `SET`;
+    ctx.font = "40px VT323";
+    ctx.fillStyle= color;
+    ctx.fillText(Result,210,230)};
+
+
+let Go =  function(){
+    let Result = `GO!!!`;
+    ctx.font = "40px VT323";
+    ctx.fillStyle= color;
+    ctx.fillText(Result,210,260)};
