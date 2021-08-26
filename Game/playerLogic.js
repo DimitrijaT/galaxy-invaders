@@ -101,7 +101,9 @@ function takeDamage(x = 1){
         points -= 100;
     }
 
-    Player.sharpness --;
+    if (Player.sharpness >= 1){
+        Player.sharpness--;
+    }
     deathSound.currentTime = 0;
     deathSound.play();
     if (Player.amountOfShots > 1){

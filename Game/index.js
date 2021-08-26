@@ -46,7 +46,7 @@
         ctx.fillStyle= color;
         ctx.fillText(NukeBoard,290,40);
 
-        let LiveBoard = `HP: ${lives}/${maxLives}`;
+        let LiveBoard = `❤️: ${lives}/${maxLives}`;
         ctx.font = "25px VT323";
         ctx.fillStyle= color;
         ctx.fillText(LiveBoard,385,40);
@@ -82,12 +82,14 @@
 
 
     function Settings(){
+
         Easy.style.display = "block";
         Medium.style.display = "block";
         Hard.style.display = "block";
         myFullScreen.style.display = "none";
         myButton.style.display = "none";
         myOptions.style.display = "none";
+        myQuit.style.display = 'none';
     }
 
     function EasyMode(){
@@ -278,7 +280,7 @@
                         ctx.drawImage(backgroundNuked, 0, 0);
                         setTimeout(function () {
                             isNuked = false;
-                        }, 300);
+                        }, 350);
 
                     } else {
                         switch (Level % 5) {
@@ -358,17 +360,19 @@
                         ctx.font = "40px VT323";
                         ctx.fillStyle = 'red';
                         ctx.fillText('GAME OVER', 170, 250);
-                        setTimeout(function () {
-                            isGamePaused = true;
-                            myButton.style.display = "block";
+                        isGamePaused = true;
+                        myButton.style.display = "block";
+
+                        if (Easy.style.display === "none"){
                             myOptions.style.display = "block";
-                            myContinue.style.display = "block";
-                            myReset.style.display = 'block';
-                            myPauseResume.style.display = 'none';
-                            if (Level === 1 || difficulty === 3) {
-                                myContinue.style.display = "none";
-                            }
-                        }, 1000);
+                        }
+                        myContinue.style.display = "block";
+                        myReset.style.display = 'block';
+                        myQuit.style.display = 'none';
+                        myPauseResume.style.display = 'none';
+                        if (Level === 1 || difficulty === 3) {
+                            myContinue.style.display = "none";
+                        }
                     }
                     scoreboard();
                     requestAnimationFrame(update);
@@ -404,11 +408,14 @@
 
 
     function beginGame(){
-
+        printing1 = true;
         Player.isDead = false;
         isGamePaused = false;
 
+        myCanvas = document.getElementById('canvas');
+        canvas.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.3)";
         myPauseResume.style.display = 'block';
+        myQuit.style.display = 'block';
         myReset.style.background = 'green';
         myReset.style.display = 'none';
 
@@ -451,6 +458,10 @@
         Player.y = canvas.height - 30;
 
         if(yesContinue === false){
+
+            revives = 3;
+            myContinue.innerHTML = `Revives (${revives})`;
+            myContinue.style.background = "green";
             StartTheGame.currentTime = 0;
             StartTheGame.play();
             if (difficulty === 1){
@@ -462,6 +473,7 @@
             else{
                 HardMode();
             }
+
         }
         else{
             yesContinue = false;
@@ -532,4 +544,22 @@
             }, 400);
         }
 
+    }
+
+    function quit(){
+        if (isGamePaused === false) {
+            lives = 0;
+            bossMode = false;
+            isGameRunning = false;
+            BossMusic.pause();
+            StartTheGame.pause();
+            StartTheGame.currentTime = 0;
+            BossMusic.currentTime = 0;
+
+            if (Player.isDead === false) {
+                gameOverSound.currentTime = 0;
+                gameOverSound.play();
+                Player.isDead = true;
+            }
+        }
     }

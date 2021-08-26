@@ -113,6 +113,7 @@ myOptions = document.getElementById('Options');
 myFullScreen = document.getElementById('FullScreen');
 myReset = document.getElementById('Reset');
 myPauseResume = document.getElementById('PauseResume');
+myQuit = document.getElementById('Quit');
 Easy = document.getElementById('Easy');
 Medium = document.getElementById('Medium');
 Hard = document.getElementById('Hard');
