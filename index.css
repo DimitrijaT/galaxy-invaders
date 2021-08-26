@@ -13,9 +13,38 @@ body{
 }
 
 
+section{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+
+
+
+
+    /* background: #80316a;  /* fallback for old browsers */
+    /* background: -webkit-linear-gradient(to right, #2d093b, #80316a);  /* Chrome 10-25, Safari 5.1-6 */
+    /*background: linear-gradient(to right, #2d093b, #80316a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+    background: #740373;
+    /*url("SiteImages/galaxy.jpg") fixed no-repeat;*/
+
+
+
+
+
+    /* background-image: linear-gradient(#200054, #4c00ff) ;*/
+    grid-area: game;
+    min-height: 88.6vh;
+}
+
+
+
 header{
-    background-color: mediumpurple;
-    background-image: linear-gradient(mediumpurple, #6f49b6);
+    background-color: 	#383838;
+    /*background-image: linear-gradient(mediumpurple, #6f49b6);*/
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -25,6 +54,8 @@ header{
     font-size: 2em;
     font-weight: bold;
     font-family: 'Open Sans', sans-serif;
+    box-shadow: 0 2px #000000;
+    z-index: 999;
 }
 aside{
     display: flex;
@@ -53,6 +84,7 @@ aside > h1{
 }
 .ScoreBoard h1{
     font-size: 1.3em;
+    margin-bottom: 0;
 }
 
 
@@ -68,13 +100,14 @@ header h1,img,sub{
     margin: 0;
     color: #96ff00;
     text-align: center;
+    user-select: none;
 
 }
 
-nav a{
+nav a:not([href="BugReport.html"]){
     display: inline-block;
     text-decoration: none;
-    border: 3px solid #5a008d;
+    border: 3px solid #740373;
     background-color: green;
     color: #EDF5E1;
     padding: 3px;
@@ -85,9 +118,22 @@ nav a{
     flex-basis: 0;
     flex-grow: 1;
     font-size: 0.5em;
+    transition: 250ms ease-in;
 }
 
-nav a:hover{
+a[href="BugReport.html"]{
+    color: #007c00;
+    text-decoration: none;
+    transition: 250ms ease-in;
+
+}
+a[href="BugReport.html"]:hover{
+    color: #00ff28;
+
+
+}
+
+nav a:hover:not([href="BugReport.html"]){
     background-color: #00ff28;
 }
 
@@ -100,17 +146,6 @@ nav{
 
 }
 
-section{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    flex-direction: column;
-    background-color: #200054;
-    background-image: linear-gradient(#200054, #4c00ff);
-    grid-area: game;
-    min-height: 88.6vh;
-}
 
 #GamePage{
     flex-direction: row;
@@ -118,6 +153,7 @@ section{
 
 
 .MainMenu{
+
     margin: 1%;
     min-height: 12%;
     display: flex;
@@ -139,8 +175,9 @@ footer{
     align-items: center;
     color: #ffffff;
     height: 5vh;
-    background-color: darkmagenta;
-    background-image: linear-gradient( #ce00ce, darkmagenta);
+    box-shadow: 0 -2px #000000;
+    background-color: 	#383838;
+    /* background-image: linear-gradient( #ce00ce, darkmagenta); */
     grid-area: footer;
     text-align: center;
     font-size: 1.2em;
@@ -150,6 +187,7 @@ footer{
 
 
 #canvas{
+    border-radius: 15px;
     flex-shrink: 1;
     flex-basis: 500px;
     max-width: 500px;
@@ -157,25 +195,27 @@ footer{
     height: 500px;
     margin: 3%;
     align-self: center;
-    border: 3px dashed black;
-    background: url("SiteImages/GalaxyInvaders.png") #8d50ff round;
+
+    background: url("SiteImages/GalaxyInvaders.png") #740373 round;
 }
 
 .MainMenu > button{
-    display: block;
-    border-radius: 5px;
-    background-color: green;
     color: #EDF5E1;
+    background-color: green;
+    font-family: 'VT323', monospace;
+    display: block;
+    border-radius: 15px;
     border: none;
     margin: 1%;
     padding: 6%;
     min-width: 300px;
     font-size: 1.2em;
+    transition: 250ms ease-in;
 }
 
 .Etext, .Mtext, .Htext{
     user-select: none;
-    border-radius: 5px;
+    border-radius: 15px;
     padding: 10px;
     margin: 1%;
 
@@ -205,9 +245,9 @@ footer{
 article{
     min-width: 300px;
     margin: 2%;
-    background-color: #5CDB95;
+    background-color: #383838;
     color: #EDF5E1;
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 2% 5% 2% 5%;
     font-size: 1.5em;
     max-width: 600px;
@@ -223,7 +263,8 @@ article > h1{
 }
 
 button:hover{
-    box-shadow: 5px 5px #5309ff !important;
+    box-shadow: 4px 4px #ff4dce !important;
+
 }
 
 #AboutMainArticle{
@@ -245,3 +286,56 @@ body {
     scrollbar-width: none;   Firefox
 }
 */
+
+header > aside > h1{
+    user-select: none;
+    font-size: 1.4em;
+}
+
+
+form {
+    margin-top: 5%;
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+
+form input[type="submit"]:hover{
+    box-shadow: 2px 2px #9c5100;
+
+}
+
+form input[type="submit"]{
+    cursor: pointer;
+    transition: 250ms ease-in;
+}
+
+#ContactSection{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+.LeftForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+    align-content: stretch;
+    width: 50%;
+}
+
+footer a{
+    text-decoration: none;
+    color: #EDF5E1;
+}
+
+@media only screen and (max-width: 600px) {
+
+    sub{
+        display: none;
+    }
+
+}

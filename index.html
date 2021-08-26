@@ -13,6 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 
 </head>
 <body>
@@ -21,29 +23,31 @@
 <header>
         <aside>
             <img src="SiteImages/Logo.png" alt="" onclick="secret()"  id="SiteLogo">
-            <h1>GALAXY INVADERS</h1><span class="leftMarginBoost"><sub><sub><sub>3.3</sub></sub></sub></span>
+            <h1>GALAXY INVADERS</h1><span class="leftMarginBoost"><sub><sub><sub>3.4</sub></sub></sub></span>
         </aside>
         <nav>
             <a href="index.html" id="ChosenSetting">Play Now</a>
             <a href="HowToPlay.html">How To Play</a>
             <a href="About.html">About</a>
+            <a href="BugReport.html"><i class="material-icons md-18">
+                bug_report
+            </i></a>
         </nav>
-
 </header>
 
 <section id="GamePage">
 
 
     <div class="MainMenu">
-        <button onclick="PauseResume()" id="PauseResume">Pause</button>
-        <button onclick="Continue()" id="Continue"></button>
-        <button onclick="beginGame()" id="StartGame"> Start Game</button>
-        <button onclick="fullScreen()" id="FullScreen"> Full Screen - OFF</button>
-        <button onclick="Settings()" id="Options">Difficulty</button>
-        <button onclick="EasyMode()" id="Easy">Easy</button>
-        <button onclick="MediumMode()" id="Medium">Medium</button>
-        <button onclick="HardMode()" id="Hard">Hard</button>
-        <button onclick="Reset()" id="Reset">Reset Scoreboard</button>
+        <button onclick="pageclick();PauseResume()" id="PauseResume">Pause</button>
+        <button onclick="pageclick();Continue()" id="Continue"></button>
+        <button onclick="pageclick();beginGame()" id="StartGame"> Start Game</button>
+        <button onclick="pageclick();fullScreen()" id="FullScreen"> Full Screen - OFF</button>
+        <button onclick="pageclick();Settings()" id="Options">Difficulty</button>
+        <button onclick="pageclick();EasyMode()" id="Easy">Easy</button>
+        <button onclick="pageclick();MediumMode()" id="Medium">Medium</button>
+        <button onclick="pageclick();HardMode()" id="Hard">Hard</button>
+        <button onclick="pageclick();Reset()" id="Reset">Reset Scoreboard</button>
     </div>
 
    <canvas id="canvas" width="500" height="500">This shows up if Canvas is not supported by your browser :(</canvas>
@@ -163,6 +167,12 @@
         <img src="Images/InviciBubble.png" alt="" id="InviciBubble">
 
         <img src="Images/SPACE.png" alt="" id="Space">
+        <img src="Images/SPACE1.png" alt="" id="Space1">
+        <img src="Images/SPACE2.png" alt="" id="Space2">
+        <img src="Images/SPACE3.png" alt="" id="Space3">
+        <img src="Images/SPACE4.png" alt="" id="Space4">
+        <img src="Images/SPACE5.png" alt="" id="Space5">
+
         <img src="Images/SPACENUKED.png" alt="" id="SpaceNuked">
         <img src="Images/Boom1.png" alt="" id="EnemyExplode1">
         <img src="Images/Boom2.png" alt="" id="EnemyExplode2">
@@ -172,8 +182,12 @@
 </section>
 
 <footer>
-    <p>Dimitrija Timeski &copy;FINKI 2021</p>
+    <p>Димитрија Тимески &copy;ФИНКИ 2021</p>   <a href="#" onclick="pageclick()"> <i class="material-icons">
+    expand_less
+</i></a>
 </footer>
+
+    <script src="Game/JS.js"></script>
 
 </div>
 
