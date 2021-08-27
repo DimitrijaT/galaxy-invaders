@@ -32,7 +32,7 @@ function fillEnemies(){
     else{
         typeEnemy = Math.ceil(Math.random() * 6);
     }
-
+    let typeArray = [Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6)]
 
     for (let i=0;i<numOfEnemies;i++){
         let TotalHealth = EnemyHealth;
@@ -41,21 +41,18 @@ function fillEnemies(){
             offsetYaxis += 50;
         }
 
-        if (difficulty === 3) {
-            if (i < 4) {
-                typeEnemy = 6;
-            }
-            if (i >= 4 && i< 8){
-                typeEnemy = 1;
+        if (difficulty === 3 || Level >= 50) {
+            if (i >= 0 && i< 8){
+                typeEnemy = typeArray[0];
             }
             if (i >= 8 && i < 16) {
-                typeEnemy = 2;
+                typeEnemy =  typeArray[1];
             } else if (i >= 16 && i < 24) {
-                typeEnemy = 3;
+                typeEnemy =  typeArray[2];
             } else if (i >= 24 && i < 32) {
-                typeEnemy = 4;
+                typeEnemy =  typeArray[3];
             } else if (i >= 32 && i < 40) {
-                typeEnemy = 5;
+                typeEnemy =  typeArray[4];
             }
         }
 
@@ -442,9 +439,6 @@ function isHIT() {
                                 }
                             }
                         }
-
-
-
 
                         Enemy[i].isDead = true;
                         points += 100 * scoreMultiplier;
