@@ -3,7 +3,6 @@
     const ctx = canvas.getContext("2d");
     canvas.width = canvas.scrollWidth;
     canvas.height = canvas.scrollHeight;
-
     MediumMode();
     myContinue.innerHTML = `Revives (${revives})`;
 
@@ -93,6 +92,7 @@
     }
 
     function EasyMode(){
+        myStartTheGame.innerHTML = 'Start Game - Easy';
         points = 0;
         maxLives = 25;
         revives = 3;
@@ -119,6 +119,7 @@
         myFullScreen.style.display = "block";
     }
     function MediumMode(){
+        myStartTheGame.innerHTML = 'Start Game - Medium';
         points = 0;
         maxLives = 20;
         revives = 3;
@@ -134,6 +135,7 @@
         EnemyHealth = 1;
         BossHealthBoost = 20;
         chanceOfPower = 60;
+        startingLaserHealth = 1;
         Easy.style.display = "none";
         Medium.style.display = "none";
         Hard.style.display = "none";
@@ -143,6 +145,7 @@
         myFullScreen.style.display = "block";
     }
     function HardMode(){
+        myStartTheGame.innerHTML = 'Start Game - Hard';
         points = 0;
         maxLives = 10;
         revives = 0;
@@ -158,6 +161,8 @@
         EnemyHealth = 2;
         BossHealthBoost = 30;
         chanceOfPower = 55;
+        startingLaserHealth = 1;
+
         Easy.style.display = "none";
         Medium.style.display = "none";
         Hard.style.display = "none";
@@ -202,34 +207,37 @@
 
 
     function PauseResume(goingFullScreen = false){
-        if (isGamePaused === true ){
-            isGamePaused = false;
-            myPauseResume.innerHTML = "Pause";
+        if (isGameRunning === true) {
+            if (isGamePaused === true) {
+                isGamePaused = false;
+                myPauseResume.innerHTML = "Pause";
 
-            if (Level %waveTillBoss === 0 ){
+                if (Level % waveTillBoss === 0) {
 
-                BossMusic.play();
+                    BossMusic.play();
 
+                } else {
+                    StartTheGame.play();
+                }
+
+                update();
+            } else if (isGamePaused === false && goingFullScreen === false) {
+
+                if (Level % waveTillBoss === 0) {
+
+                    BossMusic.pause();
+
+                } else {
+                    StartTheGame.pause();
+                }
+
+                ctx.font = "60px VT323";
+                ctx.fillStyle = color;
+                ctx.fillText(`PAUSED`, 180, 260);
+
+                myPauseResume.innerHTML = "Resume";
+                isGamePaused = true;
             }
-            else{
-                StartTheGame.play();
-            }
-
-            update();
-        }
-        else if (isGamePaused === false && goingFullScreen === false){
-
-            if (Level %waveTillBoss === 0 ){
-
-                BossMusic.pause();
-
-            }
-            else{
-                StartTheGame.pause();
-            }
-
-            myPauseResume.innerHTML = "Resume";
-            isGamePaused = true;
         }
     }
 
@@ -246,7 +254,6 @@
         isPlayerHIT();
 
     }
-
 
     //Boss Section
     function BossLogic(){
@@ -426,6 +433,7 @@
         canvas.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.3)";
         myPauseResume.style.display = 'block';
         myQuit.style.display = 'block';
+        myQuit.style.background = '#B7121F';
         myReset.style.background = 'green';
         myReset.style.display = 'none';
 

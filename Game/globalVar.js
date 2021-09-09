@@ -118,6 +118,7 @@ Easy = document.getElementById('Easy');
 Medium = document.getElementById('Medium');
 Hard = document.getElementById('Hard');
 myContinue = document.getElementById('Continue');
+myStartTheGame = document.getElementById('StartGame');
 
 let Ready = function(){
     let Result = `READY?`;

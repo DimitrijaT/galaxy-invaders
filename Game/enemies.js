@@ -341,12 +341,12 @@ function newEnemyLaserPosition(){
 
 function isPlayerHIT() {
     for (let i in EnemyFire) {  //let i=0;i<EnemyFire.length;i++
-        if (
+        if (EnemyFire[i].Active === true &&
             EnemyFire[i].x >= Player.x &&
             EnemyFire[i].x <= Player.x + Player.w &&
             EnemyFire[i].y + EnemyFire[i].h >= Player.y &&
-            EnemyFire[i].y <= Player.y + Player.h &&
-            EnemyFire[i].Active === true) {
+            EnemyFire[i].y <= Player.y + Player.h
+            ) {
 
             if (Player.unkillable === true) {
                 EnemyFire[i].Active = false;
@@ -376,12 +376,12 @@ function isPlayerHIT() {
             youLOST();
         }
 
-        if (
+        if (Enemy[i].isDead === false &&
             Enemy[i].x >= Player.x &&
             Enemy[i].x <= Player.x + Player.w &&
             Enemy[i].y + Enemy[i].h >= Player.y &&
-            Enemy[i].y <= Player.y + Player.h &&
-            Enemy[i].isDead === false) {
+            Enemy[i].y <= Player.y + Player.h
+            ) {
 
             if (Player.unkillable === true) {
                 deflectSound.play();
@@ -399,42 +399,41 @@ function isPlayerHIT() {
 //PROJECTILE
 function isHIT() {
     for (let j in Laser) {
+    if (Laser[j].Active === true) {
         for (let i in Enemy) {
             if (Laser.hasOwnProperty(j)) {   //WEBSTORM COMPLAINS
                 if (Enemy[i].isDead === false &&
                     Laser[j].x >= Enemy[i].x &&
                     Laser[j].x <= Enemy[i].x + Enemy[i].w &&
                     Laser[j].y + Laser[j].h >= Enemy[i].y &&
-                    Laser[j].y <= Enemy[i].y + Enemy[i].h &&
-                    Laser[j].Active === true) {
+                    Laser[j].y <= Enemy[i].y + Enemy[i].h
+                ) {
 
-                    if (Enemy[i].shieldMode === true){
+                    if (Enemy[i].shieldMode === true) {
                         Laser[j].Active = false;
                         enemyHurtSound[j % 5].play();
-                    }
-                    else if (Enemy[i].Health <= 1) {
+                    } else if (Enemy[i].Health <= 1) {
                         //make random explosion at location of enemy
 
-                        if (Enemy[i].typeEnemy === 5){
+                        if (Enemy[i].typeEnemy === 5) {
                             if ((Math.ceil(Math.random() * 3) === 1)) {
                                 EnemyFire[EnemyShots] = new EnemyFireConstructor(
                                     15,
                                     25,
                                     Enemy[i].x + Enemy[i].w / 2 - 5,
-                                    Enemy[i].y-5,
-                                    enemyProjectileSpeed/2,
+                                    Enemy[i].y - 5,
+                                    enemyProjectileSpeed / 2,
                                     true,
                                     Enemy[i].typeEnemy);
                                 Enemy[i].firingMode = true;
                                 EnemyShots++;
                             }
-                        }
-                        else{
+                        } else {
                             createExplosion(i);
-                            if (Enemy[i].typeEnemy === 6 || difficulty === 3){
-                                for (let i in Enemy){
-                                    if (Enemy[i].isDead===false && Enemy[i].typeEnemy === 6){
-                                        Enemy[i].speed+=0.525;
+                            if (Enemy[i].typeEnemy === 6 || difficulty === 3) {
+                                for (let i in Enemy) {
+                                    if (Enemy[i].isDead === false && Enemy[i].typeEnemy === 6) {
+                                        Enemy[i].speed += 0.525;
                                     }
                                 }
                             }
@@ -451,7 +450,7 @@ function isHIT() {
 
 
                         //play death sound
-                        switch (Enemy[i].typeEnemy){
+                        switch (Enemy[i].typeEnemy) {
 
                             case 5:
                                 summonHit[j % 5].play();
@@ -482,12 +481,12 @@ function isHIT() {
                         enemyHurtSound[j % 5].play();
 
 
-
                     }
 
                 }
             }
         }
+    }
     }
 }
 

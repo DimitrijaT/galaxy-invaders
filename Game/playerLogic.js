@@ -17,6 +17,7 @@ const Player = {
 
 function MovePlayer(){
 
+
     if (keys[37] || directionX === 1){
         Player.dx=Player.speed*-1;
     }
@@ -124,49 +125,50 @@ function takeDamage(x = 1){
 
 
 function nukeTheMap(){
+    if (isGamePaused === false && isGameRunning === true) {
 
-    if (nukes !== 0){
-        nukes--;
-        isNuked = true;
+        if (nukes !== 0) {
+            nukes--;
+            isNuked = true;
 
-        LaserShot = 0;
-        EnemyShots = 0;
-        BossShots = 0;
+            LaserShot = 0;
+            EnemyShots = 0;
+            BossShots = 0;
 
-        BossFire = [];
-        EnemyFire = [];
+            BossFire = [];
+            EnemyFire = [];
 
 
-        if (Level%waveTillBoss === 0){
-            Boss.isDamaged = true;
-            Boss.Health-=10;
-            createExplosion(0);
-            points += 100 * scoreMultiplier;
-            enemyExplode[0].play();
-        }
-        else {
+            if (Level % waveTillBoss === 0) {
+                Boss.isDamaged = true;
+                Boss.Health -= 10;
+                createExplosion(0);
+                points += 100 * scoreMultiplier;
+                enemyExplode[0].play();
+            } else {
 
-            for (let i in Enemy) {
-                if (Enemy.hasOwnProperty(i)) {
-                    if ((Enemy[i].Health <= 1 && Enemy[i].isDead === false) || (difficulty === 1 && Enemy[i].isDead === false)) {
+                for (let i in Enemy) {
+                    if (Enemy.hasOwnProperty(i)) {
+                        if ((Enemy[i].Health <= 1 && Enemy[i].isDead === false) || (difficulty === 1 && Enemy[i].isDead === false)) {
 
-                        createExplosion(i);
-                        Enemy[i].isDead = true;
-                        points += 100 * scoreMultiplier;
+                            createExplosion(i);
+                            Enemy[i].isDead = true;
+                            points += 100 * scoreMultiplier;
 
-                        enemyExplode[i % 5].play();
-                        if (Math.ceil(Math.random() * chanceOfPower) <= 10) {
-                            generatePower(i, false);
+                            enemyExplode[i % 5].play();
+                            if (Math.ceil(Math.random() * chanceOfPower) <= 10) {
+                                generatePower(i, false);
+                            }
+                        } else {
+                            Enemy[i].Health--;
+                            Enemy[i].isDamaged = true;
+                            enemyHurtSound[i % 5].play();
                         }
-                    } else {
-                        Enemy[i].Health--;
-                        Enemy[i].isDamaged = true;
-                        enemyHurtSound[i % 5].play();
+
                     }
-
                 }
-            }
 
+            }
         }
     }
 }
@@ -188,175 +190,170 @@ function LaserConstructor(w,h,x,y,speedY,speedX,Active,Health){
 }
 
 function Shoot(){
-    if (CoolDown === false) {
+    if (isGamePaused === false && isGameRunning === true) {
+        if (CoolDown === false) {
 
-        let sharpnessPointsToSpend = Player.sharpness;
+            let sharpnessPointsToSpend = Player.sharpness;
 
-        SoundCounter++;
+            SoundCounter++;
 
-        if (Player.bulletCount >= 6){
-            shootLaser2[SoundCounter % 5].play();
-        }
-        else{
-            shootLaser[SoundCounter % 5].play();
-        }
+            if (Player.bulletCount >= 6) {
+                shootLaser2[SoundCounter % 5].play();
+            } else {
+                shootLaser[SoundCounter % 5].play();
+            }
 
-        Laser[LaserShot] = new LaserConstructor(
-            10,
-            25,
-            Player.x + Player.w / 2 - 5,
-             Player.y,
-             playerLaserSpeed,
-            0,
-            true,
-            startingLaserHealth);
-
-        if (sharpnessPointsToSpend <= 3){
-            Laser[LaserShot].Health += sharpnessPointsToSpend
-        }
-        else{
-            Laser[LaserShot].Health = 4;
-        }
-
-        if (Player.bulletCount >= 2){
-            Laser[LaserShot].x -= 15;
-            Laser[LaserShot+1] = new LaserConstructor(
+            Laser[LaserShot] = new LaserConstructor(
                 10,
                 25,
-                Player.x + Player.w / 2 + 10,
+                Player.x + Player.w / 2 - 5,
                 Player.y,
                 playerLaserSpeed,
                 0,
                 true,
                 startingLaserHealth);
 
-
-            if (sharpnessPointsToSpend <= 3){
-                Laser[LaserShot+1].Health += sharpnessPointsToSpend
-            }
-            else{
-                Laser[LaserShot+1].Health = 4;
+            if (sharpnessPointsToSpend <= 3) {
+                Laser[LaserShot].Health += sharpnessPointsToSpend
+            } else {
+                Laser[LaserShot].Health = 4;
             }
 
+            if (Player.bulletCount >= 2) {
+                Laser[LaserShot].x -= 15;
+                Laser[LaserShot + 1] = new LaserConstructor(
+                    10,
+                    25,
+                    Player.x + Player.w / 2 + 10,
+                    Player.y,
+                    playerLaserSpeed,
+                    0,
+                    true,
+                    startingLaserHealth);
+
+
+                if (sharpnessPointsToSpend <= 3) {
+                    Laser[LaserShot + 1].Health += sharpnessPointsToSpend
+                } else {
+                    Laser[LaserShot + 1].Health = 4;
+                }
+
+
+            }
+            sharpnessPointsToSpend -= Laser[LaserShot].Health - 1;
+
+
+            if (Player.bulletCount >= 3) {
+
+                Laser[LaserShot].speedX = 0.3;
+                Laser[LaserShot + 1].speedX = -0.3;
+
+                Laser[LaserShot + 2] = new LaserConstructor(
+                    15,
+                    25,
+                    Player.x + Player.w / 2 - 7,
+                    Player.y - 5,
+                    playerLaserSpeed,
+                    0,
+                    true,
+                    1);
+
+
+                if (sharpnessPointsToSpend <= 3) {
+                    Laser[LaserShot + 2].Health += sharpnessPointsToSpend
+                } else {
+                    Laser[LaserShot + 2].Health = 4;
+                }
+                sharpnessPointsToSpend -= Laser[LaserShot + 2].Health - 1;
+
+            }
+
+
+            if (Player.bulletCount >= 4) {
+
+                Laser[LaserShot + 3] = new LaserConstructor(
+                    10,
+                    20,
+                    Player.x + Player.w / 2 - 25,
+                    Player.y + 15,
+                    playerLaserSpeed,
+                    0.3,
+                    true,
+                    false,
+                    1);
+
+                Laser[LaserShot + 4] = new LaserConstructor(
+                    10,
+                    20,
+                    Player.x + Player.w / 2 + 15,
+                    Player.y + 15,
+                    playerLaserSpeed,
+                    -0.3,
+                    true,
+                    false,
+                    1);
+
+                if (sharpnessPointsToSpend <= 3) {
+                    Laser[LaserShot + 3].Health += sharpnessPointsToSpend;
+                    Laser[LaserShot + 4].Health += sharpnessPointsToSpend;
+                } else {
+                    Laser[LaserShot + 3].Health = 4;
+                    Laser[LaserShot + 4].Health = 4;
+                }
+                sharpnessPointsToSpend -= Laser[LaserShot + 3].Health - 1;
+
+            }
+
+
+            if (Player.bulletCount >= 6) {
+
+                Laser[LaserShot + 1].x -= 3;
+
+                Laser[LaserShot].h = 30;
+                Laser[LaserShot].w = 20;
+
+                Laser[LaserShot].h = 25;
+                Laser[LaserShot].w = 15;
+
+                Laser[LaserShot + 1].h = 25;
+                Laser[LaserShot + 1].w = 15;
+
+                Laser[LaserShot + 5] = new LaserConstructor(
+                    10,
+                    20,
+                    Player.x + Player.w / 2 - 35,
+                    Player.y + 30,
+                    playerLaserSpeed,
+                    0.3,
+                    true,
+                    false,
+                    1);
+
+                Laser[LaserShot + 6] = new LaserConstructor(
+                    10,
+                    20,
+                    Player.x + Player.w / 2 + 25,
+                    Player.y + 30,
+                    playerLaserSpeed,
+                    -0.3,
+                    true,
+                    false,
+                    1);
+
+                if (sharpnessPointsToSpend <= 3) {
+                    Laser[LaserShot + 5].Health += sharpnessPointsToSpend;
+                    Laser[LaserShot + 6].Health += sharpnessPointsToSpend;
+                } else {
+                    Laser[LaserShot + 5].Health = 4;
+                    Laser[LaserShot + 6].Health = 4;
+                }
+
+            }
+
+
+            LaserShot = LaserShot + Player.bulletCount;
 
         }
-        sharpnessPointsToSpend -= Laser[LaserShot].Health-1;
-
-
-        if (Player.bulletCount >= 3){
-
-            Laser[LaserShot].speedX = 0.3;
-            Laser[LaserShot+1].speedX = -0.3;
-
-            Laser[LaserShot + 2] = new LaserConstructor(
-                15,
-                25,
-                Player.x + Player.w / 2 - 7,
-                Player.y-5,
-                playerLaserSpeed,
-                0,
-                true,
-                1);
-
-
-            if (sharpnessPointsToSpend <= 3){
-                Laser[LaserShot+2].Health += sharpnessPointsToSpend
-            }
-            else{
-                Laser[LaserShot+2].Health = 4;
-            }
-            sharpnessPointsToSpend -= Laser[LaserShot+2].Health-1;
-
-        }
-
-
-        if (Player.bulletCount >= 4){
-
-            Laser[LaserShot+3] = new LaserConstructor(
-                10,
-                20,
-                Player.x + Player.w / 2 - 25,
-                Player.y+15,
-                playerLaserSpeed,
-                0.3,
-                true,
-                false,
-                1);
-
-            Laser[LaserShot+4] = new LaserConstructor(
-                10,
-                20,
-                Player.x + Player.w / 2 + 15,
-                Player.y+15,
-                playerLaserSpeed,
-                -0.3,
-                true,
-                false,
-                1);
-
-            if (sharpnessPointsToSpend <= 3){
-                Laser[LaserShot+3].Health += sharpnessPointsToSpend;
-                Laser[LaserShot+4].Health += sharpnessPointsToSpend;
-            }
-            else{
-                Laser[LaserShot+3].Health = 4;
-                Laser[LaserShot+4].Health = 4;
-            }
-            sharpnessPointsToSpend -= Laser[LaserShot+3].Health-1;
-
-        }
-
-
-
-        if (Player.bulletCount >= 6){
-
-            Laser[LaserShot+1].x -= 3;
-
-            Laser[LaserShot].h = 30;
-            Laser[LaserShot].w = 20;
-
-            Laser[LaserShot].h = 25;
-            Laser[LaserShot].w = 15;
-
-            Laser[LaserShot+1].h = 25;
-            Laser[LaserShot+1].w = 15;
-
-            Laser[LaserShot+5] = new LaserConstructor(
-                10,
-                20,
-                Player.x + Player.w / 2 - 35,
-                Player.y+30,
-                playerLaserSpeed,
-                0.3,
-                true,
-                false,
-                1);
-
-            Laser[LaserShot+6] = new LaserConstructor(
-                10,
-                20,
-                Player.x + Player.w / 2 + 25,
-                Player.y+30,
-                playerLaserSpeed,
-                -0.3,
-                true,
-                false,
-                1);
-
-            if (sharpnessPointsToSpend <= 3){
-                Laser[LaserShot+5].Health += sharpnessPointsToSpend;
-                Laser[LaserShot+6].Health += sharpnessPointsToSpend;
-            }
-            else{
-                Laser[LaserShot+5].Health = 4;
-                Laser[LaserShot+6].Health = 4;
-            }
-
-        }
-
-
-        LaserShot= LaserShot + Player.bulletCount;
-
     }
 
 }
@@ -424,7 +421,7 @@ let directionY;// 1 left 2 right 3 bomb
 
 function keyPressActions(){
 
-    if (isGamePaused === false) {
+    if (isGamePaused === false && isGameRunning === true) {
 
         //MOVEMENT
 
@@ -439,6 +436,10 @@ function keyPressActions(){
             if (e.keyCode === 13) {
                 e.preventDefault();
                 nukeTheMap();
+            }
+            if (e.keyCode === 80){
+                e.preventDefault();
+                PauseResume();
             }
         });
         document.addEventListener('keyup', function (e) {

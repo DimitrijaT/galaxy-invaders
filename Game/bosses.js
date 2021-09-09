@@ -155,77 +155,80 @@ function newBossPosition(){
 
 function isBossDamaged(){
     for (let j in Laser) {
-        if (Laser.hasOwnProperty(j)) {
-            if (Boss.isDead === false &&
-                Laser[j].x >= Boss.x &&
-                Laser[j].x <= Boss.x + Boss.w &&
-                Laser[j].y + Laser[j].h >= Boss.y &&
-                Laser[j].y <= Boss.y + Boss.h &&
-                Laser[j].Active === true && Boss.isProtected === false) {
-                if (Boss.typeBoss === 3 && Boss.isHealing === true) {
-                    if (Laser[j].Health <= 1) {
-                        Laser[j].Active = false;
-                    }
-                    Laser[j].Health--;
-                    motherShipHeal[0].currentTime = 0;
-                    motherShipHeal[0].play();
-                    Boss.Health++;
-                } else {
-
-                    if (Math.ceil(Math.random() * chanceOfPower - 15) === 1) {
-                        generatePower(Boss.x, false);
-                    }
-                    Boss.isDamaged = true;
-                    Boss.Health--;
-
-                    if (Laser[j].Health <= 1) {
-                        Laser[j].Active = false;
-                    }
-                    Laser[j].Health--;
-
-                    createExplosion(0);
-                    points += 100 * scoreMultiplier;
-
-                    if (Boss.typeBoss === 1) {
-                        Boss.y -= 0.5;
-                        enemyExplode[j % 5].play();
-                    } else if (Boss.typeBoss === 2) {
-                        motherShipHit[j % 5].play();
+        if (Laser[j].Active === true) {
+            if (Laser.hasOwnProperty(j)) {
+                if (Boss.isDead === false && Boss.isProtected === false &&
+                    Laser[j].x >= Boss.x &&
+                    Laser[j].x <= Boss.x + Boss.w &&
+                    Laser[j].y + Laser[j].h >= Boss.y &&
+                    Laser[j].y <= Boss.y + Boss.h
+                    ) {
+                    if (Boss.typeBoss === 3 && Boss.isHealing === true) {
+                        if (Laser[j].Health <= 1) {
+                            Laser[j].Active = false;
+                        }
+                        Laser[j].Health--;
+                        motherShipHeal[0].currentTime = 0;
+                        motherShipHeal[0].play();
+                        Boss.Health++;
                     } else {
-                        motherShip3Hit[j % 5].play();
+
+                        if (Math.ceil(Math.random() * chanceOfPower - 15) === 1) {
+                            generatePower(Boss.x, false);
+                        }
+                        Boss.isDamaged = true;
+                        Boss.Health--;
+
+                        if (Laser[j].Health <= 1) {
+                            Laser[j].Active = false;
+                        }
+                        Laser[j].Health--;
+
+                        createExplosion(0);
+                        points += 100 * scoreMultiplier;
+
+                        if (Boss.typeBoss === 1) {
+                            Boss.y -= 0.5;
+                            enemyExplode[j % 5].play();
+                        } else if (Boss.typeBoss === 2) {
+                            motherShipHit[j % 5].play();
+                        } else {
+                            motherShip3Hit[j % 5].play();
+                        }
                     }
+
+
                 }
-
-
             }
         }
     }
     if (Boss.typeBoss === 3) {
         for (let i in Laser) {
-            for (let j in BossFire) {
-                if (Laser.hasOwnProperty(i)) {
-                    if (Laser[i].x >= BossFire[j].x &&
-                        Laser[i].x <= BossFire[j].x + BossFire[j].w &&
-                        Laser[i].y >= BossFire[j].y &&
-                        Laser[i].y <= BossFire[j].y + BossFire[j].h &&
-                        Laser[i].Active === true &&
-                        BossFire[j].Active === true) {
+            if (Laser[i].Active === true) {
+                for (let j in BossFire) {
+                    if (Laser.hasOwnProperty(i)) {
+                        if ( BossFire[j].Active === true && Laser[i].x >= BossFire[j].x &&
+                            Laser[i].x <= BossFire[j].x + BossFire[j].w &&
+                            Laser[i].y >= BossFire[j].y &&
+                            Laser[i].y <= BossFire[j].y + BossFire[j].h
+                            ) {
 
 
-                        summonHit[j % 5].play();
-                        BossFire[j].isDamaged = true;
+                            summonHit[j % 5].play();
+                            BossFire[j].isDamaged = true;
 
-                        if (BossFire[j].Health <= 1) {
-                            points += 20 * scoreMultiplier;
-                            if (Math.ceil(Math.random() * chanceOfPower / 2) < 4) {
-                                generatePower(j, true);
+                            if (BossFire[j].Health <= 1) {
+                                points += 20 * scoreMultiplier;
+                                if (Math.ceil(Math.random() * chanceOfPower / 2) < 4) {
+                                    generatePower(j, true);
+                                }
+                                BossFire[j].Active = false;
                             }
-                            BossFire[j].Active = false;
+                            BossFire[j].Health--;
+
+                            Laser[i].Active = false;
+
                         }
-                        BossFire[j].Health--;
-
-                        Laser[i].Active = false;
-
                     }
                 }
             }
@@ -505,12 +508,11 @@ function newBossLaserPosition(){
 
 function isPlayerHITbyBoss(){
         for (let i in BossFire) {
-                if (
+                if (BossFire[i].Active === true &&
                     BossFire[i].x +  BossFire[i].w - 5 >= Player.x &&
                     BossFire[i].x  + 5  <= Player.x + Player.w &&
                     BossFire[i].y +  BossFire[i].h - 5 >= Player.y &&
-                    BossFire[i].y + 5 <= Player.y + Player.h &&
-                    BossFire[i].Active === true) {
+                    BossFire[i].y + 5 <= Player.y + Player.h ) {
 
                     if (Player.unkillable === true) {
                         BossFire[i].Active = false;
@@ -545,13 +547,12 @@ function isPlayerHITbyBoss(){
 
         }
 
-    if (
+    if (Boss.isDead === false &&
+        Boss.isProtected === false &&
         Boss.x +  Boss.w - 5 >= Player.x &&
         Boss.x  + 5  <= Player.x + Player.w &&
         Boss.y +  Boss.h - 5 >= Player.y &&
-        Boss.y + 5 <= Player.y + Player.h &&
-        Boss.isDead === false &&
-        Boss.isProtected === false) {
+        Boss.y + 5 <= Player.y + Player.h ) {
 
         if (Player.unkillable === true) {
             deflectSound.play();
