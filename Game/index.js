@@ -243,7 +243,7 @@
 
                 ctx.font = "60px VT323";
                 ctx.fillStyle = color;
-                ctx.fillText(`PAUSED`, 180, 260);
+                ctx.fillText(`PAUSED`, 175, 260);
 
 
                 myPauseResume.innerHTML = "Resume";
@@ -387,7 +387,7 @@
                     } else {
                         ctx.font = "40px VT323";
                         ctx.fillStyle = 'red';
-                        ctx.fillText('GAME OVER', 170, 250);
+                        ctx.fillText('GAME OVER', 175, 260);
                         isGamePaused = true;
                         myButton.style.display = "block";
 
