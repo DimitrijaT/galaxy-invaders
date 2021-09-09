@@ -11,6 +11,7 @@
 
     //GAME OVER!
     function youLOST(){
+        fullScreenMode = false;
         lives = 0;
         bossMode = false;
         isGameRunning = false;
@@ -38,17 +39,17 @@
         let LevelBoard = `Level: ${Level}`;
         ctx.font = "25px VT323";
         ctx.fillStyle= color;
-        ctx.fillText(LevelBoard,180,40);
+        ctx.fillText(LevelBoard,175,40);
 
         let NukeBoard = `💣: ${nukes}`;
         ctx.font = "25px VT323";
         ctx.fillStyle= color;
-        ctx.fillText(NukeBoard,290,40);
+        ctx.fillText(NukeBoard,280,40);
 
         let LiveBoard = `❤️: ${lives}/${maxLives}`;
         ctx.font = "25px VT323";
         ctx.fillStyle= color;
-        ctx.fillText(LiveBoard,385,40);
+        ctx.fillText(LiveBoard,375,40);
 
         if (bossMode === true){
             let BossHealth = `Health:${Boss.Health}`;
@@ -231,9 +232,19 @@
                     StartTheGame.pause();
                 }
 
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 210, 500, 70);
+
+                ctx.lineWidth = "5";
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.rect(-10, 210, 600, 70);
+                ctx.stroke();
+
                 ctx.font = "60px VT323";
                 ctx.fillStyle = color;
                 ctx.fillText(`PAUSED`, 180, 260);
+
 
                 myPauseResume.innerHTML = "Resume";
                 isGamePaused = true;
@@ -566,6 +577,7 @@
 
     function quit(){
         if (isGamePaused === false) {
+            fullScreenMode = false;
             lives = 0;
             bossMode = false;
             isGameRunning = false;
