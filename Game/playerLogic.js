@@ -3,7 +3,7 @@ const Player = {
     w:40,
     h:30,
     x:canvas.width/2-30,
-    y:canvas.height-30,
+    y:canvas.height-35,
     speed:5,
     dx:0,
     dy:0,
@@ -83,15 +83,19 @@ function drawPlayer(){
     }
 }
 
-
+let DamageShield
 
 
 function takeDamage(x = 1){
     Player.unkillable = true;
 
-    setTimeout(function(){
+    time = 2100;
+    MaxTime = time;
+    clearTimeout(DamageShield);
+
+    DamageShield = setTimeout(function(){
         Player.unkillable = false;
-        }, 2100);
+    }, time);
 
     lives -= x;
 
@@ -155,6 +159,8 @@ function nukeTheMap(){
                             Enemy[i].isDead = true;
                             points += 100 * scoreMultiplier;
 
+
+                            enemyExplode[i % 5].setDuration = 0;
                             enemyExplode[i % 5].play();
                             if (Math.ceil(Math.random() * chanceOfPower) <= 10) {
                                 generatePower(i, false);

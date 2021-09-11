@@ -65,7 +65,10 @@ function isPowerUP(){
                         points+=50;
                         powerUPSound.currentTime = 0;
                         powerUPSound.play();
-                        nukes++;
+                        if (nukes <= 4){
+                            nukes++;
+                        }
+
                         PowerUP[i].Active = false;
 
                         break;
@@ -80,6 +83,23 @@ function isPowerUP(){
                         PowerUP[i].Active = false;
 
                         break;
+                    case 6:
+                        points += 200;
+
+                        time = 5000;
+                        MaxTime = time;
+                        powerUPSound.currentTime = 0;
+                        powerUPSound.play();
+                        Player.unkillable = true;
+
+                        clearTimeout(DamageShield);
+
+                        DamageShield = setTimeout(function(){
+                            Player.unkillable = false;
+                        }, time);
+                        PowerUP[i].Active = false;
+                        break;
+
                 }
 
 
@@ -125,7 +145,10 @@ function generatePower(eX,isBossSummon){
     else if (Math.ceil(Math.random() * 5) === 1){
         PowerUP[amountOfPowerUPs].typeOfPower = 5;  //sharpnessPower
     }
-    else{
+    else if (Math.ceil(Math.random() * 5) === 1) {
+        PowerUP[amountOfPowerUPs].typeOfPower = 6;  //SHIELDUP
+    }
+        else{
         PowerUP[amountOfPowerUPs].typeOfPower = 2;  //fireUP
     }
     amountOfPowerUPs++;
@@ -157,6 +180,9 @@ function drawPower(){
                 case 5:
                     ctx.drawImage(sharpnessPower, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
                     break;
+                case 6:
+                    ctx.drawImage(shieldUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
+                    break;
             }
         }
     }
@@ -167,5 +193,77 @@ function newPowerPosition() {
         PowerUP[i].y+=PowerUP[i].speed;
     }
 
+}
+
+
+//ENEMY DEATH EXPLOSIONS
+
+
+let numBooms = 0;
+let Boom = [];
+
+function BoomConstructor(w,h,x,y,Active,typeOfBoom)
+{
+    this.w = w;
+    this.h = h;
+    this.x = x;
+    this.y = y;
+    this.Active = Active;
+    this.typeOfBoom = typeOfBoom;
+}
+
+function createExplosion(eX){
+    if (bossMode === true){
+        Boom[numBooms] = new BoomConstructor(
+            200,
+            200,
+            Boss.x-Boss.w/2+100,
+             Boss.y-Boss.h,
+            true,
+            Math.ceil(Math.random() * 2));
+    }
+    else{
+        Boom[numBooms] = new BoomConstructor(
+            40,
+            40,
+            Enemy[eX].x + Enemy[eX].w / 2 - 5,
+            Enemy[eX].y,
+            true,
+            Math.ceil(Math.random() * 2));
+    }
+
+    numBooms++;
+}
+
+function drawBoom(){
+    for (let i in Boom){
+
+        if (Boom[i].Active === true) {
+
+            switch(Boom[i].typeOfBoom) {
+                case 1:
+                    ctx.drawImage(enemyDeath1, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
+                    break;
+                case 2:
+                    ctx.drawImage(enemyDeath2, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
+                    break;
+                default:
+                    ctx.drawImage(enemyDeath1, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
+            }
+
+            let timeout;
+            if (bossMode === true){
+                timeout = 500;
+            }
+            else{
+                timeout = 300;
+            }
+
+            setTimeout(function(){
+                Boom[i].Active = false;
+            }, timeout);
+
+        }
+    }
 }
 

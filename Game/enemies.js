@@ -382,7 +382,7 @@ function isPlayerHIT() {
             Enemy[i].y + Enemy[i].h >= Player.y &&
             Enemy[i].y <= Player.y + Player.h
             ) {
-
+                Player.y+=4.5;
             if (Player.unkillable === true) {
                 deflectSound.play();
             } else if (lives - 1 >= 1) {
@@ -571,55 +571,5 @@ function ifLevelBeaten(){
 
 }
 
-//ENEMY DEATH EXPLOSIONS
 
-
-let numBooms = 0;
-let Boom = [];
-
-function BoomConstructor(w,h,x,y,Active,typeOfBoom)
-{
-    this.w = w;
-    this.h = h;
-    this.x = x;
-    this.y = y;
-    this.Active = Active;
-    this.typeOfBoom = typeOfBoom;
-}
-
-function createExplosion(eX){
-    Boom[numBooms] = new BoomConstructor(
-        40,
-        40,
-        Enemy[eX].x + Enemy[eX].w / 2 - 5,
-        Enemy[eX].y,
-        true,
-        Math.ceil(Math.random() * 2));
-
-    numBooms++;
-}
-
-function drawBoom(){
-    for (let i in Boom){
-
-        if (Boom[i].Active === true) {
-
-            switch(Boom[i].typeOfBoom) {
-                case 1:
-                    ctx.drawImage(enemyDeath1, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
-                    break;
-                case 2:
-                    ctx.drawImage(enemyDeath2, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
-                    break;
-                default:
-                    ctx.drawImage(enemyDeath1, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
-            }
-
-            setTimeout(function(){
-                Boom[i].Active = false;
-            }, 300);
-
-        }
-    }
-}
 

@@ -6,12 +6,13 @@ let bossMode = false;
 let bossRateOfFire = 250;
 let fasterDecent = 0;
 let startingHealth;
+let levelBossMixer = 1;
 function createBoss() {
     Boss = {
         w: 237,
         h: 97,
         x: 135,
-        y: 50,
+        y: 70,
         speed: 3,
         descent: 0.04,
         isDead: false,
@@ -21,20 +22,23 @@ function createBoss() {
         isProtected: false,
         isAngry: false,
         Health: 5,
-        typeBoss: Math.ceil(Math.random() * 3)
+        typeBoss: levelBossMixer
     }
 
     switch(Boss.typeBoss){
         case 1:
             Boss.Health = BossHealthBoost + Level*10;
             Boss.descent += fasterDecent;
+            levelBossMixer ++;
             break;
         case 2:
             Boss.Health = BossHealthBoost + Level*10;
+            levelBossMixer ++;
             break;
         case 3:
             Boss.Health = BossHealthBoost*2 + Level*4;
             Boss.isProtected = true;
+            levelBossMixer = 1;
             break;
     }
 
@@ -67,6 +71,7 @@ function  drawBoss(){
                     setTimeout(function () {
                         Boss.isHealing = false;
                     }, 300);
+
                 }
                 else if (Boss.isDamaged === true) {
                     ctx.drawImage(motherShip2Hurt, Boss.x, Boss.y, Boss.w, Boss.h);
@@ -94,6 +99,7 @@ function  drawBoss(){
                     
                     if (Boss.isHealing === true){
                         ctx.drawImage(motherShip3Heal, Boss.x, Boss.y, Boss.w, Boss.h);
+
                     }
                     else {
                         if (Boss.isDamaged === true) {
@@ -170,7 +176,9 @@ function isBossDamaged(){
                         Laser[j].Health--;
                         motherShipHeal[0].currentTime = 0;
                         motherShipHeal[0].play();
-                        Boss.Health++;
+                        if (Boss.Health < startingHealth){
+                            Boss.Health++;
+                        }
                     } else {
 
                         if (Math.ceil(Math.random() * chanceOfPower - 15) === 1) {
@@ -184,7 +192,6 @@ function isBossDamaged(){
                         }
                         Laser[j].Health--;
 
-                        createExplosion(0);
                         points += 100 * scoreMultiplier;
 
                         if (Boss.typeBoss === 1) {
@@ -481,9 +488,10 @@ function newBossLaserPosition(){
                 if (Boss.isProtected === false || BossFire[i].y >= 400) {
 
                     if (Player.x < BossFire[i].x) {
-                        BossFire[i].x -= 0.8;
+                        BossFire[i].x -= 0.8 + (0.4 - (Boss.Health / startingHealth * 0.4));
+
                     } else if (Player.x > BossFire[i].x) {
-                        BossFire[i].x += 0.8;
+                        BossFire[i].x += 0.8+ (0.4 - (Boss.Health / startingHealth * 0.4));
                     }
 
                     if (Boss.isAngry === false){
@@ -523,7 +531,7 @@ function isPlayerHITbyBoss(){
 
                         if (lives - BossFire[i].Health >= 1) {
                             BossFire[i].Active = false;
-                            takeDamage(BossFire[i].Health);
+                            takeDamage(1);
 
                         }
                         else {
@@ -537,6 +545,10 @@ function isPlayerHITbyBoss(){
                         if (Boss.typeBoss === 2) {
                             motherShipHeal[i%5].play();
                             Boss.Health+=10;
+                            if (Boss.Health >= startingHealth){
+                                Boss.Health = startingHealth;
+                            }
+
                             Boss.isHealing = true;
                         }
                     } else {
@@ -554,8 +566,13 @@ function isPlayerHITbyBoss(){
         Boss.y +  Boss.h - 5 >= Player.y &&
         Boss.y + 5 <= Player.y + Player.h ) {
 
+        if (Boss.isProtected === false){
+            Player.y+=4.5;
+        }
+
         if (Player.unkillable === true) {
             deflectSound.play();
+
         } else if (lives - 1 >= 1) {
             Boss.Health -= 5;
             takeDamage();
@@ -573,7 +590,7 @@ function isBossBeaten(){
         rememberNukes = nukes;
         rememberPlayerBulletCount = Player.bulletCount;
         rememberSharpness  = Player.sharpness;
-
+        createExplosion(0);
         motherShipDeathSound.play();
         BossMusic.pause();
         StartTheGame.currentTime = 0;
@@ -597,7 +614,6 @@ function isBossBeaten(){
         if (enemyProjectileSpeed < 3) {
             enemyProjectileSpeed += 0.2;
         }
-
         Level++;
         Laser = [];
         BossFire = [];
@@ -636,3 +652,29 @@ setInterval(function () {
     }
 
 }, 3500);
+
+setInterval(function () {
+
+    if (Boss.Health < startingHealth && Boss.isProtected=== false && Boss.isHealing === true && Boss.typeBoss === 3){
+        Boss.Health += 5;
+    }
+    if (Boss.Health > startingHealth){
+        Boss.Health = startingHealth;
+    }
+}, 500);
+
+setInterval(function () {
+
+    if (Level >= 40 &&  Boss.Health < startingHealth && Boss.typeBoss === 2){
+        if (Boss.isAngry === true){
+            Boss.Health += 5;
+        }
+        else{
+            Boss.Health += 1;
+        }
+
+    }
+    if (Boss.Health > startingHealth){
+        Boss.Health = startingHealth;
+    }
+}, 500);

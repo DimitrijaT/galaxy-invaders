@@ -39,29 +39,104 @@
         let LevelBoard = `Level: ${Level}`;
         ctx.font = "25px VT323";
         ctx.fillStyle= color;
-        ctx.fillText(LevelBoard,175,40);
+        ctx.fillText(LevelBoard,170,40);
 
-        let NukeBoard = `💣: ${nukes}`;
-        ctx.font = "25px VT323";
+        //NUKES
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(282, 42,  75, -20);
+
+        ctx.fillStyle = '#B7121F';
+        ctx.fillRect(282, 42,   nukes / 10 * 75, -20);
+
+        ctx.lineWidth = "2";
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.rect(282, 42, 75, -20);
+        ctx.stroke();
+        let NukeBoard
+        if (isNuked === true) {
+             NukeBoard = `💥  ${nukes}`;
+        }
+        else{
+             NukeBoard = `💣  ${nukes}`;
+        }
+        ctx.font = "27px VT323";
         ctx.fillStyle= color;
-        ctx.fillText(NukeBoard,280,40);
+        ctx.fillText(NukeBoard,260,40);
 
-        let LiveBoard = `❤️: ${lives}/${maxLives}`;
-        ctx.font = "25px VT323";
-        ctx.fillStyle= color;
-        ctx.fillText(LiveBoard,375,40);
 
-        if (bossMode === true){
-            let BossHealth = `Health:${Boss.Health}`;
-            ctx.font = "30px VT323";
-            ctx.fillStyle= "red";
-            ctx.fillText(BossHealth,365,80);
+         //LIVES
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(387, 42,  75, -20);
+
+        ctx.fillStyle = '#B7121F';
+        if (Player.unkillable === true){
+            ctx.fillStyle = '#740373';
         }
 
+        ctx.fillRect(387, 42,  lives / maxLives * 75, -20);
 
+
+        ctx.lineWidth = "2";
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.rect(387, 42, 75, -20);
+        ctx.stroke();
+        let LiveBoard
+        if (Player.unkillable === true){
+             LiveBoard = `💘  ️${lives}`;
+        }
+        else{
+             LiveBoard = `❤️  ${lives}`;
+        }
+
+        ctx.font = "27px VT323";
+        ctx.fillStyle=  color ;
+        ctx.fillText(LiveBoard,365,40);
+
+        //BOSS HEALTHBAR
+
+        if (bossMode === true){
+
+            ctx.fillStyle = 'black';
+            ctx.fillRect(100, 60,  300, 20);
+
+            ctx.fillStyle = '#B7121F';
+            if (Boss.isDamaged === true){
+                ctx.fillStyle = 'white';
+            }
+            else if (Boss.isHealing === true && Boss.isProtected === false){
+                ctx.fillStyle = 'darkgreen';
+            }
+            ctx.fillRect(100, 60,  Boss.Health / startingHealth * 300, 20);
+
+            ctx.lineWidth = "2";
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.rect(100, 60, 300, 20);
+            ctx.stroke();
+
+            let BossHealth = `${Boss.Health}`;
+            ctx.font = "23px VT323";
+            ctx.fillStyle= color;
+            ctx.fillText(BossHealth,240,76);
+        }
+
+        if (Player.unkillable === true){
+
+            ctx.lineWidth = "10";
+            ctx.strokeStyle = '#740373';
+            ctx.beginPath();
+            ctx.rect(0, 500, time / MaxTime * 500 , 5);
+            ctx.stroke();
+        }
     }
 
-
+    setInterval(function (){
+        time-=250;
+    },250);
 
     function Reset(){
         localStorage.clear();
@@ -95,11 +170,11 @@
     function EasyMode(){
         myStartTheGame.innerHTML = 'Start Game - Easy';
         points = 0;
-        maxLives = 25;
+        maxLives = 10;
         revives = 3;
         difficulty = 1;
         Level = 1;
-        lives = 3;
+        lives = 5;
         numOfEnemies = 8;
         RateOfFire = 450
         enemySpeed = 0.8;
@@ -122,7 +197,7 @@
     function MediumMode(){
         myStartTheGame.innerHTML = 'Start Game - Medium';
         points = 0;
-        maxLives = 20;
+        maxLives = 5;
         revives = 3;
         difficulty = 2;
         Level = 1;
@@ -148,7 +223,7 @@
     function HardMode(){
         myStartTheGame.innerHTML = 'Start Game - Hard';
         points = 0;
-        maxLives = 10;
+        maxLives = 3;
         revives = 0;
         difficulty = 3;
         Level = 1;
@@ -206,10 +281,11 @@
 
     }
 
-
     function PauseResume(goingFullScreen = false){
+
         if (isGameRunning === true) {
             if (isGamePaused === true) {
+
                 isGamePaused = false;
                 myPauseResume.innerHTML = "Pause";
 
@@ -223,7 +299,7 @@
 
                 update();
             } else if (isGamePaused === false && goingFullScreen === false) {
-
+                keys = [];
                 if (Level % waveTillBoss === 0) {
 
                     BossMusic.pause();
@@ -256,7 +332,6 @@
     function EnemyLogic(){
         drawEnemy();
         ifLevelBeaten();
-        drawBoom();
         drawEnemyLaser();
         enemyShoot();
         newEnemyLaserPosition();
@@ -279,8 +354,8 @@
     }
 
     function PlayerLogic(){
-        MovePlayer();
         drawPlayer();
+        MovePlayer();
         drawLaser();
         newLaserPosition();
     }
@@ -330,7 +405,7 @@
 
                     }
                     checkHighscore(points, Level, difficulty);
-
+                    drawBoom();
                     drawPower();
                     isPowerUP();
                     newPowerPosition();
@@ -353,6 +428,7 @@
                         for (let i in PowerUP){
                             PowerUP[i].speed += 0.05;
                         }
+
                         Set();
                         setTimeout(function () {
                             printing2 = false;
@@ -364,10 +440,16 @@
                         for (let i in PowerUP){
                             PowerUP[i].speed += 0.05;
                         }
+                        Boom = [];
+                        numBooms = 0;
                         Go();
                         amountOfPowerUPs = 0;
+
                         setTimeout(function () {
                             PowerUP = [];
+                        }, 300);
+
+                        setTimeout(function () {
                             printing3 = false;
 
                         }, 600);
@@ -402,6 +484,7 @@
                             myContinue.style.display = "none";
                         }
                     }
+
                     scoreboard();
                     requestAnimationFrame(update);
 
@@ -484,7 +567,7 @@
         Player.bulletCount= 1;
 
         Player.x = canvas.width / 2 - 30;
-        Player.y = canvas.height - 30;
+        Player.y = canvas.height - 35;
 
         if(yesContinue === false){
 
@@ -537,7 +620,7 @@
         }
 
         if (difficulty === 1){
-            color = "#00fa0c";
+            color = "#00bd0a";
         }
         else if (difficulty === 2){
             color = "#fac400"
