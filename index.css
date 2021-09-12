@@ -74,6 +74,7 @@ aside > h1{
 
 
 .ScoreBoard{
+    user-select: none;
     padding: 0;
     flex-basis: 0;
     flex-grow: 1;
@@ -211,6 +212,7 @@ footer{
 }
 
 .MainMenu > button{
+    user-select: none;
     color: #EDF5E1;
     background-color: green;
     font-family: 'VT323', monospace;
