@@ -9,6 +9,9 @@
 
 
 
+
+
+
     //GAME OVER!
     function youLOST(){
         setStart = 0;

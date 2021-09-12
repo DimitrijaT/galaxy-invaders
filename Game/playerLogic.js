@@ -404,12 +404,7 @@ function drawLaser(){
         }
     }
 
-    if (count >= Player.amountOfShots){
-        CoolDown = true;
-    }
-    else{
-        CoolDown = false;
-    }
+    CoolDown = count >= Player.amountOfShots;
 
 
 }
@@ -438,9 +433,11 @@ function keyPressActions(){
             if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown'  ) {
                 e.preventDefault();
                 keys[e.key] = true;
-            } else if (e.key === ' ' && printing1 === false && printing2 === false && printing3 === false) {
+            } else if (e.key === ' ') {
                 e.preventDefault();
-                Shoot();
+                if (printing1 === false && printing2 === false && printing3 === false){
+                    Shoot();
+                }
             }
             if (e.key === 'Enter') {
                 e.preventDefault();
