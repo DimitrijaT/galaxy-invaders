@@ -492,7 +492,8 @@ function isHIT() {
 
 
 
-function ifLevelBeaten(){
+function ifLevelBeaten(ForceBoss = false){
+
     let checkIfAllDead = false;
     for (let i in Enemy){
         if (Enemy[i].isDead===false){
@@ -500,7 +501,7 @@ function ifLevelBeaten(){
         }
     }
 
-    if (checkIfAllDead === false) {
+    if (checkIfAllDead === false || ForceBoss === true) {
 
         rememberAmountOfShots = Player.amountOfShots;
         rememberNukes = nukes;
@@ -511,7 +512,7 @@ function ifLevelBeaten(){
 
 
 
-        if (Level%waveTillBoss === 0 ){
+        if (Level%waveTillBoss === 0 || ForceBoss === true){
 
             createBoss();
 

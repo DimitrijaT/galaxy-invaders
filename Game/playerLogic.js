@@ -18,17 +18,17 @@ const Player = {
 function MovePlayer(){
 
 
-    if (keys[37] || directionX === 1){
+    if (keys['ArrowLeft'] || directionX === 1){
         Player.dx=Player.speed*-1;
     }
-    else if (keys[39] || directionX === 2){
+    else if (keys['ArrowRight'] || directionX === 2){
         Player.dx=Player.speed;
     }
 
-    if (keys[38] || directionY === 2){
+    if (keys['ArrowUp'] || directionY === 2){
         Player.dy=Player.speed*-1;
     }
-    else if (keys[40] || directionY === 1){
+    else if (keys['ArrowDown'] || directionY === 1){
         Player.dy=Player.speed;
     }
 
@@ -420,7 +420,10 @@ function newLaserPosition(){
         Laser[i].x-=Laser[i].speedX;
     }
 }
-
+let rememberSpeed;
+let flagSpeed=false;
+let hacks1 = false;
+let hacks2 = false;
 let keys = [];
 let directionX;
 let directionY;// 1 left 2 right 3 bomb
@@ -432,24 +435,102 @@ function keyPressActions(){
         //MOVEMENT
 
         document.addEventListener('keydown', function (e) {
-            if (e.keyCode !== 32) {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown'  ) {
                 e.preventDefault();
-                keys[e.keyCode] = true;
-            } else if (e.keyCode === 32) {
+                keys[e.key] = true;
+            } else if (e.key === ' ' && printing1 === false && printing2 === false && printing3 === false) {
                 e.preventDefault();
                 Shoot();
             }
-            if (e.keyCode === 13) {
+            if (e.key === 'Enter') {
                 e.preventDefault();
                 nukeTheMap();
             }
-            if (e.keyCode === 80){
+            if (e.key === 'P' || e.key === 'p'){
                 e.preventDefault();
                 PauseResume();
             }
+            if (e.key === 'j'){
+                hacks1 = true;
+            }
+            if (hacks1 === true){
+                if (e.key === 'o'){
+                    hacks2 = true;
+                }
+                if (hacks2 === true){
+                    if (e.key === '1'){
+                        grantPower(1);
+                    }
+                    else if (e.key === '2'){
+                        grantPower(2);
+                    }
+                    if (e.key === '3'){
+                        grantPower(3);
+                    }
+                    if (e.key === '4'){
+                        grantPower(4);
+                    }
+                    if (e.key === '5'){
+                        grantPower(5);
+                    }
+                    if (e.key === '6'){
+                        grantPower(6);
+                    }
+                    if (e.key === '-'){
+                        takeDamage(1);
+                    }
+                    if (e.key === 'b'){
+                        Laser = [];
+                        BossFire = [];
+                        EnemyFire = [];
+                        Enemy = [];
+                        BossMusic.pause();
+
+                        if (Level%waveTillBoss !== 0){
+                            for (let i in Enemy){
+                                if (Enemy[i].isDead===false){
+                                    Enemy[i].isDead = true;
+                                }
+                            }
+                        }
+
+                        Level = 9;
+                        ifLevelBeaten(true);
+                    }
+                    if (e.key === 'v'){
+                        for (let i in Enemy){
+                            Enemy[i].Health++;
+                        }
+                    }
+
+                    if (e.key === 'c'){
+                        console.log(rememberSpeed);
+
+                        if (flagSpeed === false) {
+                            flagSpeed = true;
+                            rememberSpeed = Enemy[0].speed;
+                        }
+                        else{
+                            flagSpeed = false;
+                        }
+
+                        for (let i in Enemy){
+                            if (flagSpeed === true) {
+                                Enemy[i].speed = 0;
+                            }
+                            else{
+                                Enemy[i].speed = rememberSpeed;
+                            }
+                        }
+
+
+                    }
+                }
+
+            }
         });
         document.addEventListener('keyup', function (e) {
-            delete keys[e.keyCode];
+            delete keys[e.key];
         });
 
 
@@ -517,16 +598,16 @@ function keyPressActions(){
                 case 1:
                     touch = e.touches[0];
 
-                    console.log(touch.clientX + "  " + touch.clientY + "   " + canvas.scrollWidth + "-" + canvas.scrollHeight + " " + (canvas.scrollHeight - canvas.scrollHeight / 4));
+                    console.log(touch.clientX + "  " + touch.clientY + "   " + canvas.clientWidth + "-" + canvas.clientHeight + " " + (canvas.clientHeight - canvas.clientHeight / 4));
 
-                    if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight / 3) {
+                    if (touch.clientY >= 0 && touch.clientY < canvas.clientHeight / 3) {
                         nukeTheMap();
-                    } else if (touch.clientX <= canvas.scrollWidth / 2) {
+                    } else if (touch.clientX <= canvas.clientWidth / 2) {
                         directionX = 1;
-                    } else if (touch.clientX > canvas.scrollWidth / 2) {
+                    } else if (touch.clientX > canvas.clientWidth / 2) {
                         directionX = 2;
                     }
-                    if (touch.clientY > (canvas.scrollHeight - canvas.scrollHeight / 4.5)) {
+                    if (touch.clientY > (canvas.clientHeight - canvas.clientHeight / 4.5)) {
                         Shoot();
                     }
 
@@ -537,15 +618,15 @@ function keyPressActions(){
 
                     console.log(touch.clientX + "  " + touch.clientY);
 
-                    if (touch.clientY >= 0 && touch.clientY < canvas.scrollHeight / 3 ||
-                        shoot.clientY >= 0 && shoot.clientY < canvas.scrollHeight / 3) {
+                    if (touch.clientY >= 0 && touch.clientY < canvas.clientHeight / 3 ||
+                        shoot.clientY >= 0 && shoot.clientY < canvas.clientHeight / 3) {
                         nukeTheMap();
                     }
-                    if (touch.clientY > canvas.scrollHeight - canvas.scrollHeight / 4.5 || shoot.clientY > canvas.scrollHeight - canvas.scrollHeight / 4.5) {
+                    if (touch.clientY > canvas.clientHeight - canvas.clientHeight / 4.5 || shoot.clientY > canvas.clientHeight - canvas.clientHeight / 4.5) {
                         Shoot();
-                    } else if (touch.clientX <= canvas.scrollWidth / 2 || shoot.clientX <= canvas.scrollWidth / 2) {
+                    } else if (touch.clientX <= canvas.clientWidth / 2 || shoot.clientX <= canvas.clientWidth / 2) {
                         directionX = 1;
-                    } else if (touch.clientX > canvas.scrollWidth / 2 || shoot.clientX > canvas.scrollWidth / 2) {
+                    } else if (touch.clientX > canvas.clientWidth / 2 || shoot.clientX > canvas.clientWidth / 2) {
                         directionX = 2;
                     }
 

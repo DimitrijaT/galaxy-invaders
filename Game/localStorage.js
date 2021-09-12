@@ -2,6 +2,7 @@
 
 let highScore = [];
 let isEmpty = true;
+let saveState;
 
 function firstTimePointSetup() {
 

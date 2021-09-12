@@ -12,100 +12,107 @@ function isPowerUP(){
             PowerUP[i].y <= Player.y + Player.h &&
             PowerUP[i].Active === true){
 
-                switch (PowerUP[i].typeOfPower){
-                    case 1:
 
-                        if (lives+1 <= maxLives) {
-                            points += 200;
-                            lives++;
-                        }
-                        points += 150;
-                        lifeUPSound.currentTime = 0;
-                        lifeUPSound.play();
-                        PowerUP[i].Active = false;
-
-                        break;
-
-                    case 2:
-
-                        powerUPSound.currentTime = 0;
-                        powerUPSound.play();
-
-                        if (Player.amountOfShots !== 5){
-                            Player.amountOfShots++;
-                            points+=100;
-                        }
-                        else{
-                            points+=250;
-                        }
-                        PowerUP[i].Active = false;
-
-                        break;
-                    case 3:
-
-                        points+=150;
-                        shipUPSound.currentTime = 0;
-                        shipUPSound.play();
-                        if (Player.bulletCount === 1 || Player.bulletCount === 2){
-                            Player.bulletCount +=1;
-                        }
-                        else{
-                            Player.bulletCount +=2;
-                        }
-
-                        if (Player.bulletCount > 7){
-                            Player.bulletCount = 7;
-                        }
-                        PowerUP[i].Active = false;
-
-                        break;
-
-                    case 4:
-
-                        points+=50;
-                        powerUPSound.currentTime = 0;
-                        powerUPSound.play();
-                        if (nukes <= 4){
-                            nukes++;
-                        }
-
-                        PowerUP[i].Active = false;
-
-                        break;
-                    case 5:
-
-                        points+=100;
-                        powerUPSound.currentTime = 0;
-                        powerUPSound.play();
-                        if (Player.sharpness <= 12){
-                            Player.sharpness++;
-                        }
-                        PowerUP[i].Active = false;
-
-                        break;
-                    case 6:
-                        points += 200;
-
-                        time = 5000;
-                        MaxTime = time;
-                        powerUPSound.currentTime = 0;
-                        powerUPSound.play();
-                        Player.unkillable = true;
-
-                        clearTimeout(DamageShield);
-
-                        DamageShield = setTimeout(function(){
-                            Player.unkillable = false;
-                        }, time);
-                        PowerUP[i].Active = false;
-                        break;
-
-                }
-
+            grantPower(PowerUP[i].typeOfPower);
+            PowerUP[i].Active = false;
 
         }
     }
 }
+
+function grantPower(type){
+    switch (type){
+        case 1:
+
+            if (lives+1 <= maxLives) {
+                points += 200;
+                lives++;
+            }
+            points += 150;
+            lifeUPSound.currentTime = 0;
+            lifeUPSound.play();
+
+
+            break;
+
+        case 2:
+
+            powerUPSound.currentTime = 0;
+            powerUPSound.play();
+
+            if (Player.amountOfShots !== 5){
+                Player.amountOfShots++;
+                points+=100;
+            }
+            else{
+                points+=250;
+            }
+
+
+            break;
+        case 3:
+
+            points+=150;
+            shipUPSound.currentTime = 0;
+            shipUPSound.play();
+            if (Player.bulletCount === 1 || Player.bulletCount === 2){
+                Player.bulletCount +=1;
+            }
+            else{
+                Player.bulletCount +=2;
+            }
+
+            if (Player.bulletCount > 7){
+                Player.bulletCount = 7;
+            }
+
+
+            break;
+
+        case 4:
+            points+=50;
+            powerUPSound.currentTime = 0;
+            powerUPSound.play();
+            if (nukes <= 9){
+                nukes++;
+            }
+            break;
+        case 5:
+
+            points+=100;
+            powerUPSound.currentTime = 0;
+            powerUPSound.play();
+            if (Player.sharpness <= 12){
+                Player.sharpness++;
+            }
+
+
+            break;
+        case 6:
+            points += 200;
+
+            time = 5000;
+            MaxTime = time;
+            powerUPSound.currentTime = 0;
+            powerUPSound.play();
+            Player.unkillable = true;
+
+            clearTimeout(DamageShield);
+
+            DamageShield = setTimeout(function(){
+                Player.unkillable = false;
+            }, time);
+
+            break;
+
+    }
+
+
+
+}
+
+
+
 function generatePower(eX,isBossSummon){
     PowerUP[amountOfPowerUPs] = {
         w: 15,

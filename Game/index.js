@@ -1,8 +1,8 @@
     //MAIN SETUP
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
-    canvas.width = canvas.scrollWidth;
-    canvas.height = canvas.scrollHeight;
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
     MediumMode();
     myContinue.innerHTML = `Revives (${revives})`;
 
@@ -11,6 +11,8 @@
 
     //GAME OVER!
     function youLOST(){
+        setStart = 0;
+
         fullScreenMode = false;
         lives = 0;
         bossMode = false;
@@ -359,7 +361,7 @@
         drawLaser();
         newLaserPosition();
     }
-
+let setStart = 0;
     //MAIN LOOP FUNCTION:
     function update(){
 
@@ -486,6 +488,7 @@
                     }
 
                     scoreboard();
+
                     requestAnimationFrame(update);
 
 
@@ -630,7 +633,11 @@
         }
 
 
-        update();
+        if (setStart === 0){
+            update();
+            setStart ++;
+        }
+
 
 
     }
