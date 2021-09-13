@@ -364,6 +364,108 @@
         drawLaser();
         newLaserPosition();
     }
+
+
+    function BackgroundCreate(w,h,x,y,speed,type,img) {
+        this.w = w;
+        this.h = h;
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.type = type;
+        this.img = img;
+
+    }
+
+    Background = new BackgroundCreate(500,505,0,0,5,0,background);
+    Background2 = new BackgroundCreate(500,505,0,-500,5,0,background);
+    let gameSpeed = 1;
+
+    function BackgroundScroll(){
+
+
+        if(Background.y > 500){
+            Background.y= -500 + Background2.y + gameSpeed;
+            if (backgroundChange === true ){
+                backgroundChange = false;
+                Background.type++;
+                if (Background.type > 5)
+                {
+                    Background.type = 0;
+                }
+                switch (Background.type) {
+                    case 0:
+                        Background.img = background;
+                        break;
+                    case 1:
+                        Background.img = background1;
+                        break;
+                    case 2:
+                        Background.img = background2;
+                        break;
+                    case 3:
+                        Background.img = background3;
+                        break;
+                    case 4:
+                        Background.img = background4;
+                        break;
+
+                }
+            }
+
+        }
+        Background.y+=gameSpeed;
+
+
+        if (Background2.y > 500){
+            Background2.y=-500 + Background.y + gameSpeed;
+            if (backgroundChange2 === true){
+                backgroundChange2 = false;
+                Background2.type++;
+                if (Background2.type > 4)
+                {
+                    Background2.type = 0;
+                }
+                switch (Background2.type) {
+                    case 0:
+                        Background2.img = background;
+                        break;
+                    case 1:
+                        Background2.img = background1;
+                        break;
+                    case 2:
+                        Background2.img = background2;
+                        break;
+                    case 3:
+                        Background2.img = background3;
+                        break;
+                    case 4:
+                        Background2.img = background4;
+                        break;
+                }
+            }
+        }
+        Background2.y+=gameSpeed;
+
+
+        if (isNuked === true) {
+            ctx.drawImage(backgroundNuked, 0, 0);
+            setTimeout(function () {
+                isNuked = false;
+            }, 350);
+
+        }
+        else {
+
+            ctx.drawImage(Background.img, Background.x,  Background.y,  Background.w, Background.h);
+            ctx.drawImage(Background2.img, Background2.x,  Background2.y,  Background2.w, Background2.h);
+
+        }
+
+
+    }
+
+
 let setStart = 0;
     //MAIN LOOP FUNCTION:
     function update(){
@@ -374,41 +476,8 @@ let setStart = 0;
 
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                    if (isNuked === true) {
-                        ctx.drawImage(backgroundNuked, 0, 0);
-                        setTimeout(function () {
-                            isNuked = false;
-                        }, 350);
-
-                    } else {
-                        switch (Level % 5) {
-                            case 0:
-                                ctx.drawImage(background, 0, 0);
-                                break;
-
-                            case 1:
-                                ctx.drawImage(background1, 0, 0);
-                                break;
-
-                            case 2:
-                                ctx.drawImage(background2, 0, 0);
-                                break;
-                            case 3:
-                                ctx.drawImage(background3, 0, 0);
-                                break;
-                            case 4:
-                                ctx.drawImage(background5, 0, 0);
-                                break;
-                            default:
-
-                                ctx.drawImage(background, 0, 0);
-
-                        }
-                        if (Level % waveTillBoss === 0) {
-                            ctx.drawImage(background4, 0, 0);
-                        }
-
-                    }
+                    ctx.drawImage(Background.img, 0, 0);
+                    BackgroundScroll();
                     checkHighscore(points, Level, difficulty);
                     drawBoom();
                     drawPower();
@@ -420,15 +489,22 @@ let setStart = 0;
                         for (let i in PowerUP){
                             PowerUP[i].speed += 0.05;
                         }
+                        gameSpeed++
+                        if (gameSpeed >= 15){
+                            gameSpeed = 15;
+                        }
                         readySetGo.play();
                         Ready();
                         setTimeout(function(){
                             printing1 = false;
                             printing2 = true;
 
+
+
                         }, 650);
 
                     }
+
                     else if (printing2 === true) {
                         for (let i in PowerUP){
                             PowerUP[i].speed += 0.05;
@@ -441,10 +517,20 @@ let setStart = 0;
 
                         }, 600);
                     }
+
                     else if (printing3 === true) {
                         for (let i in PowerUP){
                             PowerUP[i].speed += 0.05;
                         }
+
+                        gameSpeed--;
+                        if (gameSpeed < 1){
+                            gameSpeed = 0.5;
+                            if (bossMode === true){
+                                gameSpeed = 1.5;
+                            }
+                        }
+
                         Boom = [];
                         numBooms = 0;
                         Go();
@@ -456,7 +542,10 @@ let setStart = 0;
 
                         setTimeout(function () {
                             printing3 = false;
-
+                            gameSpeed = 0.5;
+                            if (bossMode === true){
+                                gameSpeed = 1.5;
+                            }
                         }, 600);
                     }
                     else {

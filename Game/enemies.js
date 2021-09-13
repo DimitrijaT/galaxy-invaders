@@ -490,9 +490,12 @@ function isHIT() {
     }
 }
 
-
+let backgroundChange = false;
+let backgroundChange2 = false;
 
 function ifLevelBeaten(ForceBoss = false){
+
+
 
     let checkIfAllDead = false;
     for (let i in Enemy){
@@ -502,6 +505,9 @@ function ifLevelBeaten(ForceBoss = false){
     }
 
     if (checkIfAllDead === false || ForceBoss === true) {
+
+        //backgroundChange = true;
+        //backgroundChange2 = true;
 
         rememberAmountOfShots = Player.amountOfShots;
         rememberNukes = nukes;

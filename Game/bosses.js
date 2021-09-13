@@ -586,6 +586,8 @@ function isPlayerHITbyBoss(){
 
 function isBossBeaten(){
     if (Boss.Health <= 0){
+        backgroundChange = true;
+        backgroundChange2 = true;
         rememberAmountOfShots = Player.amountOfShots;
         rememberNukes = nukes;
         rememberPlayerBulletCount = Player.bulletCount;
