@@ -12,7 +12,7 @@ function createBoss() {
         w: 237,
         h: 97,
         x: 135,
-        y: 70,
+        y: -140,
         speed: 3,
         descent: 0.04,
         isDead: false,
@@ -22,6 +22,7 @@ function createBoss() {
         isProtected: false,
         isAngry: false,
         Health: 5,
+        isDescending : true,
         typeBoss: levelBossMixer
     }
 
@@ -126,35 +127,43 @@ function  drawBoss(){
 
 function newBossPosition(){
 
-    if (Boss.isProtected === false) {
-
-        if (Boss.DirectionBias > 0) {
-            Boss.x += Boss.speed;
-            Boss.DirectionBias--;
-        } else if (Boss.DirectionBias < 0) {
-            Boss.x += Boss.speed * -1;
-            Boss.DirectionBias++;
-        }
-
-        if (Boss.x + Boss.w >= canvas.width) {
-            Boss.DirectionBias *= -1;
-        } else if (Boss.x <= 0) {
-            Boss.DirectionBias *= -1;
-        }
-
-
-        if (Boss.DirectionBias === 0 && Math.ceil(Math.random() * 2) === 1) {
-            Boss.DirectionBias = 10;
-        } else if (Boss.DirectionBias === 0) {
-            Boss.DirectionBias = -10;
-        }
-
-        Boss.y += Boss.descent;
-
+    if (Boss.isDescending === true){
+            Boss.y+=3;
+            if (Boss.y >= 70){
+                Boss.isDescending = false;
+            }
     }
+    else {
+        if (Boss.isProtected === false) {
 
-    if (Boss.y >= canvas.height - Boss.h && Boss.isDead === false){
-        youLOST();
+            if (Boss.DirectionBias > 0) {
+                Boss.x += Boss.speed;
+                Boss.DirectionBias--;
+            } else if (Boss.DirectionBias < 0) {
+                Boss.x += Boss.speed * -1;
+                Boss.DirectionBias++;
+            }
+
+            if (Boss.x + Boss.w >= canvas.width) {
+                Boss.DirectionBias *= -1;
+            } else if (Boss.x <= 0) {
+                Boss.DirectionBias *= -1;
+            }
+
+
+            if (Boss.DirectionBias === 0 && Math.ceil(Math.random() * 2) === 1) {
+                Boss.DirectionBias = 10;
+            } else if (Boss.DirectionBias === 0) {
+                Boss.DirectionBias = -10;
+            }
+
+            Boss.y += Boss.descent;
+
+        }
+
+        if (Boss.y >= canvas.height - Boss.h && Boss.isDead === false) {
+            youLOST();
+        }
     }
 
 }
@@ -169,7 +178,11 @@ function isBossDamaged(){
                     Laser[j].y + Laser[j].h >= Boss.y &&
                     Laser[j].y <= Boss.y + Boss.h
                     ) {
-                    if (Boss.typeBoss === 3 && Boss.isHealing === true) {
+                    if (Boss.isDescending === true){
+                        Laser[j].Active = false;
+                        enemyHurtSound[j % 5].play();
+                    }
+                    else if (Boss.typeBoss === 3 && Boss.isHealing === true) {
                         if (Laser[j].Health <= 1) {
                             Laser[j].Active = false;
                         }
@@ -262,117 +275,117 @@ let BossFire = [];
 let AngryBoost;
 
 function BossShoot(){
-    
-    switch (Boss.typeBoss){
-        case 1:
-                if ((Math.ceil(Math.random() * bossRateOfFire - (Boss.y / 20) - Level) <= 1)  && Boss.isDead===false) {
-    
+
+    if (Boss.isDescending  === false) {
+
+        switch (Boss.typeBoss) {
+            case 1:
+                if ((Math.ceil(Math.random() * bossRateOfFire - (Boss.y / 20) - Level) <= 1) && Boss.isDead === false) {
+
                     BossFire[BossShots] = new BossFireConstructor(
                         10,
-                        Level/2+30,
+                        Level / 2 + 30,
                         Boss.x + Boss.w / 2 + 80,
-                        Boss.y+60,
+                        Boss.y + 60,
                         enemyProjectileSpeed,
                         true,
                         true,
                         1,
                         false);
-    
-                    BossFire[BossShots+1] = new BossFireConstructor(
+
+                    BossFire[BossShots + 1] = new BossFireConstructor(
                         10,
-                        Level/2+30,
+                        Level / 2 + 30,
                         Boss.x + Boss.w / 2 - 90,
-                        Boss.y+60,
+                        Boss.y + 60,
                         enemyProjectileSpeed,
                         true,
                         true,
                         1,
                         false);
-    
-                    BossFire[BossShots+2] = new BossFireConstructor(
+
+                    BossFire[BossShots + 2] = new BossFireConstructor(
                         10,
                         15,
                         Boss.x + Boss.w / 2 + 90,
-                        Boss.y+60,
+                        Boss.y + 60,
                         enemyProjectileSpeed,
                         true,
                         false,
                         1,
                         false);
-    
-                    BossFire[BossShots+3] = new BossFireConstructor(
+
+                    BossFire[BossShots + 3] = new BossFireConstructor(
                         10,
                         15,
                         Boss.x + Boss.w / 2 - 100,
-                        Boss.y+60,
+                        Boss.y + 60,
                         enemyProjectileSpeed,
                         true,
                         false,
                         1,
                         false);
-    
-                    BossShots+=4;
-                }
-            
-            
-            break;
-            
-        case 2:
 
-                if (Boss.Health <= startingHealth/3){
-                    AngryBoost = Level*2;
-                }
-                else{
-                    AngryBoost = Level/2;
-                }
-    
-                if ((Math.ceil(Math.random() * bossRateOfFire) <= AngryBoost)  && Boss.isDead===false) {
-                    
-                        BossFire[BossShots] = new BossFireConstructor(18,22,Boss.x + Boss.w / 2,Boss.y,4,true,false,1);
-                        BossFire[BossShots+1] = new BossFireConstructor(18,22,Boss.x + Boss.w / 2,Boss.y,4,true,false,1);
-                        BossFire[BossShots+2] = new BossFireConstructor(18,22,Boss.x + Boss.w / 2,Boss.y,4,true,false,1);
-                        BossFire[BossShots+3] = new BossFireConstructor(18,22,Boss.x + Boss.w / 2,Boss.y,4,true,false,1);
-                        BossFire[BossShots+4] = new BossFireConstructor(18,22,Boss.x + Boss.w / 2,Boss.y,4,true,false,1);
-
-                        BossShots+=5;
+                    BossShots += 4;
                 }
 
 
+                break;
 
-            break;
-        
-        case 3:
+            case 2:
 
-            if (Boss.Health <= startingHealth/3){
-                AngryBoost = Level/1.5;
-            }
-            else{
-                AngryBoost = Level/2;
-            }
-
-            if ((Math.ceil(Math.random() * bossRateOfFire * 1.5 ) <= AngryBoost) && Boss.isDead === false && Boss.isProtected === false) {
-
-                BossFire[BossShots] = new BossFireConstructor(
-                    40,
-                    40,
-                    Boss.x + Boss.w / 2 -15,
-                    Boss.y +35 ,
-                    (Math.random() * 2) + 1.5,
-                    true,
-                    false,
-                    3,
-                    false
-                 );
-                
-                if (difficulty === 1){
-                    BossFire[BossShots].Health = 2;
+                if (Boss.Health <= startingHealth / 3) {
+                    AngryBoost = Level * 2;
+                } else {
+                    AngryBoost = Level / 2;
                 }
 
-                BossShots++;
-            }
-            
-            break;
-        
+                if ((Math.ceil(Math.random() * bossRateOfFire) <= AngryBoost) && Boss.isDead === false) {
+
+                    BossFire[BossShots] = new BossFireConstructor(18, 22, Boss.x + Boss.w / 2, Boss.y, 4, true, false, 1);
+                    BossFire[BossShots + 1] = new BossFireConstructor(18, 22, Boss.x + Boss.w / 2, Boss.y, 4, true, false, 1);
+                    BossFire[BossShots + 2] = new BossFireConstructor(18, 22, Boss.x + Boss.w / 2, Boss.y, 4, true, false, 1);
+                    BossFire[BossShots + 3] = new BossFireConstructor(18, 22, Boss.x + Boss.w / 2, Boss.y, 4, true, false, 1);
+                    BossFire[BossShots + 4] = new BossFireConstructor(18, 22, Boss.x + Boss.w / 2, Boss.y, 4, true, false, 1);
+
+                    BossShots += 5;
+                }
+
+
+                break;
+
+            case 3:
+
+                if (Boss.Health <= startingHealth / 3) {
+                    AngryBoost = Level / 1.5;
+                } else {
+                    AngryBoost = Level / 2;
+                }
+
+                if ((Math.ceil(Math.random() * bossRateOfFire * 1.5) <= AngryBoost) && Boss.isDead === false && Boss.isProtected === false) {
+
+                    BossFire[BossShots] = new BossFireConstructor(
+                        40,
+                        40,
+                        Boss.x + Boss.w / 2 - 15,
+                        Boss.y + 35,
+                        (Math.random() * 2) + 1.5,
+                        true,
+                        false,
+                        3,
+                        false
+                    );
+
+                    if (difficulty === 1) {
+                        BossFire[BossShots].Health = 2;
+                    }
+
+                    BossShots++;
+                }
+
+                break;
+
+        }
     }
 
 }
@@ -586,12 +599,10 @@ function isPlayerHITbyBoss(){
 
 function isBossBeaten(){
     if (Boss.Health <= 0){
+
         backgroundChange = true;
         backgroundChange2 = true;
-        rememberAmountOfShots = Player.amountOfShots;
-        rememberNukes = nukes;
-        rememberPlayerBulletCount = Player.bulletCount;
-        rememberSharpness  = Player.sharpness;
+
         createExplosion(0);
         motherShipDeathSound.play();
         BossMusic.pause();

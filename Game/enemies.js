@@ -1,7 +1,7 @@
 
 //CREATE ENEMIES
 
-function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,isDead,typeEnemy,lowerMode,shields)
+function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,isDead,typeEnemy,lowerMode,shields,descending)
 {
     this.w = w;
     this.h = h;
@@ -16,6 +16,7 @@ function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,is
     this.typeEnemy = typeEnemy;
     this.lowerMode = false;
     this.shieldMode = false;
+    this.descending = true;
 }
 
 
@@ -23,7 +24,7 @@ let numOfEnemies = 10;
 let Enemy = [];  // new Array();
 function fillEnemies(){
     let offsetXaxis = 10;
-    let offsetYaxis = 10;
+    let offsetYaxis = -310;
     let typeEnemy;
     if (Level <= 15){
         typeEnemy = Math.ceil(Math.random() * 5);
@@ -76,7 +77,8 @@ function fillEnemies(){
             false,
             typeEnemy,
             false,
-            false
+            false,
+            true,
         );
 
 
@@ -163,105 +165,123 @@ function drawEnemy(){
 }
 
 function newEnemyPosition(){
+
+    let offsetXaxis = 10;
+    let offsetYaxis = 10;
+
     for (let i in Enemy) {
 
+        if (Enemy[i].descending === true) {
+            Enemy[i].y += 5;
 
-        if (Enemy[i].x + Enemy[i].w > canvas.width && Enemy[i].Direction === true) {
-            if (Enemy[i].typeEnemy === 1 || Enemy[i].typeEnemy === 4 || Enemy[i].typeEnemy === 5 || Enemy[i].typeEnemy === 6){
-
-                    Enemy[i].lowerMode = true;
-                setTimeout(function () {
-                    Enemy[i].lowerMode = false;
-                }, 150)
-
-
+            if (i % 8 === 0) {
+                offsetXaxis = 10;
+                offsetYaxis += 50;
             }
 
-            Enemy[i].Direction = false;
-        } else if (Enemy[i].x < 0 && Enemy[i].Direction === false) {
-            if (Enemy[i].typeEnemy === 1 || Enemy[i].typeEnemy === 4 || Enemy[i].typeEnemy === 5 || Enemy[i].typeEnemy === 6){
-
-                    Enemy[i].lowerMode = true;
-                setTimeout(function () {
-                    Enemy[i].lowerMode = false;
-                }, 150)
-
+            if (Enemy[i].y >= offsetYaxis) {
+                Enemy[i].descending = false;
             }
-            Enemy[i].Direction = true;
-        }
 
-        if (Enemy[i].Direction === true) {
-            switch (Enemy[i].typeEnemy){
-                case 6:
-                    if (Enemy[i].lowerMode === true){
-                        Enemy[i].y += 3;
-                    }Enemy[i].x += Enemy[i].speed/3;
-                    break;
-
-                case 4:
-                    Enemy[i].x += Enemy[i].speed/3;
-                    if (Enemy[i].lowerMode === true){
-                        Enemy[i].y += 3;
-                    }
-
-                    break;
-                case 3:
-                    Enemy[i].y += Enemy[i].speed/10;
-                    Enemy[i].x += Enemy[i].speed/1.5;
-                    break;
-                case 2:
-                    if (Enemy[i].x >= canvas.width/2){
-                        Enemy[i].y += Enemy[i].speed/4;
-                    }
-                    else{
-                        Enemy[i].y -= Enemy[i].speed/6;
-                    }
-                    Enemy[i].y += Enemy[i].speed/18;
-
-                case 1:
-                case 5:
-                    if (Enemy[i].lowerMode === true){
-                        Enemy[i].y += 3;
-                    }
-                default:
-                    Enemy[i].x += Enemy[i].speed;
-                    break;
-
-
-            }
         } else {
-            switch (Enemy[i].typeEnemy){
-                case 6:
-                    if (Enemy[i].lowerMode === true){
-                        Enemy[i].y += 3;
-                    }
-                    Enemy[i].x -= Enemy[i].speed/3;
-                    break;
-                case 4:
-                    Enemy[i].x -= Enemy[i].speed/3;
-                    if (Enemy[i].lowerMode === true){
-                        Enemy[i].y += 3;
-                    }
-                    break;
-                case 3:
-                    Enemy[i].x -= Enemy[i].speed*3;
-                    break;
-                case 2:
-                    if (Enemy[i].x >= canvas.width/2){
-                        Enemy[i].y -= Enemy[i].speed/4;
-                    }
-                    else{
-                        Enemy[i].y += Enemy[i].speed/6;
-                    }
-                    Enemy[i].y += Enemy[i].speed/18;
-                case 1:
-                case 5:
-                    if (Enemy[i].lowerMode === true){
-                        Enemy[i].y += 3;
-                    }
-                default:
-                    Enemy[i].x -= Enemy[i].speed;
-                    break;
+
+
+            if (Enemy[i].x + Enemy[i].w > canvas.width && Enemy[i].Direction === true) {
+                if (Enemy[i].typeEnemy === 1 || Enemy[i].typeEnemy === 4 || Enemy[i].typeEnemy === 5 || Enemy[i].typeEnemy === 6) {
+
+                    Enemy[i].lowerMode = true;
+                    setTimeout(function () {
+                        Enemy[i].lowerMode = false;
+                    }, 150)
+
+
+                }
+
+                Enemy[i].Direction = false;
+            } else if (Enemy[i].x < 0 && Enemy[i].Direction === false) {
+                if (Enemy[i].typeEnemy === 1 || Enemy[i].typeEnemy === 4 || Enemy[i].typeEnemy === 5 || Enemy[i].typeEnemy === 6) {
+
+                    Enemy[i].lowerMode = true;
+                    setTimeout(function () {
+                        Enemy[i].lowerMode = false;
+                    }, 150)
+
+                }
+                Enemy[i].Direction = true;
+            }
+
+            if (Enemy[i].Direction === true) {
+                switch (Enemy[i].typeEnemy) {
+                    case 6:
+                        if (Enemy[i].lowerMode === true) {
+                            Enemy[i].y += 3;
+                        }
+                        Enemy[i].x += Enemy[i].speed / 3;
+                        break;
+
+                    case 4:
+                        Enemy[i].x += Enemy[i].speed / 3;
+                        if (Enemy[i].lowerMode === true) {
+                            Enemy[i].y += 3;
+                        }
+
+                        break;
+                    case 3:
+                        Enemy[i].y += Enemy[i].speed / 10;
+                        Enemy[i].x += Enemy[i].speed / 1.5;
+                        break;
+                    case 2:
+                        if (Enemy[i].x >= canvas.width / 2) {
+                            Enemy[i].y += Enemy[i].speed / 4;
+                        } else {
+                            Enemy[i].y -= Enemy[i].speed / 6;
+                        }
+                        Enemy[i].y += Enemy[i].speed / 18;
+
+                    case 1:
+                    case 5:
+                        if (Enemy[i].lowerMode === true) {
+                            Enemy[i].y += 3;
+                        }
+                    default:
+                        Enemy[i].x += Enemy[i].speed;
+                        break;
+
+
+                }
+            } else {
+                switch (Enemy[i].typeEnemy) {
+                    case 6:
+                        if (Enemy[i].lowerMode === true) {
+                            Enemy[i].y += 3;
+                        }
+                        Enemy[i].x -= Enemy[i].speed / 3;
+                        break;
+                    case 4:
+                        Enemy[i].x -= Enemy[i].speed / 3;
+                        if (Enemy[i].lowerMode === true) {
+                            Enemy[i].y += 3;
+                        }
+                        break;
+                    case 3:
+                        Enemy[i].x -= Enemy[i].speed * 3;
+                        break;
+                    case 2:
+                        if (Enemy[i].x >= canvas.width / 2) {
+                            Enemy[i].y -= Enemy[i].speed / 4;
+                        } else {
+                            Enemy[i].y += Enemy[i].speed / 6;
+                        }
+                        Enemy[i].y += Enemy[i].speed / 18;
+                    case 1:
+                    case 5:
+                        if (Enemy[i].lowerMode === true) {
+                            Enemy[i].y += 3;
+                        }
+                    default:
+                        Enemy[i].x -= Enemy[i].speed;
+                        break;
+                }
             }
         }
     }
@@ -285,7 +305,7 @@ function EnemyFireConstructor(w,h,x,y,speed,Active,typeFire)
 function enemyShoot() {
     for (let i in Enemy) {
 
-        if ((Math.ceil(Math.random() * RateOfFire) <= 1)  && Enemy[i].isDead===false && Enemy[i].shieldMode === false) {
+        if ((Math.ceil(Math.random() * RateOfFire) <= 1)  && Enemy[i].isDead===false && Enemy[i].shieldMode === false && Enemy[i].descending === false) {
 
             EnemyFire[EnemyShots] = new EnemyFireConstructor(
                 10,
@@ -409,7 +429,8 @@ function isHIT() {
                     Laser[j].y <= Enemy[i].y + Enemy[i].h
                 ) {
 
-                    if (Enemy[i].shieldMode === true) {
+
+                    if (Enemy[i].shieldMode === true || Enemy[i].descending === true) {
                         Laser[j].Active = false;
                         enemyHurtSound[j % 5].play();
                     } else if (Enemy[i].Health <= 1) {
@@ -506,13 +527,11 @@ function ifLevelBeaten(ForceBoss = false){
 
     if (checkIfAllDead === false || ForceBoss === true) {
 
-        //backgroundChange = true;
-        //backgroundChange2 = true;
+        if (Level === 1 || Level === 2|| Level === 3 || Level === 4){
+            backgroundChange = true;
+            backgroundChange2 = true;
+        }
 
-        rememberAmountOfShots = Player.amountOfShots;
-        rememberNukes = nukes;
-        rememberPlayerBulletCount = Player.bulletCount;
-        rememberSharpness = Player.sharpness;
 
         Level++;
 

@@ -55,6 +55,18 @@ function grantPower(type){
             points+=150;
             shipUPSound.currentTime = 0;
             shipUPSound.play();
+
+            Player.sx +=150;
+
+            Player.typeShip++;
+            if (Player.sx >=600){
+                Player.sx = 600;
+            }
+            if ( Player.typeShip > 5){
+                Player.typeShip = 5;
+            }
+
+
             if (Player.bulletCount === 1 || Player.bulletCount === 2){
                 Player.bulletCount +=1;
             }
@@ -209,14 +221,19 @@ function newPowerPosition() {
 let numBooms = 0;
 let Boom = [];
 
-function BoomConstructor(w,h,x,y,Active,typeOfBoom)
+function BoomConstructor(w,h,x,y,Active,sx,sy,sw,sh,ib,img)
 {
     this.w = w;
     this.h = h;
     this.x = x;
     this.y = y;
     this.Active = Active;
-    this.typeOfBoom = typeOfBoom;
+    this.sx = sx;
+    this.sy = sy;
+    this.sw = sw;
+    this.sh = sh;
+    this.isboss = ib
+    this.img = img;
 }
 
 function createExplosion(eX){
@@ -227,7 +244,13 @@ function createExplosion(eX){
             Boss.x-Boss.w/2+100,
              Boss.y-Boss.h,
             true,
-            Math.ceil(Math.random() * 2));
+            0,
+            0,
+            191,
+            191,
+            true,
+            backgroundNuked
+        );
     }
     else{
         Boom[numBooms] = new BoomConstructor(
@@ -236,7 +259,12 @@ function createExplosion(eX){
             Enemy[eX].x + Enemy[eX].w / 2 - 5,
             Enemy[eX].y,
             true,
-            Math.ceil(Math.random() * 2));
+            0,
+            0,
+            191,
+            191,
+            false,
+            backgroundNuked);
     }
 
     numBooms++;
@@ -247,24 +275,27 @@ function drawBoom(){
 
         if (Boom[i].Active === true) {
 
-            switch(Boom[i].typeOfBoom) {
-                case 1:
-                    ctx.drawImage(enemyDeath1, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
-                    break;
-                case 2:
-                    ctx.drawImage(enemyDeath2, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
-                    break;
-                default:
-                    ctx.drawImage(enemyDeath1, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
+
+            ctx.drawImage(Boom[i].img,Boom[i].sx, Boom[i].sy, Boom[i].sw, Boom[i].sh, Boom[i].x, Boom[i].y, Boom[i].w, Boom[i].h);
+
+            Boom[i].sx += 191;
+            if (Boom[i].sx >= 959){
+                Boom[i].sx = 0;
+                Boom[i].sy = 191;
+            }
+            if (Boom[i].sx >= 382 && Boom[i].sy === 191){
+                Boom[i].sx = 0;
+                Boom[i].sy = 0;
             }
 
             let timeout;
-            if (bossMode === true){
-                timeout = 500;
+            if (Boom[i].isboss === true){
+                timeout = 6000;
             }
             else{
-                timeout = 300;
+                timeout = 500;
             }
+            Boom[i].y+=gameSpeed;
 
             setTimeout(function(){
                 Boom[i].Active = false;

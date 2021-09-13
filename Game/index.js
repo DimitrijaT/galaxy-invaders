@@ -4,34 +4,7 @@
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
     MediumMode();
-    myContinue.innerHTML = `Revives (${revives})`;
-
-
-
-
-
-
-
-    //GAME OVER!
-    function youLOST(){
-        setStart = 0;
-
-        fullScreenMode = false;
-        lives = 0;
-        bossMode = false;
-        isGameRunning = false;
-        BossMusic.pause();
-        StartTheGame.pause();
-        StartTheGame.currentTime = 0;
-        BossMusic.currentTime = 0;
-
-        if (Player.isDead === false){
-            gameOverSound.currentTime = 0;
-            gameOverSound.play();
-            Player.isDead = true;
-        }
-
-    }
+    myContinue.innerHTML = `Revives - ${revives}`;
 
     //ScoreBoard
     function scoreboard(){
@@ -172,6 +145,16 @@
         myQuit.style.display = 'none';
     }
 
+    function HideMenu(){
+        Easy.style.display = "none";
+        Medium.style.display = "none";
+        Hard.style.display = "none";
+        myContinue.style.display = "none";
+        myButton.style.display = "block";
+        myOptions.style.display = "block";
+        myFullScreen.style.display = "block";
+    }
+
     function EasyMode(){
         myStartTheGame.innerHTML = 'Start Game - Easy';
         points = 0;
@@ -190,14 +173,8 @@
         BossHealthBoost = 10;
         startingLaserHealth = 2;
         chanceOfPower = 65;
+        HideMenu();
 
-        Easy.style.display = "none";
-        Medium.style.display = "none";
-        Hard.style.display = "none";
-        myContinue.style.display = "none";
-        myButton.style.display = "block";
-        myOptions.style.display = "block";
-        myFullScreen.style.display = "block";
     }
     function MediumMode(){
         myStartTheGame.innerHTML = 'Start Game - Medium';
@@ -217,13 +194,7 @@
         BossHealthBoost = 20;
         chanceOfPower = 60;
         startingLaserHealth = 1;
-        Easy.style.display = "none";
-        Medium.style.display = "none";
-        Hard.style.display = "none";
-        myContinue.style.display = "none";
-        myButton.style.display = "block";
-        myOptions.style.display = "block";
-        myFullScreen.style.display = "block";
+        HideMenu();
     }
     function HardMode(){
         myStartTheGame.innerHTML = 'Start Game - Hard';
@@ -243,14 +214,7 @@
         BossHealthBoost = 30;
         chanceOfPower = 55;
         startingLaserHealth = 1;
-
-        Easy.style.display = "none";
-        Medium.style.display = "none";
-        Hard.style.display = "none";
-        myContinue.style.display = "none";
-        myButton.style.display = "block";
-        myOptions.style.display = "block";
-        myFullScreen.style.display = "block";
+        HideMenu();
     }
 
     function fullScreen(){
@@ -285,6 +249,239 @@
         }
 
     }
+
+
+    function EnemyLogic(){
+        drawEnemy();
+        ifLevelBeaten();
+        drawEnemyLaser();
+        enemyShoot();
+        newEnemyLaserPosition();
+        newEnemyPosition();
+        isHIT();
+        isPlayerHIT();
+
+    }
+
+    //Boss Section
+    function BossLogic(){
+        drawBoss();
+        newBossPosition();
+        isBossDamaged();
+        BossShoot();
+        drawBossLaser();
+        newBossLaserPosition();
+        isPlayerHITbyBoss();
+        isBossBeaten();
+    }
+
+    function PlayerLogic(){
+        drawPlayer();
+        MovePlayer();
+        drawLaser();
+        newLaserPosition();
+    }
+
+
+    function BackgroundCreate(w,h,x,y,speed,type,img,sx,sy,sw,sh) {
+        this.w = w;
+        this.h = h;
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.type = type;
+        this.img = img;
+        this.sx = sx
+        this.sy = sy
+        this.sw = sw
+        this.sh = sh
+
+    }
+
+    Background = new BackgroundCreate(500,505,0,0,5,0,background);
+    Background2 = new BackgroundCreate(500,505,0,-500,5,0,background);
+    Background3 = new BackgroundCreate(500,500,0,0,5,0,backgroundNuked,0,0,191,191);
+    let gameSpeed = 1;
+
+    function BackgroundScroll(){
+        if(Background.y > 500){
+            Background.y= -500 + Background2.y + gameSpeed;
+            if (backgroundChange === true ){
+                backgroundChange = false;
+                Background.type++;
+                if (Background.type > 6)
+                {
+                    Background.type = 4;
+                }
+                switch (Background.type) {
+                    case 0:
+                        Background.img = background;
+                        break;
+                    case 1:
+                        Background.img = background1;
+                        break;
+                    case 2:
+                        Background.img = background2;
+                        break;
+                    case 3:
+                        Background.img = background3;
+                        break;
+                    case 4:
+                        Background.img = background4;
+                        break;
+                    case 5:
+                        Background.img = background5;
+                        break;
+                    case 6:
+                        Background.img = background6;
+                        break;
+
+                }
+            }
+
+        }
+        Background.y+=gameSpeed;
+        if (Background2.y > 500){
+            Background2.y=-500 + Background.y + gameSpeed;
+            if (backgroundChange2 === true){
+                backgroundChange2 = false;
+                Background2.type++;
+                if (Background2.type > 6)
+                {
+                    Background2.type = 4;
+                }
+                switch (Background2.type) {
+                    case 0:
+                        Background2.img = background;
+                        break;
+                    case 1:
+                        Background2.img = background1;
+                        break;
+                    case 2:
+                        Background2.img = background2;
+                        break;
+                    case 3:
+                        Background2.img = background3;
+                        break;
+                    case 4:
+                        Background2.img = background4;
+                        break;
+                    case 5:
+                        Background2.img = background5;
+                        break;
+                    case 6:
+                        Background2.img = background6;
+                        break;
+                }
+            }
+        }
+        Background2.y+=gameSpeed;
+        ctx.drawImage(Background.img, Background.x,  Background.y,  Background.w, Background.h);
+        ctx.drawImage(Background2.img, Background2.x,  Background2.y,  Background2.w, Background2.h);
+
+        if (isNuked === true) {
+
+            ctx.drawImage(Background3.img,Background3.sx,Background3.sy,Background3.sw,Background3.sh, Background3.x, Background3.y,Background3.w,Background3.h);
+            Background3.sx += 191;
+            if (Background3.sx >= 959){
+                Background3.sx = 0;
+                Background3.sy = 191;
+            }
+            if (Background3.sx >= 382 && Background3.sy === 191){
+                Background3.sx = 0;
+                Background3.sy = 0;
+            }
+            setTimeout(function () {
+                isNuked = false;
+            }, 450);
+
+        }
+
+
+    }
+
+    function  secret(){
+        if (isGamePaused === true) {
+            if (mouseControls === false) {
+                canvas.style.cursor = "none";
+                mouseControls = true;
+            } else {
+                mouseControls = false;
+                canvas.style.cursor = "auto";
+            }
+            secretSound.setDuration = 0;
+            secretSound.play();
+
+            let logo = document.getElementById("SiteLogo");
+            logo.src = "SiteImages/LogoClicked.png"
+
+            setTimeout(function () {
+                let logo = document.getElementById("SiteLogo");
+                logo.src = "SiteImages/Logo.png";
+            }, 400);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function youLOST(){
+        setStart = 0;
+        fullScreenMode = false;
+        lives = 0;
+        bossMode = false;
+        isGameRunning = false;
+        BossMusic.pause();
+        StartTheGame.pause();
+        StartTheGame.currentTime = 0;
+        BossMusic.currentTime = 0;
+
+        if (Player.isDead === false){
+            gameOverSound.currentTime = 0;
+            gameOverSound.play();
+            Player.isDead = true;
+        }
+
+        setTimeout(function (){
+            isGamePaused=true;
+        },50);
+
+    }
+
+
+    function quit(){
+        if (isGamePaused === false) {
+            fullScreenMode = false;
+            lives = 0;
+            bossMode = false;
+            BossMusic.pause();
+            StartTheGame.pause();
+            StartTheGame.currentTime = 0;
+            BossMusic.currentTime = 0;
+
+            if (Player.isDead === false) {
+                gameOverSound.currentTime = 0;
+                gameOverSound.play();
+                Player.isDead = true;
+            }
+            isGameRunning = false;
+            setTimeout(function (){
+                isGamePaused=true;
+            },50);
+        }
+    }
+
 
     function PauseResume(goingFullScreen = false){
 
@@ -333,267 +530,10 @@
         }
     }
 
-
-    function EnemyLogic(){
-        drawEnemy();
-        ifLevelBeaten();
-        drawEnemyLaser();
-        enemyShoot();
-        newEnemyLaserPosition();
-        newEnemyPosition();
-        isHIT();
-        isPlayerHIT();
-
-    }
-
-    //Boss Section
-    function BossLogic(){
-        drawBoss();
-        newBossPosition();
-        isBossDamaged();
-        BossShoot();
-        drawBossLaser();
-        newBossLaserPosition();
-        isPlayerHITbyBoss();
-        isBossBeaten();
-    }
-
-    function PlayerLogic(){
-        drawPlayer();
-        MovePlayer();
-        drawLaser();
-        newLaserPosition();
-    }
-
-
-    function BackgroundCreate(w,h,x,y,speed,type,img) {
-        this.w = w;
-        this.h = h;
-        this.x = x;
-        this.y = y;
-        this.speed = speed;
-        this.type = type;
-        this.img = img;
-
-    }
-
-    Background = new BackgroundCreate(500,505,0,0,5,0,background);
-    Background2 = new BackgroundCreate(500,505,0,-500,5,0,background);
-    let gameSpeed = 1;
-
-    function BackgroundScroll(){
-
-
-        if(Background.y > 500){
-            Background.y= -500 + Background2.y + gameSpeed;
-            if (backgroundChange === true ){
-                backgroundChange = false;
-                Background.type++;
-                if (Background.type > 5)
-                {
-                    Background.type = 1;
-                }
-                switch (Background.type) {
-                    case 0:
-                        Background.img = background;
-                        break;
-                    case 1:
-                        Background.img = background1;
-                        break;
-                    case 2:
-                        Background.img = background2;
-                        break;
-                    case 3:
-                        Background.img = background3;
-                        break;
-                    case 4:
-                        Background.img = background4;
-                        break;
-
-                }
-            }
-
-        }
-        Background.y+=gameSpeed;
-
-
-        if (Background2.y > 500){
-            Background2.y=-500 + Background.y + gameSpeed;
-            if (backgroundChange2 === true){
-                backgroundChange2 = false;
-                Background2.type++;
-                if (Background2.type > 5)
-                {
-                    Background2.type = 1;
-                }
-                switch (Background2.type) {
-                    case 0:
-                        Background2.img = background;
-                        break;
-                    case 1:
-                        Background2.img = background1;
-                        break;
-                    case 2:
-                        Background2.img = background2;
-                        break;
-                    case 3:
-                        Background2.img = background3;
-                        break;
-                    case 4:
-                        Background2.img = background4;
-                        break;
-                }
-            }
-        }
-        Background2.y+=gameSpeed;
-
-
-        if (isNuked === true) {
-            ctx.drawImage(backgroundNuked, 0, 0);
-            setTimeout(function () {
-                isNuked = false;
-            }, 350);
-
-        }
-        else {
-
-            ctx.drawImage(Background.img, Background.x,  Background.y,  Background.w, Background.h);
-            ctx.drawImage(Background2.img, Background2.x,  Background2.y,  Background2.w, Background2.h);
-
-        }
-
-
-    }
-
-
-let setStart = 0;
-    //MAIN LOOP FUNCTION:
-    function update(){
-
-
-                if (isGamePaused === false) {
-
-
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    ctx.drawImage(Background.img, 0, 0);
-                    BackgroundScroll();
-                    checkHighscore(points, Level, difficulty);
-                    drawBoom();
-                    drawPower();
-                    isPowerUP();
-                    newPowerPosition();
-
-
-                    if (printing1 === true) {
-                        for (let i in PowerUP){
-                            PowerUP[i].speed += 0.05;
-                        }
-                        gameSpeed++
-                        if (gameSpeed >= 15){
-                            gameSpeed = 15;
-                        }
-                        readySetGo.play();
-                        Ready();
-                        setTimeout(function(){
-                            printing1 = false;
-                            printing2 = true;
-
-
-
-                        }, 650);
-
-                    }
-
-                    else if (printing2 === true) {
-                        for (let i in PowerUP){
-                            PowerUP[i].speed += 0.05;
-                        }
-
-                        Set();
-                        setTimeout(function () {
-                            printing2 = false;
-                            printing3 = true;
-
-                        }, 600);
-                    }
-
-                    else if (printing3 === true) {
-                        for (let i in PowerUP){
-                            PowerUP[i].speed += 0.05;
-                        }
-
-                        gameSpeed--;
-                        if (gameSpeed < 1){
-                            gameSpeed = 0.5;
-                            if (bossMode === true){
-                                gameSpeed = 1.5;
-                            }
-                        }
-
-                        Boom = [];
-                        numBooms = 0;
-                        Go();
-                        amountOfPowerUPs = 0;
-
-                        setTimeout(function () {
-                            PowerUP = [];
-                        }, 300);
-
-                        setTimeout(function () {
-                            printing3 = false;
-                            gameSpeed = 0.5;
-                            if (bossMode === true){
-                                gameSpeed = 1.5;
-                            }
-                        }, 600);
-                    }
-                    else {
-
-                        if (Level % waveTillBoss === 0) {
-                            BossLogic();
-
-                        } else {
-                            EnemyLogic();
-                        }
-                    }
-
-                    if (isGameRunning === true) {
-                        PlayerLogic();
-                    } else {
-                        ctx.font = "40px VT323";
-                        ctx.fillStyle = 'red';
-                        ctx.fillText('GAME OVER', 175, 260);
-                        isGamePaused = true;
-                        myButton.style.display = "block";
-
-                        if (Easy.style.display === "none"){
-                            myOptions.style.display = "block";
-                        }
-                        myContinue.style.display = "block";
-                        myReset.style.display = 'block';
-                        myQuit.style.display = 'none';
-                        myPauseResume.style.display = 'none';
-                        if (Level === 1 || difficulty === 3) {
-                            myContinue.style.display = "none";
-                        }
-                    }
-
-                    scoreboard();
-
-                    requestAnimationFrame(update);
-
-
-                }
-
-
-
-
-
-    }
-
     function Continue() {
-        if (revives >= 1){
+        if (revives > 0){
+
+            isGamePaused = false;
             revives--;
             if (points-5000 < 0){
                 points = 0;
@@ -601,13 +541,11 @@ let setStart = 0;
             else{
                 points -= 5000;
             }
-            myContinue.innerHTML = `Revives (${revives})`;
+            myContinue.innerHTML = `Revives - ${revives}`;
             yesContinue = true;
             if (revives === 0){
                 myContinue.style.background = "gray";
             }
-
-            isGamePaused = true;
             beginGame();
         }
     }
@@ -617,8 +555,8 @@ let setStart = 0;
         printing1 = true;
         Player.isDead = false;
         isGamePaused = false;
+        isGameRunning = true;
 
-        myCanvas = document.getElementById('canvas');
         canvas.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.3)";
         myPauseResume.style.display = 'block';
         myQuit.style.display = 'block';
@@ -647,8 +585,6 @@ let setStart = 0;
 
         lives = 3;
         LaserShot = 0;
-        isGameRunning = true;
-
 
         Laser = [];
         BossFire = [];
@@ -657,30 +593,33 @@ let setStart = 0;
         keys = [];
 
         nukes = 3;
+
         Player.amountOfShots = 1;
         Player.sharpness = 0;
-        Player.bulletCount= 1;
+        Player.bulletCount = 1;
 
         Player.x = canvas.width / 2 - 30;
         Player.y = canvas.height - 35;
 
-        if(yesContinue === false){
 
+        if(yesContinue === false){
+            Background.type = 0
+            Background2.type = 0;
+            gameSpeed = 1;
             revives = 3;
-            myContinue.innerHTML = `Revives (${revives})`;
+            myContinue.innerHTML = `Revives - ${revives}`;
             myContinue.style.background = "green";
+
             StartTheGame.currentTime = 0;
             StartTheGame.play();
-            if (difficulty === 1){
-                EasyMode();
+            switch (difficulty){
+                    case 1:EasyMode();
+                        break;
+                    case 2:MediumMode();
+                         break;
+                    case 3:HardMode();
+                         break;
             }
-            else if(difficulty === 2){
-                MediumMode();
-            }
-            else{
-                HardMode();
-            }
-
         }
         else{
             yesContinue = false;
@@ -688,7 +627,26 @@ let setStart = 0;
             nukes = rememberNukes;
             Player.sharpness = rememberSharpness;
             Player.bulletCount = rememberPlayerBulletCount;
+            Player.typeShip = rememberTypeShip;
 
+            switch (Player.typeShip) {
+                case 1:
+                    Player.sx = 0;
+                    break;
+                case 2:
+                    Player.sx = 150;
+                    break;
+                case 3:
+                    Player.sx = 300;
+                    break;
+                case 4:
+                    Player.sx = 450;
+                    break;
+                case 5:
+                    Player.sx = 600;
+                    break;
+
+            }
             if (Level %waveTillBoss === 0 ){
                 bossMode = true;
                 BossMusic.currentTime = 0;
@@ -725,53 +683,137 @@ let setStart = 0;
         }
 
 
-        if (setStart === 0){
-            update();
-            setStart ++;
-        }
+        update();
+
+
+
 
 
 
     }
 
-    function  secret(){
-        if (isGamePaused === true) {
-            if (mouseControls === false) {
-                canvas.style.cursor = "none";
-                mouseControls = true;
-            } else {
-                mouseControls = false;
-                canvas.style.cursor = "auto";
-            }
-            secretSound.setDuration = 0;
-            secretSound.play();
+    function update(){
 
-            let logo = document.getElementById("SiteLogo");
-            logo.src = "SiteImages/LogoClicked.png"
 
-            setTimeout(function () {
-                let logo = document.getElementById("SiteLogo");
-                logo.src = "SiteImages/Logo.png";
-            }, 400);
-        }
-
-    }
-
-    function quit(){
         if (isGamePaused === false) {
-            fullScreenMode = false;
-            lives = 0;
-            bossMode = false;
-            isGameRunning = false;
-            BossMusic.pause();
-            StartTheGame.pause();
-            StartTheGame.currentTime = 0;
-            BossMusic.currentTime = 0;
 
-            if (Player.isDead === false) {
-                gameOverSound.currentTime = 0;
-                gameOverSound.play();
-                Player.isDead = true;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.drawImage(Background.img, 0,0,100, 500, 0, 0,500,500);
+            BackgroundScroll();
+            checkHighscore(points, Level, difficulty);
+            drawBoom();
+            drawPower();
+            isPowerUP();
+            newPowerPosition();
+
+
+            if (printing1 === true) {
+                for (let i in PowerUP){
+                    PowerUP[i].speed += 0.05;
+                }
+                gameSpeed++
+                if (gameSpeed >= 15){
+                    gameSpeed = 15;
+                }
+                readySetGo.play();
+                Ready();
+                setTimeout(function(){
+                    printing1 = false;
+                    printing2 = true;
+
+
+
+                }, 650);
+
             }
+
+            else if (printing2 === true) {
+                for (let i in PowerUP){
+                    PowerUP[i].speed += 0.05;
+                }
+
+                Set();
+                setTimeout(function () {
+                    printing2 = false;
+                    printing3 = true;
+
+                }, 600);
+            }
+
+            else if (printing3 === true) {
+                for (let i in PowerUP){
+                    PowerUP[i].speed += 0.05;
+                }
+
+                gameSpeed--;
+                if (gameSpeed < 1){
+                    gameSpeed = 0.5;
+                    if (bossMode === true){
+                        gameSpeed = 1.5;
+                    }
+                }
+
+                Boom = [];
+                numBooms = 0;
+                Go();
+                amountOfPowerUPs = 0;
+
+                rememberAmountOfShots = Player.amountOfShots;
+                rememberNukes = nukes;
+                rememberPlayerBulletCount = Player.bulletCount;
+                rememberSharpness = Player.sharpness;
+                rememberTypeShip = Player.typeShip;
+
+                setTimeout(function () {
+                    PowerUP = [];
+                }, 300);
+
+                setTimeout(function () {
+                    printing3 = false;
+                    gameSpeed = 0.5;
+                    if (bossMode === true){
+                        gameSpeed = 1.5;
+                    }
+                }, 600);
+            }
+            else {
+
+                if (Level % waveTillBoss === 0) {
+                    BossLogic();
+
+                } else {
+                    EnemyLogic();
+                }
+            }
+
+            if (isGameRunning === true) {
+                PlayerLogic();
+            } else {
+                ctx.font = "40px VT323";
+                ctx.fillStyle = 'red';
+                ctx.fillText('GAME OVER', 175, 260);
+                myButton.style.display = "block";
+
+                if (Easy.style.display === "none"){
+                    myOptions.style.display = "block";
+                }
+                myContinue.style.display = "block";
+                myReset.style.display = 'block';
+                myQuit.style.display = 'none';
+                myPauseResume.style.display = 'none';
+                if (Level === 1 || difficulty === 3) {
+                    myContinue.style.display = "none";
+                }
+            }
+
+            scoreboard();
+
+            requestAnimationFrame(update);
+
+
         }
+
     }
+

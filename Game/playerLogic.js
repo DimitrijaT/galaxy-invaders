@@ -9,10 +9,15 @@ const Player = {
     dy:0,
     unkillable: false,
     isDead: false,
+    shootingMode: false,
     amountOfShots: 1,
     bulletCount: 1,
     typeShip: 1,
-    sharpness: 0
+    sharpness: 0,
+    sx:  0,
+    sy : 0,
+    sw : 150,
+    sh : 140
 }
 
 function MovePlayer(){
@@ -60,23 +65,16 @@ function MovePlayer(){
 
 function drawPlayer(){
 
-    switch(Player.bulletCount){
-        case 7:
-            ctx.drawImage(image5,Player.x,Player.y,Player.w,Player.h);
-            break;
-        case 5:
-            ctx.drawImage(image4,Player.x,Player.y,Player.w,Player.h);
-            break;
-        case 3:
-            ctx.drawImage(image3,Player.x,Player.y,Player.w,Player.h);
-            break;
-        case 2:
-            ctx.drawImage(image2,Player.x,Player.y,Player.w,Player.h);
-            break;
-        default:
-            ctx.drawImage(image,Player.x,Player.y,Player.w,Player.h);
+    if (Player.shootingMode === true){
+        Player.sy += 140;
 
     }
+    if(Player.sy >= 675 || Player.shootingMode === false){
+        Player.sy = 0;
+    }
+
+
+    ctx.drawImage(image,Player.sx,Player.sy,Player.sw,Player.sh,Player.x,Player.y,Player.w,Player.h);
 
     if (Player.unkillable === true) {
         ctx.drawImage(invic, Player.x - 10, Player.y - 10, Player.w + 20, 20);
@@ -88,6 +86,18 @@ let DamageShield
 
 function takeDamage(x = 1){
     Player.unkillable = true;
+
+    Player.sx -=150;
+
+    if (Player.sx <= 0){
+        Player.sx =0;
+    }
+
+    Player.typeShip--;
+
+    if ( Player.typeShip < 1){
+        Player.typeShip = 1;
+    }
 
     time = 2100;
     MaxTime = time;
@@ -198,6 +208,11 @@ function LaserConstructor(w,h,x,y,speedY,speedX,Active,Health){
 function Shoot(){
     if (isGamePaused === false && isGameRunning === true) {
         if (CoolDown === false) {
+            Player.shootingMode = true;
+            setTimeout(function (){
+                Player.shootingMode = false;
+                Player.sy = 0;
+            },100)
 
             let sharpnessPointsToSpend = Player.sharpness;
 
@@ -441,7 +456,10 @@ function keyPressActions(){
             }
             if (e.key === 'Enter') {
                 e.preventDefault();
-                nukeTheMap();
+                if (isNuked === false){
+                    nukeTheMap();
+                }
+
             }
             if (e.key === 'P' || e.key === 'p'){
                 e.preventDefault();

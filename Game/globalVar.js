@@ -1,8 +1,4 @@
 const image =  document.getElementById('Player');
-const image2 =  document.getElementById('PlayerLevel2');
-const image3 =  document.getElementById('PlayerLevel3');
-const image4 =  document.getElementById('PlayerLevel4');
-const image5 =  document.getElementById('PlayerLevel5');
 
 const enemy =  document.getElementById('Enemy');
 const enemyHurt =  document.getElementById('EnemyHurt');
@@ -63,14 +59,14 @@ const shieldUP = document.getElementById('ShieldUP');
 const bombUP = document.getElementById('BombUP');
 const fireUP = document.getElementById('FirePower');
 const shipUP = document.getElementById('ShipUP');
-const enemyDeath1 = document.getElementById('EnemyExplode1');
-const enemyDeath2 = document.getElementById('EnemyExplode2');
 const background = document.getElementById( 'Space');
 const background1 = document.getElementById( 'Space1');
 const background2 = document.getElementById( 'Space2');
 const background3 = document.getElementById( 'Space3');
 const background4 = document.getElementById( 'Space4');
 const background5 = document.getElementById( 'Space5');
+const background6 = document.getElementById( 'Space6');
+
 
 
 const backgroundNuked = document.getElementById( 'SpaceNuked');
@@ -87,17 +83,13 @@ let enemyProjectileSpeed = 3;
 let Level = 1;
 let time;
 let MaxTime;
-let amountOfShots = 1;
-let rememberAmountOfShots;
 let chanceOfPower = 60;
 let gainLifePerStage = 0;
 let waveTillBoss = 5;
-let rememberPlayerBulletCount;
 let EnemyHealth = 1;
 let BossHealthBoost = 20;
 let startingLaserHealth = 1;
 let nukes = 3;
-let rememberNukes;
 let isNuked = false;
 let difficulty = 1; //1- Easy  2-Medium   3-Hard
 let fullScreenMode = false;
@@ -106,9 +98,15 @@ let yesContinue = false;
 let firstTime = true;
 let playerLaserSpeed = 4;
 let mouseControls = false;
-let rememberSharpness;
+
 let printing1, printing2, printing3 = false;
 let color;
+
+let rememberNukes;
+let rememberPlayerBulletCount;
+let rememberTypeShip;
+let rememberAmountOfShots;
+let rememberSharpness;
 
 
 myButton = document.getElementById('StartGame');
