@@ -391,7 +391,7 @@
                 Background.type++;
                 if (Background.type > 5)
                 {
-                    Background.type = 0;
+                    Background.type = 1;
                 }
                 switch (Background.type) {
                     case 0:
@@ -422,9 +422,9 @@
             if (backgroundChange2 === true){
                 backgroundChange2 = false;
                 Background2.type++;
-                if (Background2.type > 4)
+                if (Background2.type > 5)
                 {
-                    Background2.type = 0;
+                    Background2.type = 1;
                 }
                 switch (Background2.type) {
                     case 0:
