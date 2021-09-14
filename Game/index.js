@@ -163,6 +163,10 @@
 
         }
 
+        //if (mouseControls === false && runs === true){
+         //   myMouse.style.display = "none";
+        //}
+
 
     }
 
@@ -506,42 +510,38 @@ let fullscreenOptimize = false;
 
     function  mouse(){
 
-        if (runs === false) {
-            if (mouseControls === false) {
-                mouseControls = true;
-                myMouse.innerHTML = `Mouse Controls - ON`;
-                myMouse.style.background = "green";
-                canvas.style.cursor = "none";
-
-            } else {
-                mouseControls = false;
-                myMouse.innerHTML = `Mouse Controls - OFF`;
-                myMouse.style.background = "gray";
-                canvas.style.cursor = "auto";
-            }
-        }
-        else{
-
-            if (mousecontrolsDisabled === true) {
-                mousecontrolsDisabled = false;
-                myMouse.innerHTML = `Mouse Controls - ON`;
-                myMouse.style.background = "green";
-                canvas.style.cursor = "none";
-
-            } else {
+            if (mouseMode === true) {
+                mouseMode = false;
                 mousecontrolsDisabled = true;
                 myMouse.innerHTML = `Mouse Controls - OFF`;
                 myMouse.style.background = "gray";
                 canvas.style.cursor = "auto";
+
+            } else {
+                mouseMode = true;
+                mousecontrolsDisabled = false;
+                myMouse.innerHTML = `Mouse Controls - ON`;
+                myMouse.style.background = "green";
+                canvas.style.cursor = "none";
             }
-
-
-
-        }
-
-
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function secret(){
 
@@ -556,13 +556,6 @@ function secret(){
         logo.src = "SiteImages/Logo.png";
     }, 400);
 }
-
-
-
-
-
-
-
 
     function quit(){
         if (isGamePaused === false) {
@@ -592,7 +585,7 @@ function secret(){
         if (isGameRunning === true) {
             if (isGamePaused === true) {
 
-                if (mouseControls === true) {
+                if (mouseMode === true) {
                     myMouse.innerHTML = `Mouse Controls - ON`;
                     myMouse.style.background = "green";
                     canvas.style.cursor = "none";
@@ -614,7 +607,7 @@ function secret(){
             } else if (isGamePaused === false && goingFullScreen === false) {
 
 
-                if (mouseControls === true){
+                if (mouseMode === true){
                     myMouse.innerHTML = `Mouse Controls - OFF`;
                     myMouse.style.background = "gray";
                     canvas.style.cursor = "auto";

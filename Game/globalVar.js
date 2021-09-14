@@ -37,7 +37,8 @@ let playerLaserSpeed = 4;
 let mouseControls = false;
 let printing1, printing2, printing3 = false;
 let color;
-let mousecontrolsDisabled = false;
+let mousecontrolsDisabled = true;
+let mouseMode = false;
 let runs = false;
 let rememberPlayer = Player;
 

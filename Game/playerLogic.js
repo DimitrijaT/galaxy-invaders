@@ -606,52 +606,7 @@ function keyPressActions(){
 
 
 
-        //MOUSE CONTROLS
 
-        if (mouseControls === true) {
-
-            canvas.addEventListener('mousedown', function (e){
-                if (mousecontrolsDisabled === false) {
-                    e.preventDefault();
-                    ShootInterval = true;
-                }
-
-            });
-
-            canvas.addEventListener('mouseup', function (e){
-                if (mousecontrolsDisabled === false) {
-                    e.preventDefault();
-                    ShootInterval = false;
-                }
-
-            });
-
-
-
-            canvas.addEventListener("mousemove", function (e) {
-
-                if (mousecontrolsDisabled === false) {
-                    let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
-                    let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas
-                    let canvasY = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);  // (0,0) the top left of the canvas
-
-
-                    if (canvasX - Player.w / 2 < canvas.width - Player.w &&
-                        canvasX > 0 &&
-                        canvasY - Player.h / 2 > 0 &&
-                        canvasY - Player.h / 2 < canvas.height - Player.h) {
-
-                        Player.x = canvasX;
-                        Player.y = canvasY;
-                    }
-                }
-
-
-
-            });
-
-        }
 
 
         //PHONE CONTROLS
@@ -746,3 +701,47 @@ setInterval(function (){
 },100)
 
 
+
+//MOUSE CONTROLS
+
+
+
+canvas.addEventListener('mousedown', function (e){
+    if (mousecontrolsDisabled === false) {
+        e.preventDefault();
+        ShootInterval = true;
+    }
+
+});
+
+canvas.addEventListener('mouseup', function (e){
+    if (mousecontrolsDisabled === false) {
+        console.log(mousecontrolsDisabled);
+        e.preventDefault();
+        ShootInterval = false;
+    }
+
+});
+
+canvas.addEventListener("mousemove", function (e) {
+
+    if (mousecontrolsDisabled === false) {
+        let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
+        let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas
+        let canvasY = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make
+        ctx.clearRect(0, 0, canvas.width, canvas.height);  // (0,0) the top left of the canvas
+
+
+        if (canvasX - Player.w / 2 < canvas.width - Player.w &&
+            canvasX > 0 &&
+            canvasY - Player.h / 2 > 0 &&
+            canvasY - Player.h / 2 < canvas.height - Player.h) {
+
+            Player.x = canvasX;
+            Player.y = canvasY;
+        }
+    }
+
+
+
+});
