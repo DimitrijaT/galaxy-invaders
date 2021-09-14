@@ -771,6 +771,8 @@ let fullscreenOptimize = false;
             }
 
             else if (printing2 === true) {
+
+
                 for (let i in PowerUP){
                     PowerUP[i].speed += 0.05;
                 }
@@ -801,9 +803,6 @@ let fullscreenOptimize = false;
                     }
                 }
                 Laser = [];
-                BossFire = [];
-                EnemyFire = [];
-                Enemy = [];
                 Boom = [];
                 numBooms = 0;
                 Go();
