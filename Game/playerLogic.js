@@ -515,7 +515,7 @@ function keyPressActions(){
                 }
                 if (hacks2 === true){
                     if (e.key === '1'){
-                        grantPower(1);
+                        grantPower(1,0,true);
                     }
                     else if (e.key === '2'){
                         grantPower(2);
@@ -530,9 +530,10 @@ function keyPressActions(){
                         grantPower(5);
                     }
                     if (e.key === '6'){
-                        grantPower(6);
+                        grantPower(6,15000);
                     }
                     if (e.key === '-'){
+                        lives++;
                         takeDamage(1);
                     }
                     if (e.key === 'b'){

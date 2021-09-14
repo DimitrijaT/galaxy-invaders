@@ -112,25 +112,25 @@ function fillEnemies(){
             case 4:
                 Enemy[i].sx = 105;
                 Enemy[i].sy = 0;
-                Enemy[i].sw = 35
+                Enemy[i].sw = 35;
                 Enemy[i].sh = 35;
                 break;
             case 3:
                 Enemy[i].sx = 70;
                 Enemy[i].sy = 0;
-                Enemy[i].sw = 35
+                Enemy[i].sw = 35;
                 Enemy[i].sh = 35;
                 break;
             case 2:
                 Enemy[i].sx = 35;
                 Enemy[i].sy = 0;
-                Enemy[i].sw = 35
+                Enemy[i].sw = 35;
                 Enemy[i].sh = 35;
                 break;
             default:
                 Enemy[i].sx = 0;
                 Enemy[i].sy = 0;
-                Enemy[i].sw = 35
+                Enemy[i].sw = 35;
                 Enemy[i].sh = 35;
                 break;
         }

@@ -20,9 +20,13 @@ function isPowerUP(){
     }
 }
 
-function grantPower(type){
+function grantPower(type,duration = 5000,hackLives = false){
     switch (type){
         case 1:
+
+            if (hackLives === true){
+                lives = maxLives;
+            }
 
             if (lives+1 <= maxLives) {
                 points += 200;
@@ -103,7 +107,7 @@ function grantPower(type){
         case 6:
             points += 200;
 
-            time = 5000;
+            time = duration;
             MaxTime = time;
             powerUPSound.currentTime = 0;
             powerUPSound.play();

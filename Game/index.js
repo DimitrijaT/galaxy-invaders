@@ -801,6 +801,9 @@ let fullscreenOptimize = false;
                     }
                 }
                 Laser = [];
+                BossFire = [];
+                EnemyFire = [];
+                Enemy = [];
                 Boom = [];
                 numBooms = 0;
                 Go();
