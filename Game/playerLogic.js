@@ -23,40 +23,39 @@ const Player = {
 function MovePlayer(){
 
 
-    if (keys['ArrowLeft'] || directionX === 1){
-        Player.dx=Player.speed*-1;
+    if (keys['ArrowLeft'] ){
+        if (Player.x >= 0){
+            Player.dx=Player.speed*-1;
+        }
+
     }
-    else if (keys['ArrowRight'] || directionX === 2){
-        Player.dx=Player.speed;
+    else if (keys['ArrowRight'] ){
+        if (Player.x + Player.w  <= canvas.width){
+            Player.dx=Player.speed;
+        }
+
     }
 
-    if (keys['ArrowUp'] || directionY === 2){
-        Player.dy=Player.speed*-1;
+    if (keys['ArrowUp'] ){
+        if (Player.y >= 0){
+            Player.dy=Player.speed*-1;
+        }
+
     }
-    else if (keys['ArrowDown'] || directionY === 1){
-        Player.dy=Player.speed;
+    else if (keys['ArrowDown'] ){
+        if (Player.y + Player.h <= canvas.height  ) {
+            Player.dy=Player.speed;
+        }
     }
 
 
-    if (Player.x + Player.w >= canvas.width){
-        Player.x -= 0.5;
-    }
-    else if (Player.x <= 0 ){
-        Player.x +=0.5;
-    }
-    else if (Player.y <= 0 ){
-        Player.y +=0.5;
-    }
-    else if (Player.y + Player.h >= canvas.height ){
-        Player.y -=0.5;
-    }
-    else{
         Player.x += Player.dx;
         Player.y += Player.dy;
-    }
+
 
     Player.dx = 0;
     Player.dy = 0;
+
 
 
 
@@ -437,8 +436,7 @@ let flagSpeed=false;
 let hacks1 = false;
 let hacks2 = false;
 let keys = [];
-let directionX;
-let directionY;// 1 left 2 right 3 bomb
+
 
 function keyPressActions(){
 
@@ -552,6 +550,12 @@ function keyPressActions(){
 
 
 
+
+
+
+
+
+
         //MOUSE CONTROLS
 
         if (mouseControls === true) {
@@ -568,49 +572,25 @@ function keyPressActions(){
                 let canvasY = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make
                 ctx.clearRect(0, 0, canvas.width, canvas.height);  // (0,0) the top left of the canvas
 
-
                 Player.x = canvasX;
                 Player.y = canvasY;
 
-                /*
-                if (canvasX < Player.x){
-                    directionX = 1;
-                }
-                else if (canvasX > Player.x + Player.w){
-                    directionX = 2;
-
-                }
-                else{
-                    directionX = 0;
-                }
-
-                if (canvasY > Player.y + Player.h){
-                    directionY = 1;
-
-                }
-                else if (canvasY < Player.y){
-                    directionY = 2;
-                }
-                else{
-                    directionY = 0;
-                }
-
-                setTimeout(function (){
-                    directionY = 0;
-                    directionX = 0;
-                },1);
-
-
-                 */
             });
 
         }
 
 
-
         //PHONE CONTROLS
+        canvas.addEventListener('touchstart', handleTouchEvent, true);
+        canvas.addEventListener('touchmove', handleTouchEvent, true);
+        canvas.addEventListener('touchend', letGo, true);
+        canvas.addEventListener('touchcancel', handleTouchEvent, true);
+        canvas.addEventListener('touchstart', handleTouchEvent,true)
 
-        canvas.addEventListener('touchstart', function (e) {
+
+        function handleTouchEvent(e){
+            e.preventDefault();
+            e.stopPropagation();
             let touch;
             let shoot;
             switch (e.touches.length) {
@@ -618,54 +598,56 @@ function keyPressActions(){
                     touch = e.touches[0];
 
                     console.log(touch.clientX + "  " + touch.clientY + "   " + canvas.clientWidth + "-" + canvas.clientHeight + " " + (canvas.clientHeight - canvas.clientHeight / 4));
+                    if (printing1 === false && printing2 === false && printing3 === false){
+                         ShootInterval = true;
+                    }
 
-                    if (touch.clientY >= 0 && touch.clientY < canvas.clientHeight / 3) {
-                        nukeTheMap();
-                    } else if (touch.clientX <= canvas.clientWidth / 2) {
-                        directionX = 1;
-                    } else if (touch.clientX > canvas.clientWidth / 2) {
-                        directionX = 2;
+
+                    if (e.touches[0].pageX - canvas.offsetLeft - Player.w/2 <= canvas.width - Player.w + 5 &&
+                        e.touches[0].pageX - canvas.offsetLeft - Player.w/2 >= 0 - 5&&
+                        e.touches[0].pageY - canvas.offsetTop - Player.h/2 >= 0 - 5&&
+                        e.touches[0].pageY - canvas.offsetTop - Player.h/2 <= canvas.height - Player.h + 5) {
+
+                        Player.x= e.touches[0].pageX - canvas.offsetLeft - Player.w/2;
+                        Player.y= e.touches[0].pageY - canvas.offsetTop - Player.h/2;
                     }
-                    if (touch.clientY > (canvas.clientHeight - canvas.clientHeight / 4.5)) {
-                        if (printing1 === false && printing2 === false && printing3 === false){
-                            Shoot();
-                        }
-                    }
+
+
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+
+
 
                     break;
                 case 2:
                     touch = e.touches[0];
                     shoot = e.touches[1];
 
-                    console.log(touch.clientX + "  " + touch.clientY);
 
-                    if (touch.clientY >= 0 && touch.clientY < canvas.clientHeight / 3 ||
-                        shoot.clientY >= 0 && shoot.clientY < canvas.clientHeight / 3) {
-                        nukeTheMap();
-                    }
-                    if (touch.clientY > canvas.clientHeight - canvas.clientHeight / 4.5 || shoot.clientY > canvas.clientHeight - canvas.clientHeight / 4.5) {
-                        if (printing1 === false && printing2 === false && printing3 === false){
-                            Shoot();
-                        }
-                    } else if (touch.clientX <= canvas.clientWidth / 2 || shoot.clientX <= canvas.clientWidth / 2) {
-                        directionX = 1;
-                    } else if (touch.clientX > canvas.clientWidth / 2 || shoot.clientX > canvas.clientWidth / 2) {
-                        directionX = 2;
-                    }
+                    nukeTheMap();
 
-
-                    break;
             }
 
-        });
+        }
 
-        window.addEventListener('touchend', function () {
-            directionX = 0;
-        });
+        function letGo(){
+           ShootInterval = false;
+
+        }
+
 
 
     }
 
 }
+
+let ShootInterval;
+setInterval(function (){
+    if (ShootInterval === true){
+        Shoot();
+    }
+},100)
 
 
