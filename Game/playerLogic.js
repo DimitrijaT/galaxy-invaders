@@ -557,7 +557,9 @@ function keyPressActions(){
         if (mouseControls === true) {
             document.addEventListener('click', function (e){
                 e.preventDefault();
-                Shoot();
+                if (printing1 === false && printing2 === false && printing3 === false){
+                    Shoot();
+                }
             });
 
             canvas.addEventListener("mousemove", function (e) {
@@ -625,7 +627,9 @@ function keyPressActions(){
                         directionX = 2;
                     }
                     if (touch.clientY > (canvas.clientHeight - canvas.clientHeight / 4.5)) {
-                        Shoot();
+                        if (printing1 === false && printing2 === false && printing3 === false){
+                            Shoot();
+                        }
                     }
 
                     break;
@@ -640,7 +644,9 @@ function keyPressActions(){
                         nukeTheMap();
                     }
                     if (touch.clientY > canvas.clientHeight - canvas.clientHeight / 4.5 || shoot.clientY > canvas.clientHeight - canvas.clientHeight / 4.5) {
-                        Shoot();
+                        if (printing1 === false && printing2 === false && printing3 === false){
+                            Shoot();
+                        }
                     } else if (touch.clientX <= canvas.clientWidth / 2 || shoot.clientX <= canvas.clientWidth / 2) {
                         directionX = 1;
                     } else if (touch.clientX > canvas.clientWidth / 2 || shoot.clientX > canvas.clientWidth / 2) {
