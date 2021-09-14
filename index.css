@@ -245,10 +245,10 @@ footer{
 #Hard, .Htext{
     background-color: #ff5100;
 }
-#FullScreen{
+#FullScreen, #MouseONOFF{
     background-color: gray;
 }
-#Continue , #PauseResume, #Quit{
+#Continue , #PauseResume, #Quit, #FullScreen, #MouseONOFF{
     display: none;
 }
 
@@ -414,4 +414,5 @@ article,header,footer{
 article ul{
     text-align: left;
 }
+
 

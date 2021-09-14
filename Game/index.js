@@ -133,16 +133,54 @@
         document.getElementById('Hlevel').innerHTML ='0';
     }
 
+    let inSettings = false;
 
     function Settings(){
 
-        Easy.style.display = "block";
-        Medium.style.display = "block";
-        Hard.style.display = "block";
-        myFullScreen.style.display = "none";
-        myButton.style.display = "none";
-        myOptions.style.display = "none";
-        myQuit.style.display = 'none';
+        if (inSettings === false){
+            inSettings = true;
+            Easy.style.display = "none";
+            Medium.style.display = "none";
+            Hard.style.display = "none";
+            myFullScreen.style.display = "block";
+            myMouse.style.display = "block";
+            myButton.style.display = "none";
+            myOptions.style.display = "none";
+            myQuit.style.display = 'none';
+            mySettings.innerHTML = 'Back';
+        }
+        else{
+            inSettings = false;
+            Easy.style.display = "none";
+            Medium.style.display = "none";
+            Hard.style.display = "none";
+            myFullScreen.style.display = "none";
+            myMouse.style.display = "none";
+            myButton.style.display = "block";
+            myOptions.style.display = "block";
+            myQuit.style.display = 'none';
+            mySettings.innerHTML = 'Settings';
+
+        }
+
+
+    }
+
+
+    function Difficulty(){
+
+            Easy.style.display = "block";
+            Medium.style.display = "block";
+            Hard.style.display = "block";
+            myFullScreen.style.display = "none";
+            myButton.style.display = "none";
+            myOptions.style.display = "none";
+            myQuit.style.display = 'none';
+            myMouse.style.display = "none";
+            mySettings.style.display = "none";
+            myContinue.style.display = 'none';
+
+
     }
 
     function HideMenu(){
@@ -152,10 +190,14 @@
         myContinue.style.display = "none";
         myButton.style.display = "block";
         myOptions.style.display = "block";
-        myFullScreen.style.display = "block";
+        mySettings.style.display = "block";
+        myFullScreen.style.display = "none";
+
     }
 
     function EasyMode(){
+        HideMenu();
+
         myStartTheGame.innerHTML = 'Start Game - Easy';
         points = 0;
         maxLives = 10;
@@ -173,10 +215,11 @@
         BossHealthBoost = 10;
         startingLaserHealth = 2;
         chanceOfPower = 65;
-        HideMenu();
 
     }
     function MediumMode(){
+        HideMenu();
+
         myStartTheGame.innerHTML = 'Start Game - Medium';
         points = 0;
         maxLives = 5;
@@ -194,9 +237,11 @@
         BossHealthBoost = 20;
         chanceOfPower = 60;
         startingLaserHealth = 1;
-        HideMenu();
+
     }
     function HardMode(){
+        HideMenu();
+
         myStartTheGame.innerHTML = 'Start Game - Hard';
         points = 0;
         maxLives = 3;
@@ -214,7 +259,7 @@
         BossHealthBoost = 30;
         chanceOfPower = 55;
         startingLaserHealth = 1;
-        HideMenu();
+
     }
 
     function fullScreen(){
@@ -459,30 +504,58 @@ let fullscreenOptimize = false;
 
     }
 
-    function  secret(){
-        if (isGamePaused === true) {
+    function  mouse(){
+
+        if (runs === false) {
             if (mouseControls === false) {
-                canvas.style.cursor = "none";
                 mouseControls = true;
+                myMouse.innerHTML = `Mouse Controls - ON`;
+                myMouse.style.background = "green";
+                canvas.style.cursor = "none";
+
             } else {
                 mouseControls = false;
+                myMouse.innerHTML = `Mouse Controls - OFF`;
+                myMouse.style.background = "gray";
                 canvas.style.cursor = "auto";
             }
-            secretSound.currentTime = 0;
-            secretSound.play();
-
-            let logo = document.getElementById("SiteLogo");
-            logo.src = "SiteImages/LogoClicked.png"
-
-            setTimeout(function () {
-                let logo = document.getElementById("SiteLogo");
-                logo.src = "SiteImages/Logo.png";
-            }, 400);
         }
+        else{
+
+            if (mousecontrolsDisabled === true) {
+                mousecontrolsDisabled = false;
+                myMouse.innerHTML = `Mouse Controls - ON`;
+                myMouse.style.background = "green";
+                canvas.style.cursor = "none";
+
+            } else {
+                mousecontrolsDisabled = true;
+                myMouse.innerHTML = `Mouse Controls - OFF`;
+                myMouse.style.background = "gray";
+                canvas.style.cursor = "auto";
+            }
+
+
+
+        }
+
+
 
     }
 
+function secret(){
 
+    secretSound.currentTime = 0;
+    secretSound.play();
+
+    let logo = document.getElementById("SiteLogo");
+    logo.src = "SiteImages/LogoClicked.png"
+
+    setTimeout(function () {
+        let logo = document.getElementById("SiteLogo");
+        logo.src = "SiteImages/Logo.png";
+    }, 400);
+}
 
 
 
@@ -519,6 +592,13 @@ let fullscreenOptimize = false;
         if (isGameRunning === true) {
             if (isGamePaused === true) {
 
+                if (mouseControls === true) {
+                    myMouse.innerHTML = `Mouse Controls - ON`;
+                    myMouse.style.background = "green";
+                    canvas.style.cursor = "none";
+                    mousecontrolsDisabled = false;
+                }
+
                 isGamePaused = false;
                 myPauseResume.innerHTML = "Pause";
 
@@ -532,6 +612,17 @@ let fullscreenOptimize = false;
 
                 update();
             } else if (isGamePaused === false && goingFullScreen === false) {
+
+
+                if (mouseControls === true){
+                    myMouse.innerHTML = `Mouse Controls - OFF`;
+                    myMouse.style.background = "gray";
+                    canvas.style.cursor = "auto";
+                    mousecontrolsDisabled = true;
+                }
+
+
+
                 keys = [];
                 if (Level % waveTillBoss === 0) {
 
@@ -583,17 +674,12 @@ let fullscreenOptimize = false;
 
 
     function beginGame(){
+        runs = true;
         printing1 = true;
         Player.isDead = false;
         isGamePaused = false;
         isGameRunning = true;
-
         canvas.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.3)";
-        myPauseResume.style.display = 'block';
-        myQuit.style.display = 'block';
-        myQuit.style.background = '#B7121F';
-        myReset.style.background = 'green';
-        myReset.style.display = 'none';
 
         if (fullScreenMode === true){
             fullScreenMode = false;
@@ -694,7 +780,17 @@ let fullscreenOptimize = false;
 
         myButton.style.display = "none";
         myOptions.style.display = "none";
+        mySettings.style.display = "none";
         myContinue.style.display = "none";
+        myPauseResume.style.display = 'block';
+        myQuit.style.display = 'block';
+        myQuit.style.background = '#B7121F';
+        myReset.style.background = 'green';
+        myReset.style.display = 'none';
+        mySettings.style.display = "none";
+        myFullScreen.style.display = 'block';
+        myMouse.style.display = 'none';
+
 
         fillEnemies();
         if (firstTime === true)
@@ -854,9 +950,13 @@ let fullscreenOptimize = false;
                 myReset.style.display = 'block';
                 myQuit.style.display = 'none';
                 myPauseResume.style.display = 'none';
-                if (Level === 1 || difficulty === 3) {
+                if (Level === 1 || difficulty === 3 ) {
                     myContinue.style.display = "none";
                 }
+
+                mySettings.style.display = "block";
+                myFullScreen.style.display = 'none';
+                myMouse.style.display = 'none';
             }
 
             scoreboard();

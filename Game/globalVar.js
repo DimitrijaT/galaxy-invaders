@@ -37,16 +37,23 @@ let playerLaserSpeed = 4;
 let mouseControls = false;
 let printing1, printing2, printing3 = false;
 let color;
-
+let mousecontrolsDisabled = false;
+let runs = false;
 let rememberPlayer = Player;
 
 
 myButton = document.getElementById('StartGame');
-myOptions = document.getElementById('Options');
+
+myMouse = document.getElementById('MouseONOFF');
+
+mySettings = document.getElementById('Settings');
 myFullScreen = document.getElementById('FullScreen');
 myReset = document.getElementById('Reset');
 myPauseResume = document.getElementById('PauseResume');
+
 myQuit = document.getElementById('Quit');
+
+myOptions = document.getElementById('Options');
 Easy = document.getElementById('Easy');
 Medium = document.getElementById('Medium');
 Hard = document.getElementById('Hard');

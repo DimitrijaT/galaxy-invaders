@@ -23,26 +23,26 @@ let Player = {
 function MovePlayer(){
 
 
-    if (keys['ArrowLeft'] ){
+    if (keys['ArrowLeft'] || keys['a'] ){
         if (Player.x >= 0){
             Player.dx=Player.speed*-1;
         }
 
     }
-    else if (keys['ArrowRight'] ){
+    else if (keys['ArrowRight'] || keys['d']){
         if (Player.x + Player.w  <= canvas.width){
             Player.dx=Player.speed;
         }
 
     }
 
-    if (keys['ArrowUp'] ){
+    if (keys['ArrowUp'] || keys['w']){
         if (Player.y >= 0){
             Player.dy=Player.speed*-1;
         }
 
     }
-    else if (keys['ArrowDown'] ){
+    else if (keys['ArrowDown'] || keys['s']){
         if (Player.y + Player.h <= canvas.height  ) {
             Player.dy=Player.speed;
         }
@@ -485,22 +485,28 @@ function keyPressActions(){
 
         //MOVEMENT
 
+        document.addEventListener('keyup', function (e) {
+            if (e.key === ' ' || e.key === 'x' ) {
+                e.preventDefault();
+                ShootInterval = false;
+            }
+
+        });
+
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown'  ) {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown' ||
+                e.key === 'a' || e.key === 'd' || e.key === 'w' || e.key === 's') {
                 e.preventDefault();
                 keys[e.key] = true;
-            } else if (e.key === ' ') {
+            } else if (e.key === ' ' || e.key === 'x' ) {
                 e.preventDefault();
-                if (printing1 === false && printing2 === false && printing3 === false){
-                    Shoot();
-                }
+                ShootInterval = true;
             }
             if (e.key === 'Enter') {
                 e.preventDefault();
                 if (isNuked === false){
                     nukeTheMap();
                 }
-
             }
             if (e.key === 'P' || e.key === 'p'){
                 e.preventDefault();
@@ -603,21 +609,45 @@ function keyPressActions(){
         //MOUSE CONTROLS
 
         if (mouseControls === true) {
-            document.addEventListener('click', function (e){
-                e.preventDefault();
-                if (printing1 === false && printing2 === false && printing3 === false){
-                    Shoot();
+
+            canvas.addEventListener('mousedown', function (e){
+                if (mousecontrolsDisabled === false) {
+                    e.preventDefault();
+                    ShootInterval = true;
                 }
+
             });
 
-            canvas.addEventListener("mousemove", function (e) {
-                let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
-                let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas
-                let canvasY = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make
-                ctx.clearRect(0, 0, canvas.width, canvas.height);  // (0,0) the top left of the canvas
+            canvas.addEventListener('mouseup', function (e){
+                if (mousecontrolsDisabled === false) {
+                    e.preventDefault();
+                    ShootInterval = false;
+                }
 
-                Player.x = canvasX;
-                Player.y = canvasY;
+            });
+
+
+
+            canvas.addEventListener("mousemove", function (e) {
+
+                if (mousecontrolsDisabled === false) {
+                    let cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
+                    let canvasX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas
+                    let canvasY = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);  // (0,0) the top left of the canvas
+
+
+                    if (canvasX - Player.w / 2 < canvas.width - Player.w &&
+                        canvasX > 0 &&
+                        canvasY - Player.h / 2 > 0 &&
+                        canvasY - Player.h / 2 < canvas.height - Player.h) {
+
+                        Player.x = canvasX;
+                        Player.y = canvasY;
+                    }
+                }
+
+
 
             });
 
@@ -710,7 +740,7 @@ function keyPressActions(){
 
 let ShootInterval;
 setInterval(function (){
-    if (ShootInterval === true){
+    if (ShootInterval === true && printing1 === false && printing2 === false && printing3 === false ){
         Shoot();
     }
 },100)
