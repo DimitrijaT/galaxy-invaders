@@ -173,10 +173,10 @@ function isBossDamaged(){
         if (Laser[j].Active === true) {
             if (Laser.hasOwnProperty(j)) {
                 if (Boss.isDead === false && Boss.isProtected === false &&
-                    Laser[j].x >= Boss.x &&
+                    Laser[j].x + Laser[j].w >= Boss.x &&
                     Laser[j].x <= Boss.x + Boss.w &&
-                    Laser[j].y + Laser[j].h >= Boss.y &&
-                    Laser[j].y <= Boss.y + Boss.h
+                    Laser[j].y + Laser[j].h >= Boss.y -15 &&
+                    Laser[j].y + 15 <= Boss.y + Boss.h
                     ) {
                     if (Boss.isDescending === true){
                         Laser[j].Active = false;
@@ -531,9 +531,9 @@ function isPlayerHITbyBoss(){
         for (let i in BossFire) {
                 if (BossFire[i].Active === true &&
                     BossFire[i].x +  BossFire[i].w - 5 >= Player.x &&
-                    BossFire[i].x  + 5  <= Player.x + Player.w &&
-                    BossFire[i].y +  BossFire[i].h - 5 >= Player.y &&
-                    BossFire[i].y + 5 <= Player.y + Player.h ) {
+                    BossFire[i].x <= Player.x + Player.w - 5 &&
+                    BossFire[i].y +  BossFire[i].h -5  >= Player.y &&
+                    BossFire[i].y  <= Player.y + Player.h -5 ) {
 
                     if (Player.unkillable === true) {
                         BossFire[i].Active = false;
@@ -574,10 +574,10 @@ function isPlayerHITbyBoss(){
 
     if (Boss.isDead === false &&
         Boss.isProtected === false &&
-        Boss.x +  Boss.w - 5 >= Player.x &&
-        Boss.x  + 5  <= Player.x + Player.w &&
+        Boss.x +  Boss.w  >= Player.x &&
+        Boss.x  <= Player.x + Player.w &&
         Boss.y +  Boss.h - 5 >= Player.y &&
-        Boss.y + 5 <= Player.y + Player.h ) {
+        Boss.y <= Player.y + Player.h ) {
 
         if (Boss.isProtected === false){
             Player.y+=4.5;
@@ -628,7 +628,6 @@ function isBossBeaten(){
             enemyProjectileSpeed += 0.2;
         }
         Level++;
-        Laser = [];
         BossFire = [];
         EnemyFire = [];
         Enemy = [];

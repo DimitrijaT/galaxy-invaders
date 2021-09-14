@@ -426,8 +426,10 @@ function drawLaser(){
 
 function newLaserPosition(){
     for (let i in Laser){
-        Laser[i].y-=Laser[i].speedY;
-        Laser[i].x-=Laser[i].speedX;
+            Laser[i].y-=Laser[i].speedY;
+            Laser[i].x-=Laser[i].speedX;
+
+
     }
 }
 let rememberSpeed;

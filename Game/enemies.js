@@ -362,7 +362,7 @@ function newEnemyLaserPosition(){
 function isPlayerHIT() {
     for (let i in EnemyFire) {  //let i=0;i<EnemyFire.length;i++
         if (EnemyFire[i].Active === true &&
-            EnemyFire[i].x >= Player.x &&
+            EnemyFire[i].x + EnemyFire[i].w >= Player.x &&
             EnemyFire[i].x <= Player.x + Player.w &&
             EnemyFire[i].y + EnemyFire[i].h >= Player.y &&
             EnemyFire[i].y <= Player.y + Player.h
@@ -397,7 +397,7 @@ function isPlayerHIT() {
         }
 
         if (Enemy[i].isDead === false &&
-            Enemy[i].x >= Player.x &&
+            Enemy[i].x + Enemy[i].w >= Player.x &&
             Enemy[i].x <= Player.x + Player.w &&
             Enemy[i].y + Enemy[i].h >= Player.y &&
             Enemy[i].y <= Player.y + Player.h
@@ -423,7 +423,7 @@ function isHIT() {
         for (let i in Enemy) {
             if (Laser.hasOwnProperty(j)) {   //WEBSTORM COMPLAINS
                 if (Enemy[i].isDead === false &&
-                    Laser[j].x >= Enemy[i].x &&
+                    Laser[j].x + Laser[j].w >= Enemy[i].x &&
                     Laser[j].x <= Enemy[i].x + Enemy[i].w &&
                     Laser[j].y + Laser[j].h >= Enemy[i].y &&
                     Laser[j].y <= Enemy[i].y + Enemy[i].h
@@ -576,7 +576,6 @@ function ifLevelBeaten(ForceBoss = false){
                 enemyProjectileSpeed += 0.2;
             }
 
-            Laser = [];
             BossFire = [];
             EnemyFire = [];
             Enemy = [];

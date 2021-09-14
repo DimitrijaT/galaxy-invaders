@@ -6,9 +6,9 @@ let PowerUP = [];
 function isPowerUP(){
     for (let i in PowerUP){
         if (
-            PowerUP[i].x >= Player.x-5 &&
+            PowerUP[i].x + PowerUP[i].w >= Player.x &&
             PowerUP[i].x <= Player.x + Player.w &&
-            PowerUP[i].y +PowerUP[i].w >= Player.y &&
+            PowerUP[i].y +PowerUP[i].h >= Player.y &&
             PowerUP[i].y <= Player.y + Player.h &&
             PowerUP[i].Active === true){
 

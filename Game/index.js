@@ -278,8 +278,6 @@
     function PlayerLogic(){
         drawPlayer();
         MovePlayer();
-        drawLaser();
-        newLaserPosition();
     }
 
 
@@ -335,12 +333,14 @@
                     case 6:
                         Background.img = background6;
                         break;
+                    default:
+                        Background.img = background4;
+                        break;
 
                 }
             }
 
         }
-        Background.y+=gameSpeed;
         if (Background2.y > 500){
             Background2.y=-500 + Background.y + gameSpeed;
             if (backgroundChange2 === true){
@@ -372,10 +372,15 @@
                     case 6:
                         Background2.img = background6;
                         break;
+                    default:
+                        Background2.img = background4;
+                        break;
                 }
             }
         }
+        Background.y+=gameSpeed;
         Background2.y+=gameSpeed;
+
         ctx.drawImage(Background.img, Background.x,  Background.y,  Background.w, Background.h);
         ctx.drawImage(Background2.img, Background2.x,  Background2.y,  Background2.w, Background2.h);
 
@@ -705,11 +710,14 @@
             checkHighscore(points, Level, difficulty);
             drawBoom();
             drawPower();
-            isPowerUP();
-            newPowerPosition();
+
+
+            drawLaser();
+            newLaserPosition();
 
 
             if (printing1 === true) {
+
                 for (let i in PowerUP){
                     PowerUP[i].speed += 0.05;
                 }
@@ -718,6 +726,11 @@
                     gameSpeed = 15;
                 }
                 readySetGo.play();
+
+                for (let i in Laser){
+                    Laser[i].speedY = gameSpeed*-1;
+                }
+
                 Ready();
                 setTimeout(function(){
                     printing1 = false;
@@ -734,6 +747,10 @@
                     PowerUP[i].speed += 0.05;
                 }
 
+                for (let i in Laser){
+                    Laser[i].speedY = gameSpeed*-1;
+                }
+
                 Set();
                 setTimeout(function () {
                     printing2 = false;
@@ -746,7 +763,6 @@
                 for (let i in PowerUP){
                     PowerUP[i].speed += 0.05;
                 }
-
                 gameSpeed--;
                 if (gameSpeed < 1){
                     gameSpeed = 0.5;
@@ -754,7 +770,7 @@
                         gameSpeed = 1.5;
                     }
                 }
-
+                Laser = [];
                 Boom = [];
                 numBooms = 0;
                 Go();
@@ -780,6 +796,8 @@
             }
             else {
 
+
+
                 if (Level % waveTillBoss === 0) {
                     BossLogic();
 
@@ -789,6 +807,8 @@
             }
 
             if (isGameRunning === true) {
+                isPowerUP();
+                newPowerPosition();
                 PlayerLogic();
             } else {
                 ctx.font = "40px VT323";
