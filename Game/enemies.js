@@ -1,7 +1,7 @@
 
 //CREATE ENEMIES
 
-function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,isDead,typeEnemy,lowerMode,shields,descending)
+function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,isDead,typeEnemy,lowerMode,shields,descending,sx,sy,sw,sh,img)
 {
     this.w = w;
     this.h = h;
@@ -17,22 +17,26 @@ function EnemyConstructor(w,h,x,y,speed,Direction,firingMode,Health,isDamaged,is
     this.lowerMode = false;
     this.shieldMode = false;
     this.descending = true;
+    this.sx = sx;
+    this.sy = sy;
+    this.sw = sw;
+    this.sh = sh;
+    this.img = img;
 }
 
 
 let numOfEnemies = 10;
 let Enemy = [];  // new Array();
+let levelEnemyMixer = 1;
 function fillEnemies(){
     let offsetXaxis = 10;
     let offsetYaxis = -310;
-    let typeEnemy;
-    if (Level <= 15){
-        typeEnemy = Math.ceil(Math.random() * 5);
 
+    if (levelEnemyMixer > 6){
+        levelEnemyMixer = 1;
     }
-    else{
-        typeEnemy = Math.ceil(Math.random() * 6);
-    }
+    let typeEnemy = levelEnemyMixer;
+
     let typeArray = [Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6)]
 
     for (let i=0;i<numOfEnemies;i++){
@@ -79,6 +83,11 @@ function fillEnemies(){
             false,
             false,
             true,
+            0,
+            0,
+            35,
+            35,
+            enemy
         );
 
 
@@ -86,49 +95,52 @@ function fillEnemies(){
         offsetXaxis +=50;
 
     }
+    for (let i in Enemy) {
+        switch (Enemy[i].typeEnemy) {
+            case 6:
+                Enemy[i].sx = 140;
+                Enemy[i].sy = 0;
+                Enemy[i].sw = 35
+                Enemy[i].sh = 35;
+                break;
+            case 5:
+                Enemy[i].sx = 175;
+                Enemy[i].sy = 0;
+                Enemy[i].sw = 35
+                Enemy[i].sh = 35;
+                break;
+            case 4:
+                Enemy[i].sx = 105;
+                Enemy[i].sy = 0;
+                Enemy[i].sw = 35
+                Enemy[i].sh = 35;
+                break;
+            case 3:
+                Enemy[i].sx = 70;
+                Enemy[i].sy = 0;
+                Enemy[i].sw = 35
+                Enemy[i].sh = 35;
+                break;
+            case 2:
+                Enemy[i].sx = 35;
+                Enemy[i].sy = 0;
+                Enemy[i].sw = 35
+                Enemy[i].sh = 35;
+                break;
+            default:
+                Enemy[i].sx = 0;
+                Enemy[i].sy = 0;
+                Enemy[i].sw = 35
+                Enemy[i].sh = 35;
+                break;
+        }
+    }
 }
 
 function drawEnemy(){
     for (let i in Enemy)
     {
         if(Enemy[i].isDead === false){
-
-            let fE;
-            let dE;
-            let eE;
-
-            switch (Enemy[i].typeEnemy){
-                case 6:
-                    fE = enemyshoots5;
-                    dE = enemyHurt5;
-                    eE = enemy5;
-                    break;
-                case 5:
-                    fE = boss3FireSleep;
-                    dE = boss3FireHurt;
-                    eE = boss3Fire;
-                    break;
-                case 4:
-                    fE = enemyshoots4;
-                    dE = enemyHurt4;
-                    eE = enemy4;
-                    break;
-                case 3:
-                    fE = enemyshoots3;
-                    dE = enemyHurt3;
-                    eE = enemy3;
-                    break;
-                case 2:
-                    fE = enemyshoots2;
-                    dE = enemyHurt2;
-                    eE = enemy2;
-                    break;
-                default:
-                    fE = enemyshoots;
-                    dE = enemyHurt;
-                    eE = enemy;
-                    break;
-            }
 
             if (Enemy[i].typeEnemy === 6 && Math.ceil(Math.random() * 380) === 1){
                 Enemy[i].shieldMode = true;
@@ -140,22 +152,22 @@ function drawEnemy(){
             if
                     (Enemy[i].firingMode === true)
                 {
-                    ctx.drawImage(fE, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
+                    ctx.drawImage(Enemy[i].img,Enemy[i].sx, Enemy[i].sy+37, Enemy[i].sw, Enemy[i].sh, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
                     setTimeout(function () {
                         Enemy[i].firingMode = false;
                     }, 350);
                 }
             else if (Enemy[i].shieldMode === true){
-                ctx.drawImage(enemyshield5, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
+                ctx.drawImage(Enemy[i].img,Enemy[i].sx, Enemy[i].sy+107, Enemy[i].sw, Enemy[i].sh, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
             }
             else if (Enemy[i].isDamaged === true) {
-                        ctx.drawImage(dE, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
+                ctx.drawImage(Enemy[i].img,Enemy[i].sx, Enemy[i].sy+75, Enemy[i].sw, Enemy[i].sh, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
                         setTimeout(function () {
                             Enemy[i].isDamaged = false;
                         }, 200);
                     }
             else{
-                        ctx.drawImage(eE, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
+                        ctx.drawImage(Enemy[i].img,Enemy[i].sx, Enemy[i].sy, Enemy[i].sw, Enemy[i].sh, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
                     }
 
 
@@ -291,7 +303,7 @@ function newEnemyPosition(){
 let EnemyShots = 0;
 let EnemyFire = [];
 
-function EnemyFireConstructor(w,h,x,y,speed,Active,typeFire)
+function EnemyFireConstructor(w,h,x,y,speed,Active,typeFire,sx,sy,sw,sh,img)
 {
     this.w = w;
     this.h = h;
@@ -299,7 +311,12 @@ function EnemyFireConstructor(w,h,x,y,speed,Active,typeFire)
     this.y = y;
     this.speed = speed;
     this.Active = Active;
-    this.typeFire = typeFire
+    this.typeFire = typeFire;
+    this.sx = sx;
+    this.sy = sy;
+    this.sw = sw;
+    this.sh = sh;
+    this.img = img;
 }
 
 function enemyShoot() {
@@ -313,9 +330,58 @@ function enemyShoot() {
                 Enemy[i].x + Enemy[i].w / 2 - 5,
                 Enemy[i].y,enemyProjectileSpeed,
                 true,
-                Enemy[i].typeEnemy);
+                Enemy[i].typeEnemy,
+                0,
+                0,
+                50,
+                80,
+                enemyLaser)
+            ;
             Enemy[i].firingMode = true;
             EnemyShots++;
+        }
+
+    }
+
+    for (let i in EnemyFire) {
+        switch(EnemyFire[i].typeFire){
+            case 6:
+
+                EnemyFire[i].sx = 50;
+                EnemyFire[i].sy = 0;
+                EnemyFire[i].sw = 50
+                EnemyFire[i].sh = 80;
+                break;
+            case 5:
+                EnemyFire[i].sx = 150;
+                EnemyFire[i].sy = 0;
+                EnemyFire[i].sw = 50
+                EnemyFire[i].sh = 80;
+                break;
+            case 4:
+                EnemyFire[i].sx = 100;
+                EnemyFire[i].sy = 0;
+                EnemyFire[i].sw = 50
+                EnemyFire[i].sh = 80;
+                break;
+            case 3:
+                EnemyFire[i].sx = 200;
+                EnemyFire[i].sy = 0;
+                EnemyFire[i].sw = 50
+                EnemyFire[i].sh = 80;
+                break;
+            case 2:
+                EnemyFire[i].sx = 200;
+                EnemyFire[i].sy = 0;
+                EnemyFire[i].sw = 50
+                EnemyFire[i].sh = 80;
+                break;
+            default:
+                EnemyFire[i].sx = 0;
+                EnemyFire[i].sy = 0;
+                EnemyFire[i].sw = 50
+                EnemyFire[i].sh = 80;
+                break;
         }
 
     }
@@ -323,32 +389,13 @@ function enemyShoot() {
 
 function drawEnemyLaser(){
     for (let i in EnemyFire) {
-        if (EnemyFire[i].y === 500) {
+        if (EnemyFire[i].y >= 500) {
             EnemyFire[i].Active = false;
         }
-        if (EnemyFire[i].Active === true) {
-            switch(EnemyFire[i].typeFire){
-                case 6:
-                    ctx.drawImage(enemyLaser5, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
-                    break;
-                case 5:
-                    ctx.drawImage(boss3FireAttack, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
-                    break;
-                case 4:
-                    ctx.drawImage(boss2Fire, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
-                    break;
-                case 3:
-                    ctx.drawImage(enemyLaser, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
-                    break;
-                case 2:
-                    ctx.drawImage(bossLaser, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
-                    break;
-                default:
-                    ctx.drawImage(enemyLaser, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
-                    break;
-            }
-
+        else if (  EnemyFire[i].Active === true){
+            ctx.drawImage(EnemyFire[i].img,EnemyFire[i].sx, EnemyFire[i].sy, EnemyFire[i].sw, EnemyFire[i].sh, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
         }
+
     }
 }
 
@@ -386,14 +433,14 @@ function isPlayerHIT() {
                 EnemyFire[i].Active = false;
                 takeDamage();
             } else {
-                youLOST();
+                quit();
             }
         }
     }
 
     for (let i in Enemy) {
         if (Enemy[i].y >= canvas.height - 30 && Enemy[i].isDead === false) {
-            youLOST();
+            quit();
         }
 
         if (Enemy[i].isDead === false &&
@@ -404,12 +451,13 @@ function isPlayerHIT() {
             ) {
                 Player.y+=4.5;
             if (Player.unkillable === true) {
+                deflectSound.currentTime = 0;
                 deflectSound.play();
             } else if (lives - 1 >= 1) {
                 Enemy[i].isDead = true;
                 takeDamage();
             } else {
-                youLOST();
+                quit();
             }
         }
     }
@@ -445,7 +493,12 @@ function isHIT() {
                                     Enemy[i].y - 5,
                                     enemyProjectileSpeed / 2,
                                     true,
-                                    Enemy[i].typeEnemy);
+                                    Enemy[i].typeEnemy,
+                                    150,
+                                    0,
+                                    50,
+                                    80,
+                                    enemyLaser);
                                 Enemy[i].firingMode = true;
                                 EnemyShots++;
                             }
@@ -474,10 +527,12 @@ function isHIT() {
                         switch (Enemy[i].typeEnemy) {
 
                             case 5:
+                                summonHit[j % 5].currentTime = 0;
                                 summonHit[j % 5].play();
                                 break;
 
                             default:
+                                enemyExplode[j % 5].currentTime = 0;
                                 enemyExplode[j % 5].play();
 
                         }
@@ -499,6 +554,7 @@ function isHIT() {
                         Laser[j].Health--;
 
                         //play damage sound
+                        enemyHurtSound[j % 5].currentTime = 0;
                         enemyHurtSound[j % 5].play();
 
 
@@ -516,8 +572,6 @@ let backgroundChange2 = false;
 
 function ifLevelBeaten(ForceBoss = false){
 
-
-
     let checkIfAllDead = false;
     for (let i in Enemy){
         if (Enemy[i].isDead===false){
@@ -526,6 +580,10 @@ function ifLevelBeaten(ForceBoss = false){
     }
 
     if (checkIfAllDead === false || ForceBoss === true) {
+
+
+        levelEnemyMixer++;
+
 
         if (Level === 1 || Level === 2|| Level === 3 || Level === 4){
             backgroundChange = true;

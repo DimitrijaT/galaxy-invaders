@@ -401,6 +401,9 @@ form input[type="submit"]{
     sub{
         display: none;
     }
+    #FullScreen{
+        display: none !important;
+    }
 
 }
 

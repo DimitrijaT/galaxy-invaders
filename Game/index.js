@@ -218,6 +218,7 @@
     }
 
     function fullScreen(){
+        fullscreenOptimize = false;
 
         if (fullScreenMode === false){
             fullScreenMode = true;
@@ -239,8 +240,9 @@
             canvas.style.backgroundImage = 'none';
             canvas.style.background = 'none';
             canvas.style.border = 'none';
-
+            fullscreenOptimize = true;
             if(canvas.webkitRequestFullScreen) {
+
                 canvas.webkitRequestFullScreen();
             }
             else {
@@ -249,7 +251,7 @@
         }
 
     }
-
+let fullscreenOptimize = false;
 
     function EnemyLogic(){
         drawEnemy();
@@ -296,93 +298,145 @@
 
     }
 
-    Background = new BackgroundCreate(500,505,0,0,5,0,background);
-    Background2 = new BackgroundCreate(500,505,0,-500,5,0,background);
+    Background = new BackgroundCreate(500,500,0,0,5,0,background,0,0,300,300);
+    Background2 = new BackgroundCreate(500,500,0,-500,5,0,background,0,0,300,300);
     Background3 = new BackgroundCreate(500,500,0,0,5,0,backgroundNuked,0,0,191,191);
     let gameSpeed = 1;
 
     function BackgroundScroll(){
+
+        ctx.drawImage(Background.img,Background.sx,  Background.sy,  Background.sw, Background.sh, Background.x,  Background.y,  Background.w, Background.h);
+        ctx.drawImage(Background2.img,Background2.sx,  Background2.sy,  Background2.sw, Background2.sh, Background2.x,  Background2.y,  Background2.w, Background2.h);
+
+        Background.y+= gameSpeed;
+        Background2.y+= gameSpeed;
+
         if(Background.y > 500){
             Background.y= -500 + Background2.y + gameSpeed;
+
             if (backgroundChange === true ){
                 backgroundChange = false;
                 Background.type++;
-                if (Background.type > 6)
+                if (Background.type > 11)
                 {
-                    Background.type = 4;
+                    Background.type = 5;
                 }
                 switch (Background.type) {
                     case 0:
-                        Background.img = background;
+                        Background.sx = 0;
+                        Background.sy = 0;
                         break;
                     case 1:
-                        Background.img = background1;
+                        Background.sx = 0;
+                        Background.sy = 300;
                         break;
                     case 2:
-                        Background.img = background2;
+                        Background.sx = 0;
+                        Background.sy = 600;
                         break;
                     case 3:
-                        Background.img = background3;
+                        Background.sx = 0;
+                        Background.sy = 900;
                         break;
                     case 4:
-                        Background.img = background4;
+                        Background.sx = 0;
+                        Background.sy = 1200;
                         break;
                     case 5:
-                        Background.img = background5;
+                        Background.sx = 300;
+                        Background.sy = 0;
                         break;
                     case 6:
-                        Background.img = background6;
+                        Background.sx = 300;
+                        Background.sy = 300;
                         break;
-                    default:
-                        Background.img = background4;
+                    case 7:
+                        Background.sx = 300;
+                        Background.sy = 600;
                         break;
-
+                    case 8:
+                        Background.sx = 300;
+                        Background.sy = 900;
+                        break;
+                    case 9:
+                        Background.sx = 300;
+                        Background.sy = 1200;
+                        break;
+                    case 10:
+                        Background.sx = 600;
+                        Background.sy = 0;
+                        break;
+                    case 11:
+                        Background.sx = 600;
+                        Background.sy = 300;
+                        break;
                 }
             }
 
         }
         if (Background2.y > 500){
-            Background2.y=-500 + Background.y + gameSpeed;
+            Background2.y = -500 + Background.y + gameSpeed;
             if (backgroundChange2 === true){
                 backgroundChange2 = false;
                 Background2.type++;
-                if (Background2.type > 6)
+                if (Background2.type > 11)
                 {
-                    Background2.type = 4;
+                    Background2.type = 5;
                 }
                 switch (Background2.type) {
                     case 0:
-                        Background2.img = background;
+                        Background2.sx = 0;
+                        Background2.sy = 0;
                         break;
                     case 1:
-                        Background2.img = background1;
+                        Background2.sx = 0;
+                        Background2.sy = 300;
                         break;
                     case 2:
-                        Background2.img = background2;
+                        Background2.sx = 0;
+                        Background2.sy = 600;
                         break;
                     case 3:
-                        Background2.img = background3;
+                        Background2.sx = 0;
+                        Background2.sy = 900;
                         break;
                     case 4:
-                        Background2.img = background4;
+                        Background2.sx = 0;
+                        Background2.sy = 1200;
                         break;
                     case 5:
-                        Background2.img = background5;
+                        Background2.sx = 300;
+                        Background2.sy = 0;
                         break;
                     case 6:
-                        Background2.img = background6;
+                        Background2.sx = 300;
+                        Background2.sy = 300;
                         break;
-                    default:
-                        Background2.img = background4;
+                    case 7:
+                        Background2.sx = 300;
+                        Background2.sy = 600;
+                        break;
+                    case 8:
+                        Background2.sx = 300;
+                        Background2.sy = 900;
+                        break;
+                    case 9:
+                        Background2.sx = 300;
+                        Background2.sy = 1200;
+                        break;
+                    case 10:
+                        Background2.sx = 600;
+                        Background2.sy = 0;
+                        break;
+                    case 11:
+                        Background2.sx = 600;
+                        Background2.sy = 300;
                         break;
                 }
             }
         }
-        Background.y+=gameSpeed;
-        Background2.y+=gameSpeed;
 
-        ctx.drawImage(Background.img, Background.x,  Background.y,  Background.w, Background.h);
-        ctx.drawImage(Background2.img, Background2.x,  Background2.y,  Background2.w, Background2.h);
+
 
         if (isNuked === true) {
 
@@ -414,7 +468,7 @@
                 mouseControls = false;
                 canvas.style.cursor = "auto";
             }
-            secretSound.setDuration = 0;
+            secretSound.currentTime = 0;
             secretSound.play();
 
             let logo = document.getElementById("SiteLogo");
@@ -435,34 +489,6 @@
 
 
 
-
-
-
-
-
-
-    function youLOST(){
-        setStart = 0;
-        fullScreenMode = false;
-        lives = 0;
-        bossMode = false;
-        isGameRunning = false;
-        BossMusic.pause();
-        StartTheGame.pause();
-        StartTheGame.currentTime = 0;
-        BossMusic.currentTime = 0;
-
-        if (Player.isDead === false){
-            gameOverSound.currentTime = 0;
-            gameOverSound.play();
-            Player.isDead = true;
-        }
-
-        setTimeout(function (){
-            isGamePaused=true;
-        },50);
-
-    }
 
 
     function quit(){
@@ -599,6 +625,7 @@
 
         nukes = 3;
 
+
         Player.amountOfShots = 1;
         Player.sharpness = 0;
         Player.bulletCount = 1;
@@ -628,11 +655,10 @@
         }
         else{
             yesContinue = false;
-            Player.amountOfShots = rememberAmountOfShots;
-            nukes = rememberNukes;
-            Player.sharpness = rememberSharpness;
-            Player.bulletCount = rememberPlayerBulletCount;
-            Player.typeShip = rememberTypeShip;
+            Player.amountOfShots =  rememberPlayer.amountOfShots ;
+            Player.bulletCount =  rememberPlayer.bulletCount ;
+             Player.typeShip =  rememberPlayer.typeShip ;
+            Player.sharpness =  rememberPlayer.sharpness ;
 
             switch (Player.typeShip) {
                 case 1:
@@ -705,7 +731,7 @@
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            ctx.drawImage(Background.img, 0,0,100, 500, 0, 0,500,500);
+            ctx.drawImage(Background.img, 0,0,50, 500, 0, 0,500,500);
             BackgroundScroll();
             checkHighscore(points, Level, difficulty);
             drawBoom();
@@ -725,9 +751,11 @@
                 if (gameSpeed >= 15){
                     gameSpeed = 15;
                 }
+                readySetGo.currentTime = 0;
                 readySetGo.play();
 
                 for (let i in Laser){
+
                     Laser[i].speedY = gameSpeed*-1;
                 }
 
@@ -748,7 +776,9 @@
                 }
 
                 for (let i in Laser){
-                    Laser[i].speedY = gameSpeed*-1;
+
+                        Laser[i].speedY = gameSpeed * -1;
+
                 }
 
                 Set();
@@ -776,11 +806,10 @@
                 Go();
                 amountOfPowerUPs = 0;
 
-                rememberAmountOfShots = Player.amountOfShots;
-                rememberNukes = nukes;
-                rememberPlayerBulletCount = Player.bulletCount;
-                rememberSharpness = Player.sharpness;
-                rememberTypeShip = Player.typeShip;
+                rememberPlayer.amountOfShots =  Player.amountOfShots ;
+                rememberPlayer.bulletCount =  Player.bulletCount ;
+                rememberPlayer.typeShip =  Player.typeShip ;
+                rememberPlayer.sharpness =  Player.sharpness ;
 
                 setTimeout(function () {
                     PowerUP = [];

@@ -1,5 +1,5 @@
 //PLAYER CONTROLS AND CREATION
-const Player = {
+let Player = {
     w:40,
     h:30,
     x:canvas.width/2-30,
@@ -157,6 +157,7 @@ function nukeTheMap(){
                 Boss.Health -= 10;
                 createExplosion(0);
                 points += 100 * scoreMultiplier;
+                enemyExplode[0].currentTime = 0;
                 enemyExplode[0].play();
             } else {
 
@@ -169,7 +170,7 @@ function nukeTheMap(){
                             points += 100 * scoreMultiplier;
 
 
-                            enemyExplode[i % 5].setDuration = 0;
+                            enemyExplode[i % 5].currentTime = 0;
                             enemyExplode[i % 5].play();
                             if (Math.ceil(Math.random() * chanceOfPower) <= 10) {
                                 generatePower(i, false);
@@ -177,6 +178,7 @@ function nukeTheMap(){
                         } else {
                             Enemy[i].Health--;
                             Enemy[i].isDamaged = true;
+                            enemyHurtSound[i % 5].currentTime = 0;
                             enemyHurtSound[i % 5].play();
                         }
 
@@ -193,7 +195,7 @@ let CoolDown = false;
 let Laser = [];
 let SoundCounter = 0;
 
-function LaserConstructor(w,h,x,y,speedY,speedX,Active,Health){
+function LaserConstructor(w,h,x,y,speedY,speedX,Active,Health,sx=1,sy=0,sw=50,sh=75,img=laser){
     this.w =  w;
     this.h = h;
     this.x = x;
@@ -202,6 +204,11 @@ function LaserConstructor(w,h,x,y,speedY,speedX,Active,Health){
     this.speedX = speedX;
     this.Active = Active;
     this.Health = Health;
+    this.sx = sx;
+    this.sy = sy;
+    this.sw = sw;
+    this.sh = sh;
+    this.img = img;
 }
 
 function Shoot(){
@@ -218,8 +225,10 @@ function Shoot(){
             SoundCounter++;
 
             if (Player.bulletCount >= 6) {
+                shootLaser2[SoundCounter % 5].currentTime = 0;
                 shootLaser2[SoundCounter % 5].play();
             } else {
+                shootLaser[SoundCounter % 5].currentTime = 0;
                 shootLaser[SoundCounter % 5].play();
             }
 
@@ -231,7 +240,12 @@ function Shoot(){
                 playerLaserSpeed,
                 0,
                 true,
-                startingLaserHealth);
+                startingLaserHealth,
+                0,
+                0,
+                50,
+                75,
+                laser);
 
             if (sharpnessPointsToSpend <= 3) {
                 Laser[LaserShot].Health += sharpnessPointsToSpend
@@ -249,7 +263,12 @@ function Shoot(){
                     playerLaserSpeed,
                     0,
                     true,
-                    startingLaserHealth);
+                    startingLaserHealth,
+                    0,
+                    0,
+                    50,
+                    75,
+                    laser);
 
 
                 if (sharpnessPointsToSpend <= 3) {
@@ -276,7 +295,12 @@ function Shoot(){
                     playerLaserSpeed,
                     0,
                     true,
-                    1);
+                    1,
+                    0,
+                    0,
+                    50,
+                    75,
+                    laser);
 
 
                 if (sharpnessPointsToSpend <= 3) {
@@ -299,8 +323,12 @@ function Shoot(){
                     playerLaserSpeed,
                     0.3,
                     true,
-                    false,
-                    1);
+                    1,
+                    0,
+                    0,
+                    50,
+                    75,
+                    laser);
 
                 Laser[LaserShot + 4] = new LaserConstructor(
                     10,
@@ -310,8 +338,12 @@ function Shoot(){
                     playerLaserSpeed,
                     -0.3,
                     true,
-                    false,
-                    1);
+                    1,
+                    0,
+                    0,
+                    50,
+                    75,
+                    laser);
 
                 if (sharpnessPointsToSpend <= 3) {
                     Laser[LaserShot + 3].Health += sharpnessPointsToSpend;
@@ -346,8 +378,12 @@ function Shoot(){
                     playerLaserSpeed,
                     0.3,
                     true,
-                    false,
-                    1);
+                    1,
+                    0,
+                    0,
+                    50,
+                    75,
+                    laser);
 
                 Laser[LaserShot + 6] = new LaserConstructor(
                     10,
@@ -357,8 +393,12 @@ function Shoot(){
                     playerLaserSpeed,
                     -0.3,
                     true,
-                    false,
-                    1);
+                    1,
+                    0,
+                    0,
+                    50,
+                    75,
+                    laser);
 
                 if (sharpnessPointsToSpend <= 3) {
                     Laser[LaserShot + 5].Health += sharpnessPointsToSpend;
@@ -391,30 +431,31 @@ function drawLaser(){
 
             switch (Laser[i].Health){
                 case 4:
-                    ctx.drawImage(laserPiercing3, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
+                    Laser[i].sx = 150;
                     break;
                 case 3:
-                    ctx.drawImage(laserPiercing2, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
+                    Laser[i].sx = 100;
                     break;
                 case 2:
-                    ctx.drawImage(laserPiercing1, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
+                    Laser[i].sx = 50;
                     break;
                 default:
-                    ctx.drawImage(laser, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
+                    Laser[i].sx = 0;
                     break;
             }
+
+            Laser[i].sy+=75;
+            if (Laser[i].sy >= 150){
+                Laser[i].sy = 0;
+            }
+
+            ctx.drawImage(Laser[i].img, Laser[i].sx, Laser[i].sy, Laser[i].sw, Laser[i].sh, Laser[i].x, Laser[i].y, Laser[i].w, Laser[i].h);
 
             countGroup++;
             if (countGroup === Player.bulletCount){
                 count++;
                 countGroup = 0;
             }
-
-        /*
-            ctx.font = "25px VT323";
-            ctx.fillStyle= "red";
-            ctx.fillText(Player.bulletCount + "<-->" + countGroup + " " + Player.amountOfShots + "<-->" + count,100,200);
-           */
         }
     }
 
@@ -425,10 +466,10 @@ function drawLaser(){
 
 function newLaserPosition(){
     for (let i in Laser){
+        if (Laser[i].Active === true){
             Laser[i].y-=Laser[i].speedY;
             Laser[i].x-=Laser[i].speedX;
-
-
+        }
     }
 }
 let rememberSpeed;
@@ -500,6 +541,8 @@ function keyPressActions(){
                         EnemyFire = [];
                         Enemy = [];
                         BossMusic.pause();
+
+
 
                         if (Level%waveTillBoss !== 0){
                             for (let i in Enemy){
@@ -603,14 +646,33 @@ function keyPressActions(){
                     }
 
 
-                    if (e.touches[0].pageX - canvas.offsetLeft - Player.w/2 <= canvas.width - Player.w + 5 &&
-                        e.touches[0].pageX - canvas.offsetLeft - Player.w/2 >= 0 - 5&&
-                        e.touches[0].pageY - canvas.offsetTop - Player.h/2 >= 0 - 5&&
-                        e.touches[0].pageY - canvas.offsetTop - Player.h/2 <= canvas.height - Player.h + 5) {
+                    /*
+                    if (fullscreenOptimize === true) {
 
-                        Player.x= e.touches[0].pageX - canvas.offsetLeft - Player.w/2;
-                        Player.y= e.touches[0].pageY - canvas.offsetTop - Player.h/2;
+
+
+                        if (e.touches[0].pageX - canvas.width - Player.w/2 <= canvas.width - Player.w  &&
+                            e.touches[0].pageX - canvas.width - Player.w/2 >= 0 &&
+                            e.touches[0].pageY - canvas.height  - Player.h/2 >= 0 &&
+                            e.touches[0].pageY  - canvas.height- Player.h/2 <= canvas.height - Player.h ) {
+
+                            Player.x= e.touches[0].pageX  - Player.w/2;
+                            Player.y= e.touches[0].pageY  - Player.h/2;
+                        }
+
+
                     }
+                    else{ */
+                        if (e.touches[0].pageX - canvas.offsetLeft - Player.w/2 <= canvas.width - Player.w + 5 &&
+                            e.touches[0].pageX - canvas.offsetLeft - Player.w/2 >= 0 - 5&&
+                            e.touches[0].pageY - canvas.offsetTop - Player.h/2 >= 0 - 5&&
+                            e.touches[0].pageY - canvas.offsetTop - Player.h/2 <= canvas.height - Player.h + 5) {
+
+                            Player.x= e.touches[0].pageX - canvas.offsetLeft - Player.w/2;
+                            Player.y= e.touches[0].pageY - canvas.offsetTop - Player.h/2;
+                        }
+                    //}
+
 
 
 
@@ -626,7 +688,9 @@ function keyPressActions(){
                     shoot = e.touches[1];
 
 
-                    nukeTheMap();
+                    if (isNuked === false){
+                        nukeTheMap();
+                    }
 
             }
 

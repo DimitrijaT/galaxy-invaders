@@ -133,7 +133,13 @@ function generatePower(eX,isBossSummon){
         y: 0,
         speed: 2,
         Active: true,
-        typeOfPower: 1
+        typeOfPower: 1,
+        sx: 0,
+        sy: 0,
+        sh: 40,
+        sw: 40,
+        img: fireUP
+
     }
     if (bossMode === true){
         if (isBossSummon === true){
@@ -154,21 +160,48 @@ function generatePower(eX,isBossSummon){
 
     if (Math.ceil(Math.random() * 6) === 1  && bossMode !== true){ //no lifeUPS when vs. Boss
         PowerUP[amountOfPowerUPs].typeOfPower = 1 //lifeUP
+        PowerUP[amountOfPowerUPs].sx = 80
+        PowerUP[amountOfPowerUPs].sy = 0
+        PowerUP[amountOfPowerUPs].sw = 40
+        PowerUP[amountOfPowerUPs].sh = 40
+
     }
     else if (Math.ceil(Math.random() * 6) === 1){
         PowerUP[amountOfPowerUPs].typeOfPower = 3;  //shipUP
+
+        PowerUP[amountOfPowerUPs].sx = 120
+        PowerUP[amountOfPowerUPs].sy = 0
+        PowerUP[amountOfPowerUPs].sw = 40
+        PowerUP[amountOfPowerUPs].sh = 40
     }
     else if (Math.ceil(Math.random() * 15) === 1){
         PowerUP[amountOfPowerUPs].typeOfPower = 4;  //bombUP
+
+        PowerUP[amountOfPowerUPs].sx = 40
+        PowerUP[amountOfPowerUPs].sy = 0
+        PowerUP[amountOfPowerUPs].sw = 40
+        PowerUP[amountOfPowerUPs].sh = 40
     }
     else if (Math.ceil(Math.random() * 5) === 1){
         PowerUP[amountOfPowerUPs].typeOfPower = 5;  //sharpnessPower
+        PowerUP[amountOfPowerUPs].sx = 160
+        PowerUP[amountOfPowerUPs].sy = 0
+        PowerUP[amountOfPowerUPs].sw = 40
+        PowerUP[amountOfPowerUPs].sh = 40
     }
     else if (Math.ceil(Math.random() * 5) === 1) {
         PowerUP[amountOfPowerUPs].typeOfPower = 6;  //SHIELDUP
+        PowerUP[amountOfPowerUPs].sx = 200
+        PowerUP[amountOfPowerUPs].sy = 0
+        PowerUP[amountOfPowerUPs].sw = 40
+        PowerUP[amountOfPowerUPs].sh = 40
     }
         else{
         PowerUP[amountOfPowerUPs].typeOfPower = 2;  //fireUP
+        PowerUP[amountOfPowerUPs].sx = 0
+        PowerUP[amountOfPowerUPs].sy = 0
+        PowerUP[amountOfPowerUPs].sw = 40
+        PowerUP[amountOfPowerUPs].sh = 40
     }
     amountOfPowerUPs++;
 }
@@ -178,31 +211,7 @@ function drawPower(){
             PowerUP[i].Active = false;
         }
         if (PowerUP[i].Active === true) {
-
-            switch (PowerUP[i].typeOfPower){
-                case 1:
-                    ctx.drawImage(lifeUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
-                    break;
-
-                case 2:
-                    ctx.drawImage(fireUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
-                    break;
-
-                case 3:
-                    ctx.drawImage(shipUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
-                    break;
-
-                case 4:
-                    ctx.drawImage(bombUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
-                    break;
-
-                case 5:
-                    ctx.drawImage(sharpnessPower, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
-                    break;
-                case 6:
-                    ctx.drawImage(shieldUP, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
-                    break;
-            }
+            ctx.drawImage(PowerUP[i].img,PowerUP[i].sx, PowerUP[i].sy, PowerUP[i].sw, PowerUP[i].sh, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
         }
     }
 }
@@ -289,7 +298,7 @@ function drawBoom(){
             }
 
             let timeout;
-            if (Boom[i].isboss === true){
+            if (Boom[i].isboss === true && Boom[i].Health <= 0){
                 timeout = 6000;
             }
             else{
