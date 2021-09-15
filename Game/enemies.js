@@ -322,7 +322,7 @@ function EnemyFireConstructor(w,h,x,y,speed,Active,typeFire,sx,sy,sw,sh,img)
 function enemyShoot() {
     for (let i in Enemy) {
 
-        if ((Math.ceil(Math.random() * RateOfFire) <= 1)  && Enemy[i].isDead===false && Enemy[i].shieldMode === false && Enemy[i].descending === false) {
+        if ( Enemy[i].isDead===false  && (Math.ceil(Math.random() * RateOfFire) <= 1) && Enemy[i].shieldMode === false && Enemy[i].descending === false) {
 
             EnemyFire[EnemyShots] = new EnemyFireConstructor(
                 10,
@@ -346,7 +346,6 @@ function enemyShoot() {
     for (let i in EnemyFire) {
         switch(EnemyFire[i].typeFire){
             case 6:
-
                 EnemyFire[i].sx = 50;
                 EnemyFire[i].sy = 0;
                 EnemyFire[i].sw = 50
@@ -392,7 +391,7 @@ function drawEnemyLaser(){
         if (EnemyFire[i].y >= 500) {
             EnemyFire[i].Active = false;
         }
-        else if (  EnemyFire[i].Active === true){
+        else if ( EnemyFire[i].Active === true){
             ctx.drawImage(EnemyFire[i].img,EnemyFire[i].sx, EnemyFire[i].sy, EnemyFire[i].sw, EnemyFire[i].sh, EnemyFire[i].x, EnemyFire[i].y, EnemyFire[i].w, EnemyFire[i].h);
         }
 
@@ -513,6 +512,8 @@ function isHIT() {
                             }
                         }
 
+
+
                         Enemy[i].isDead = true;
                         points += 100 * scoreMultiplier;
 
@@ -581,9 +582,7 @@ function ifLevelBeaten(ForceBoss = false){
 
     if (checkIfAllDead === false || ForceBoss === true) {
 
-
         levelEnemyMixer++;
-
 
         if (Level === 1 || Level === 2|| Level === 3 || Level === 4){
             backgroundChange = true;
@@ -596,6 +595,7 @@ function ifLevelBeaten(ForceBoss = false){
 
 
         if (Level%waveTillBoss === 0 || ForceBoss === true){
+
 
             createBoss();
 

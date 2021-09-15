@@ -517,6 +517,7 @@ let fullscreenOptimize = false;
                 myMouse.style.background = "gray";
                 canvas.style.cursor = "auto";
 
+
             } else {
                 mouseMode = true;
                 mousecontrolsDisabled = false;
@@ -559,6 +560,18 @@ function secret(){
 
     function quit(){
         if (isGamePaused === false) {
+
+            if (mouseMode === true){
+                mousecontrolsDisabled = true;
+                canvas.style.cursor = "auto";
+            }
+
+            setTimeout(function(){
+                    canvas.style.cursor = "auto";
+                    mousecontrolsDisabled = true;
+            },100);
+
+
             fullScreenMode = false;
             lives = 0;
             bossMode = false;
@@ -667,6 +680,16 @@ function secret(){
 
 
     function beginGame(){
+
+        if (mouseMode === true){
+
+            myMouse.innerHTML = `Mouse Controls - ON`;
+            myMouse.style.background = "green";
+            mousecontrolsDisabled = false;
+            canvas.style.cursor = "none";
+        }
+
+
         runs = true;
         printing1 = true;
         Player.isDead = false;
@@ -805,12 +828,8 @@ function secret(){
 
         update();
 
-
-
-
-
-
     }
+
 
     function update(){
 
@@ -825,99 +844,97 @@ function secret(){
             checkHighscore(points, Level, difficulty);
             drawBoom();
             drawPower();
-
-
             drawLaser();
             newLaserPosition();
 
 
             if (printing1 === true) {
+                if (printing3 === true) {
+                    for (let i in PowerUP){
+                        PowerUP[i].speed += 0.05;
+                    }
+                    gameSpeed--;
+                    if (gameSpeed < 1){
+                        gameSpeed = 0.5;
+                        if (bossMode === true){
+                            gameSpeed = 1.5;
+                        }
+                    }
+                    Laser = [];
+                    Boom = [];
+                    numBooms = 0;
+                    Go();
+                    amountOfPowerUPs = 0;
 
-                for (let i in PowerUP){
-                    PowerUP[i].speed += 0.05;
+                    rememberPlayer.amountOfShots =  Player.amountOfShots ;
+                    rememberPlayer.bulletCount =  Player.bulletCount ;
+                    rememberPlayer.typeShip =  Player.typeShip ;
+                    rememberPlayer.sharpness =  Player.sharpness ;
+
+                    setTimeout(function () {
+                        PowerUP = [];
+                    }, 300);
+
+                    setTimeout(function () {
+                        printing1 = false;
+                        printing2 = false
+                        printing3 = false;
+                        gameSpeed = 0.5;
+                        if (bossMode === true){
+                            gameSpeed = 1.5;
+                        }
+                    }, 600);
                 }
-                gameSpeed++
-                if (gameSpeed >= 15){
-                    gameSpeed = 15;
-                }
-                readySetGo.currentTime = 0;
-                readySetGo.play();
-
-                for (let i in Laser){
-
-                    Laser[i].speedY = gameSpeed*-1;
-                }
-
-                Ready();
-                setTimeout(function(){
-                    printing1 = false;
-                    printing2 = true;
+                else if (printing2 === true) {
 
 
+                    for (let i in PowerUP){
+                        PowerUP[i].speed += 0.05;
+                    }
 
-                }, 650);
-
-            }
-
-            else if (printing2 === true) {
-
-
-                for (let i in PowerUP){
-                    PowerUP[i].speed += 0.05;
-                }
-
-                for (let i in Laser){
+                    for (let i in Laser){
 
                         Laser[i].speedY = gameSpeed * -1;
 
+                    }
+
+                    Set();
+                    setTimeout(function () {
+                        printing3 = true;
+
+                    }, 600);
+                }
+                else{
+
+                    readySetGo.currentTime = 0;
+                    readySetGo.play();
+
+                    for (let i in PowerUP){
+                        PowerUP[i].speed += 0.05;
+                    }
+                    gameSpeed++
+                    if (gameSpeed >= 15){
+                        gameSpeed = 15;
+                    }
+
+
+                    for (let i in Laser){
+
+                        Laser[i].speedY = gameSpeed*-1;
+                    }
+
+                    Ready();
+                    setTimeout(function(){
+                        printing2 = true;
+
+                    }, 650);
+
+
                 }
 
-                Set();
-                setTimeout(function () {
-                    printing2 = false;
-                    printing3 = true;
-
-                }, 600);
             }
 
-            else if (printing3 === true) {
-                for (let i in PowerUP){
-                    PowerUP[i].speed += 0.05;
-                }
-                gameSpeed--;
-                if (gameSpeed < 1){
-                    gameSpeed = 0.5;
-                    if (bossMode === true){
-                        gameSpeed = 1.5;
-                    }
-                }
-                Laser = [];
-                Boom = [];
-                numBooms = 0;
-                Go();
-                amountOfPowerUPs = 0;
-
-                rememberPlayer.amountOfShots =  Player.amountOfShots ;
-                rememberPlayer.bulletCount =  Player.bulletCount ;
-                rememberPlayer.typeShip =  Player.typeShip ;
-                rememberPlayer.sharpness =  Player.sharpness ;
-
-                setTimeout(function () {
-                    PowerUP = [];
-                }, 300);
-
-                setTimeout(function () {
-                    printing3 = false;
-                    gameSpeed = 0.5;
-                    if (bossMode === true){
-                        gameSpeed = 1.5;
-                    }
-                }, 600);
-            }
             else {
-
-
-
                 if (Level % waveTillBoss === 0) {
                     BossLogic();
 
@@ -954,7 +971,9 @@ function secret(){
 
             scoreboard();
 
-            requestAnimationFrame(update);
+                requestAnimationFrame(update);
+
+
 
 
         }

@@ -34,7 +34,6 @@ let isGamePaused = true;
 let yesContinue = false;
 let firstTime = true;
 let playerLaserSpeed = 4;
-let mouseControls = false;
 let printing1, printing2, printing3 = false;
 let color;
 let mousecontrolsDisabled = true;

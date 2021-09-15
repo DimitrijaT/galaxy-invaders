@@ -616,6 +616,9 @@ function keyPressActions(){
         canvas.addEventListener('touchcancel', handleTouchEvent, true);
         canvas.addEventListener('touchstart', handleTouchEvent,true)
 
+        let oldX;
+        let oldY;
+
 
         function handleTouchEvent(e){
             e.preventDefault();
@@ -626,7 +629,7 @@ function keyPressActions(){
                 case 1:
                     touch = e.touches[0];
 
-                    console.log(touch.clientX + "  " + touch.clientY + "   " + canvas.clientWidth + "-" + canvas.clientHeight + " " + (canvas.clientHeight - canvas.clientHeight / 4));
+                   // console.log(touch.clientX + "  " + touch.clientY + "   " + canvas.clientWidth + "-" + canvas.clientHeight + " " + (canvas.clientHeight - canvas.clientHeight / 4));
                     if (printing1 === false && printing2 === false && printing3 === false){
                          ShootInterval = true;
                     }
@@ -654,9 +657,12 @@ function keyPressActions(){
                             e.touches[0].pageY - canvas.offsetTop - Player.h/2 >= 0 - 5&&
                             e.touches[0].pageY - canvas.offsetTop - Player.h/2 <= canvas.height - Player.h + 5) {
 
-                            Player.x= e.touches[0].pageX - canvas.offsetLeft - Player.w/2;
+                            Player.x= e.touches[0].pageX - canvas.offsetLeft - Player.w/4;
                             Player.y= e.touches[0].pageY - canvas.offsetTop - Player.h/2;
                         }
+
+
+
                     //}
 
 
@@ -705,11 +711,12 @@ setInterval(function (){
 //MOUSE CONTROLS
 
 
-
 canvas.addEventListener('mousedown', function (e){
     if (mousecontrolsDisabled === false) {
-        e.preventDefault();
-        ShootInterval = true;
+        if (e.button === 0){
+            e.preventDefault();
+            ShootInterval = true;
+        }
     }
 
 });
@@ -722,6 +729,15 @@ canvas.addEventListener('mouseup', function (e){
     }
 
 });
+
+canvas.addEventListener('contextmenu', function (e){
+    if (mousecontrolsDisabled === false && isNuked === false) {
+        e.preventDefault();
+        nukeTheMap();
+        ShootInterval = false;
+    }
+});
+
 
 canvas.addEventListener("mousemove", function (e) {
 
@@ -737,9 +753,14 @@ canvas.addEventListener("mousemove", function (e) {
             canvasY - Player.h / 2 > 0 &&
             canvasY - Player.h / 2 < canvas.height - Player.h) {
 
-            Player.x = canvasX;
-            Player.y = canvasY;
+
+
+                Player.x = canvasX;
+                Player.y = canvasY;
+
         }
+
+
     }
 
 
