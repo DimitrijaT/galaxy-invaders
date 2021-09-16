@@ -317,20 +317,9 @@ function BossShoot(){
                         80,
                         enemyLaser);
 
-                    BossFire[BossShots + 1] = new BossFireConstructor(
-                        10,
-                        Level / 2 + 30,
-                        Boss.x + Boss.w / 2 - 90,
-                        Boss.y + 60,
-                        enemyProjectileSpeed,
-                        true,
-                        1,
-                        false,
-                        200,
-                        0,
-                        50,
-                        80,
-                        enemyLaser);
+                    BossFire[BossShots + 1] = Object.assign({}, BossFire[BossShots]);
+                    BossFire[BossShots + 1].x = Boss.x + Boss.w / 2 - 90
+
 
                     BossFire[BossShots + 2] = new BossFireConstructor(
                         10,
@@ -347,20 +336,9 @@ function BossShoot(){
                         80,
                         enemyLaser);
 
-                    BossFire[BossShots + 3] = new BossFireConstructor(
-                        10,
-                        15,
-                        Boss.x + Boss.w / 2 - 100,
-                        Boss.y + 60,
-                        enemyProjectileSpeed,
-                        true,
-                        1,
-                        false,
-                        0,
-                        0,
-                        50,
-                        80,
-                        enemyLaser);
+                    BossFire[BossShots + 3] = Object.assign({}, BossFire[BossShots+2]);
+                    BossFire[BossShots + 3].x = Boss.x + Boss.w / 2 - 100;
+
 
                     BossShots += 4;
                 }
@@ -385,34 +363,10 @@ function BossShoot(){
                         50,
                         80,
                         enemyLaser);
-                    BossFire[BossShots + 1] = new BossFireConstructor(18, 22, Boss.x + Boss.w / 2, Boss.y, 4, true, 1,
-                        false,
-                        100,
-                        0,
-                        50,
-                        80,
-                        enemyLaser);
-                    BossFire[BossShots + 2] = new BossFireConstructor(18, 22, Boss.x + Boss.w / 2, Boss.y, 4, true, 1,
-                        false,
-                        100,
-                        0,
-                        50,
-                        80,
-                        enemyLaser);
-                    BossFire[BossShots + 3] = new BossFireConstructor(18, 22, Boss.x + Boss.w / 2, Boss.y, 4, true, 1,
-                        false,
-                        100,
-                        0,
-                        50,
-                        80,
-                        enemyLaser);
-                    BossFire[BossShots + 4] = new BossFireConstructor(18, 22, Boss.x + Boss.w / 2, Boss.y, 4, true, 1,
-                        false,
-                        100,
-                        0,
-                        50,
-                        80,
-                        enemyLaser);
+                    BossFire[BossShots+1] = Object.assign({}, BossFire[BossShots]);
+                    BossFire[BossShots+2] = Object.assign({}, BossFire[BossShots]);
+                    BossFire[BossShots+3] = Object.assign({}, BossFire[BossShots]);
+                    BossFire[BossShots+4] = Object.assign({}, BossFire[BossShots]);
 
                     BossShots += 5;
                 }
@@ -653,6 +607,9 @@ function isPlayerHITbyBoss(){
 function isBossBeaten(){
     if (Boss.Health <= 0){
 
+        readySetGo.currentTime = 0;
+        readySetGo.play();
+
         if (Level% 10 === 0){
             backgroundChange = true;
             backgroundChange2 = true;
@@ -666,6 +623,7 @@ function isBossBeaten(){
         bossMode = false;
         points += 1500;
         fasterDecent +=0.05;
+        Level++;
 
         if (lives < maxLives){
             lives += gainLifePerStage;
@@ -682,7 +640,7 @@ function isBossBeaten(){
         if (enemyProjectileSpeed < 3) {
             enemyProjectileSpeed += 0.2;
         }
-        Level++;
+
         BossFire = [];
         EnemyFire = [];
         Enemy = [];

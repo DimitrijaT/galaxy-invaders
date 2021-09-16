@@ -1,8 +1,8 @@
     //MAIN SETUP
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+    canvas.width = 500;
+    canvas.height = 500;
     MediumMode();
     myContinue.innerHTML = `Revives - ${revives}`;
 
@@ -307,7 +307,6 @@ let fullscreenOptimize = false;
         ifLevelBeaten();
         drawEnemyLaser();
         enemyShoot();
-        newEnemyLaserPosition();
         newEnemyPosition();
         isHIT();
         isPlayerHIT();
@@ -546,6 +545,8 @@ let fullscreenOptimize = false;
 
 function secret(){
 
+    begin2();
+
     secretSound.currentTime = 0;
     secretSound.play();
 
@@ -680,6 +681,9 @@ function secret(){
 
 
     function beginGame(){
+
+        readySetGo.currentTime = 0;
+        readySetGo.play();
 
         if (mouseMode === true){
 
@@ -854,15 +858,16 @@ function secret(){
                         PowerUP[i].speed += 0.05;
                     }
                     gameSpeed--;
-                    if (gameSpeed < 1){
-                        gameSpeed = 0.5;
-                        if (bossMode === true){
-                            gameSpeed = 1.5;
+                    if (gameSpeed < 5){
+                        gameSpeed = 1;
+                        if (bossMode === true || (levelEnemyMixer === 7 && difficulty !== 3 && Level < 50)){
+                            gameSpeed = 5;
                         }
                     }
                     Laser = [];
                     Boom = [];
                     numBooms = 0;
+                    EnemyShots = 0;
                     Go();
                     amountOfPowerUPs = 0;
 
@@ -879,9 +884,9 @@ function secret(){
                         printing1 = false;
                         printing2 = false
                         printing3 = false;
-                        gameSpeed = 0.5;
-                        if (bossMode === true){
-                            gameSpeed = 1.5;
+                        gameSpeed = 1;
+                        if (bossMode === true || (levelEnemyMixer === 7 && difficulty !== 3 && Level < 50)){
+                            gameSpeed = 5;
                         }
                     }, 600);
                 }
@@ -905,9 +910,6 @@ function secret(){
                     }, 600);
                 }
                 else{
-
-                    readySetGo.currentTime = 0;
-                    readySetGo.play();
 
                     for (let i in PowerUP){
                         PowerUP[i].speed += 0.05;
@@ -970,6 +972,8 @@ function secret(){
             }
 
             scoreboard();
+
+
 
                 requestAnimationFrame(update);
 

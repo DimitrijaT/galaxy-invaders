@@ -185,7 +185,7 @@ footer{
     justify-content: center;
     align-items: center;
     color: #ffffff;
-    height: 5vh;
+    height: 4vh;
     box-shadow: 0 -2px #000000;
     background-color: 	#383838;
     /* background-image: linear-gradient( #ce00ce, darkmagenta); */
@@ -200,18 +200,21 @@ footer{
 #canvas{
     border-radius: 15px;
     flex-shrink: 1;
-    flex-basis: 500px;
-    max-width: 500px;
+    flex-basis: 600px;
+    max-width: 600px;
     min-width: 100px;
-    height: 500px;
-    margin: 3%;
+    height: 600px;
+    margin: 1%;
     align-self: center;
 
     background: url("SiteImages/GalaxyInvaders.png") #740373 round;
-
 }
 
-.MainMenu > button{
+#canvas2{
+    display: none;
+}
+
+.MainMenu > button {
     user-select: none;
     color: #EDF5E1;
     background-color: green;
@@ -219,7 +222,7 @@ footer{
     display: block;
     border-radius: 15px;
     border: none;
-    margin: 1%;
+    margin: 1.3%;
     padding: 6%;
     min-width: 300px;
     font-size: 1.2em;
@@ -258,7 +261,7 @@ footer{
 
 article{
     min-width: 300px;
-    margin: 2%;
+    margin: 1%;
     background-color: #383838;
     color: #EDF5E1;
     border-radius: 15px;
@@ -396,15 +399,31 @@ form input[type="submit"]{
     width: 100%;
 }
 
-@media only screen and (max-width: 600px) {
 
-    sub{
+@media only screen and (max-width: 800px) {
+
+    sub {
         display: none;
     }
-    #FullScreen{
+
+    #FullScreen {
         display: none !important;
     }
 
+    #canvas {
+        margin: 2%;
+        flex-basis: 500px;
+        height: 500px;
+    }
+
+    article {
+        margin: 3%;
+    }
+
+    .MainMenu > button {
+        margin: 1%;
+
+    }
 }
 
 article,header,footer{

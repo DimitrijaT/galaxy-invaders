@@ -39,6 +39,7 @@
 
 
     <div class="MainMenu">
+        <canvas oncontextmenu="return false;" id="canvas2" width="200" height="30">This shows up if Canvas is not supported by your browser :(</canvas>
         <button onclick="pageclick();PauseResume()" id="PauseResume">Pause</button>
         <button onclick="pageclick();Continue()" id="Continue"></button>
         <button onclick="pageclick();beginGame()" id="StartGame">Start Game - Medium</button>
@@ -111,7 +112,7 @@
 
     <div class="LoadGameImages">
 
-
+        <img src="Images/asteroids.png" alt="" id="Asteroid">
         <img src="Images/ship.png" alt="" id="Player">
         <img src="Images/alien.png" alt="" id="Enemy">
         <img src="Images/enemyFire.png" alt="" id="EnemyLaser">
@@ -145,7 +146,7 @@
 <script src="Game/bosses.js"></script>
 <script src="Game/powerUps.js"></script>
 <script src="Game/sounds.js"></script>
-
+<script src="Game/index2.js"></script>
 <script src="Game/localStorage.js"></script>
 
 </body>

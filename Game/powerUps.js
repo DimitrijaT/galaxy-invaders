@@ -249,7 +249,7 @@ function BoomConstructor(w,h,x,y,Active,sx,sy,sw,sh,ib,img)
     this.img = img;
 }
 
-function createExplosion(eX){
+function createExplosion(eX,asteroid = false){
     if (bossMode === true){
         Boom[numBooms] = new BoomConstructor(
             200,
@@ -278,6 +278,10 @@ function createExplosion(eX){
             191,
             false,
             backgroundNuked);
+    }
+
+    if (asteroid === true){
+        Boom[numBooms].w = Boom[numBooms].h +=   Enemy[eX].w / 2
     }
 
     numBooms++;

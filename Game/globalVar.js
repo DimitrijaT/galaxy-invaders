@@ -1,5 +1,6 @@
 const image =  document.getElementById('Player');
 const enemy =  document.getElementById('Enemy');
+const asteroid =  document.getElementById('Asteroid');
 const laser = document.getElementById('Laser');
 const motherShip =  document.getElementById('MotherShip');
 const enemyLaser = document.getElementById('EnemyLaser');
@@ -40,6 +41,7 @@ let mousecontrolsDisabled = true;
 let mouseMode = false;
 let runs = false;
 let rememberPlayer = Player;
+let noHitChallenge = false
 
 
 myButton = document.getElementById('StartGame');
