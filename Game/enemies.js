@@ -38,7 +38,7 @@ function fillEnemies(){
     }
 
     let typeEnemy = levelEnemyMixer;
-    let typeArray = [Math.ceil(Math.random() * 7),Math.ceil(Math.random() * 7),Math.ceil(Math.random() * 7),Math.ceil(Math.random() * 7),Math.ceil(Math.random() * 7),Math.ceil(Math.random() * 7)]
+    let typeArray = [Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 6),Math.ceil(Math.random() * 7)]
 
     for (let i=0;i<numOfEnemies;i++){
 
@@ -170,7 +170,7 @@ function drawEnemy(){
     {
         if(Enemy[i].isDead === false){
 
-            if (Enemy[i].typeEnemy === 7){
+            if (Enemy[i].typeEnemy === 7 && Enemy[i].y>=-10){
                 ctx.drawImage(Enemy[i].img,Enemy[i].sx, Enemy[i].sy, Enemy[i].sw, Enemy[i].sh, Enemy[i].x, Enemy[i].y, Enemy[i].w, Enemy[i].h);
 
                asteroidSwap(Enemy,i);
@@ -227,7 +227,7 @@ function newEnemyPosition(){
                     speedUp = 0.5;
                 }
                 if (Enemy[i].y <= -10){
-                    speedUp*=2;
+                    speedUp*=1.5;
                 }
                 Enemy[i].y += speedUp;
                 Enemy[i].x += Enemy[i].xd;
