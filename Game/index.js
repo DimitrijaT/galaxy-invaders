@@ -104,11 +104,18 @@
 
         if (Player.unkillable === true){
 
-            ctx.lineWidth = "10";
+            ctx.lineWidth = "5";
             ctx.strokeStyle = '#740373';
             ctx.beginPath();
-            ctx.rect(0, 500, time / MaxTime * 500 , 5);
+            ctx.rect(0, 500, 500 , 10);
             ctx.stroke();
+
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.rect(0, 500, time / MaxTime * 500, 10);
+            ctx.stroke();
+
         }
     }
 
@@ -148,6 +155,11 @@
             myOptions.style.display = "none";
             myQuit.style.display = 'none';
             mySettings.innerHTML = 'Back';
+            myPowerPanel.style.display = 'block';
+            myReset.style.display = 'block';
+
+            myContinue.style.display = 'none';
+
         }
         else{
             inSettings = false;
@@ -160,12 +172,14 @@
             myOptions.style.display = "block";
             myQuit.style.display = 'none';
             mySettings.innerHTML = 'Settings';
+            myPowerPanel.style.display = 'none';
+            myReset.style.display = 'none';
+            if (revives > 0 && runs === true && showContinue === true){
+                myContinue.style.display = 'block';
+                showContinue = true;
+            }
 
         }
-
-        //if (mouseControls === false && runs === true){
-         //   myMouse.style.display = "none";
-        //}
 
 
     }
@@ -183,6 +197,8 @@
             myMouse.style.display = "none";
             mySettings.style.display = "none";
             myContinue.style.display = 'none';
+            myPowerPanel.style.display = 'none';
+            myReset.style.display = 'none';
 
 
     }
@@ -192,10 +208,13 @@
         Medium.style.display = "none";
         Hard.style.display = "none";
         myContinue.style.display = "none";
+        showContinue = false;
         myButton.style.display = "block";
         myOptions.style.display = "block";
         mySettings.style.display = "block";
         myFullScreen.style.display = "none";
+        myPowerPanel.style.display = 'none';
+        myReset.style.display = 'none';
 
     }
 
@@ -536,16 +555,30 @@ let fullscreenOptimize = false;
 
 
 
+function powerPanel(){
+
+        if (powerPanelActive === false){
+            powerPanelActive = true;
+            myPowerPanel.innerHTML = `Power Panel - ON`;
+            myPowerPanel.style.background = "green";
+            begin2();
+        }
+        else{
+            powerPanelActive = false;
+            myPowerPanel.innerHTML = `Power Panel - OFF`;
+            myPowerPanel.style.background = "gray";
+            begin2();
+        }
 
 
 
+
+    }
 
 
 
 
 function secret(){
-
-    begin2();
 
     secretSound.currentTime = 0;
     secretSound.play();
@@ -682,6 +715,8 @@ function secret(){
 
     function beginGame(){
 
+
+        runs = true;
         readySetGo.currentTime = 0;
         readySetGo.play();
 
@@ -693,8 +728,6 @@ function secret(){
             canvas.style.cursor = "none";
         }
 
-
-        runs = true;
         printing1 = true;
         Player.isDead = false;
         isGamePaused = false;
@@ -741,12 +774,19 @@ function secret(){
 
 
         if(yesContinue === false){
+
+            Player.amountOfShots =  1 ;
+            Player.bulletCount = 1;
+            Player.typeShip =  1 ;
+            levelEnemyMixer = 1;
+            Player.sx = Player2.sx = 0;
             Background.type = 0
             Background2.type = 0;
             gameSpeed = 1;
             revives = 3;
             myContinue.innerHTML = `Revives - ${revives}`;
             myContinue.style.background = "green";
+            Player.ultraLaserSpeed = 0;
 
             StartTheGame.currentTime = 0;
             StartTheGame.play();
@@ -761,10 +801,15 @@ function secret(){
         }
         else{
             yesContinue = false;
+            PowerUP = [];
             Player.amountOfShots =  rememberPlayer.amountOfShots ;
             Player.bulletCount =  rememberPlayer.bulletCount ;
-             Player.typeShip =  rememberPlayer.typeShip ;
+            Player.typeShip =  rememberPlayer.typeShip ;
             Player.sharpness =  rememberPlayer.sharpness ;
+            setTimeout(function (){
+                Player2.sx = Player.sx;
+            },200)
+
 
             switch (Player.typeShip) {
                 case 1:
@@ -805,7 +850,7 @@ function secret(){
         myPauseResume.style.display = 'block';
         myQuit.style.display = 'block';
         myQuit.style.background = '#B7121F';
-        myReset.style.background = 'green';
+        myReset.style.background = '#B7121F';
         myReset.style.display = 'none';
         mySettings.style.display = "none";
         myFullScreen.style.display = 'block';
@@ -947,7 +992,6 @@ function secret(){
 
             if (isGameRunning === true) {
                 isPowerUP();
-                newPowerPosition();
                 PlayerLogic();
             } else {
                 ctx.font = "40px VT323";
@@ -959,16 +1003,19 @@ function secret(){
                     myOptions.style.display = "block";
                 }
                 myContinue.style.display = "block";
-                myReset.style.display = 'block';
+                showContinue = true;
+                myReset.style.display = 'none';
                 myQuit.style.display = 'none';
                 myPauseResume.style.display = 'none';
                 if (Level === 1 || difficulty === 3 ) {
                     myContinue.style.display = "none";
+                    showContinue = false;
                 }
 
                 mySettings.style.display = "block";
                 myFullScreen.style.display = 'none';
                 myMouse.style.display = 'none';
+                myPowerPanel.style.display = 'none';
             }
 
             scoreboard();

@@ -41,10 +41,12 @@ let mousecontrolsDisabled = true;
 let mouseMode = false;
 let runs = false;
 let rememberPlayer = Player;
-let noHitChallenge = false
+let noHitChallenge = false;
+let showContinue = false;
 
 
 myButton = document.getElementById('StartGame');
+myPowerPanel = document.getElementById('PowerPanel');
 
 myMouse = document.getElementById('MouseONOFF');
 

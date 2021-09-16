@@ -65,10 +65,13 @@ function grantPower(type,duration = 5000,hackLives = false){
             Player.typeShip++;
             if (Player.sx >=600){
                 Player.sx = 600;
+
             }
             if ( Player.typeShip > 5){
                 Player.typeShip = 5;
             }
+
+            Player2.sx = Player.sx;
 
 
             if (Player.bulletCount === 1 || Player.bulletCount === 2){
@@ -100,6 +103,9 @@ function grantPower(type,duration = 5000,hackLives = false){
             powerUPSound.play();
             if (Player.sharpness <= 12){
                 Player.sharpness++;
+                if (Player.sharpness === 12){
+                    Player.ultraLaserSpeed = 1;
+                }
             }
 
 
@@ -216,16 +222,11 @@ function drawPower(){
         }
         if (PowerUP[i].Active === true) {
             ctx.drawImage(PowerUP[i].img,PowerUP[i].sx, PowerUP[i].sy, PowerUP[i].sw, PowerUP[i].sh, PowerUP[i].x, PowerUP[i].y, PowerUP[i].w, PowerUP[i].h);
+            PowerUP[i].y+=PowerUP[i].speed + Player.ultraLaserSpeed;
         }
     }
 }
-function newPowerPosition() {
 
-    for (let i in PowerUP){
-        PowerUP[i].y+=PowerUP[i].speed;
-    }
-
-}
 
 
 //ENEMY DEATH EXPLOSIONS
@@ -267,8 +268,8 @@ function createExplosion(eX,asteroid = false){
     }
     else{
         Boom[numBooms] = new BoomConstructor(
-            40,
-            40,
+            25,
+            25,
             Enemy[eX].x + Enemy[eX].w / 2 - 5,
             Enemy[eX].y,
             true,
@@ -281,7 +282,7 @@ function createExplosion(eX,asteroid = false){
     }
 
     if (asteroid === true){
-        Boom[numBooms].w = Boom[numBooms].h +=   Enemy[eX].w / 2
+        Boom[numBooms].w = Boom[numBooms].h +=  Math.ceil( Enemy[eX].w / 2);
     }
 
     numBooms++;

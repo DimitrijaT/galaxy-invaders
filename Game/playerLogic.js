@@ -17,7 +17,8 @@ let Player = {
     sx:  0,
     sy : 0,
     sw : 150,
-    sh : 140
+    sh : 140,
+    ultraLaserSpeed: 0
 }
 
 function MovePlayer(){
@@ -84,6 +85,8 @@ let DamageShield
 
 
 function takeDamage(x = 1){
+
+    Player.ultraLaserSpeed = 0;
     Player.unkillable = true;
 
     Player.sx -=150;
@@ -91,6 +94,8 @@ function takeDamage(x = 1){
     if (Player.sx <= 0){
         Player.sx =0;
     }
+    Player2.sx = Player.sx;
+
 
     Player.typeShip--;
 
@@ -237,7 +242,7 @@ function Shoot(){
                 25,
                 Player.x + Player.w / 2 - 5,
                 Player.y,
-                playerLaserSpeed,
+                playerLaserSpeed + Player.ultraLaserSpeed,
                 0,
                 true,
                 startingLaserHealth,
@@ -260,7 +265,7 @@ function Shoot(){
                     25,
                     Player.x + Player.w / 2 + 10,
                     Player.y,
-                    playerLaserSpeed,
+                    playerLaserSpeed + Player.ultraLaserSpeed,
                     0,
                     true,
                     startingLaserHealth,
@@ -292,7 +297,7 @@ function Shoot(){
                     25,
                     Player.x + Player.w / 2 - 7,
                     Player.y - 5,
-                    playerLaserSpeed,
+                    playerLaserSpeed + Player.ultraLaserSpeed,
                     0,
                     true,
                     1,
@@ -320,7 +325,7 @@ function Shoot(){
                     20,
                     Player.x + Player.w / 2 - 25,
                     Player.y + 15,
-                    playerLaserSpeed,
+                    playerLaserSpeed + Player.ultraLaserSpeed,
                     0.3,
                     true,
                     1,
@@ -335,7 +340,7 @@ function Shoot(){
                     20,
                     Player.x + Player.w / 2 + 15,
                     Player.y + 15,
-                    playerLaserSpeed,
+                    playerLaserSpeed + Player.ultraLaserSpeed,
                     -0.3,
                     true,
                     1,
@@ -375,7 +380,7 @@ function Shoot(){
                     20,
                     Player.x + Player.w / 2 - 35,
                     Player.y + 30,
-                    playerLaserSpeed,
+                    playerLaserSpeed+ Player.ultraLaserSpeed,
                     0.3,
                     true,
                     1,
@@ -390,7 +395,7 @@ function Shoot(){
                     20,
                     Player.x + Player.w / 2 + 25,
                     Player.y + 30,
-                    playerLaserSpeed,
+                    playerLaserSpeed + Player.ultraLaserSpeed,
                     -0.3,
                     true,
                     1,
@@ -616,8 +621,6 @@ function keyPressActions(){
         canvas.addEventListener('touchcancel', handleTouchEvent, true);
         canvas.addEventListener('touchstart', handleTouchEvent,true)
 
-        let oldX;
-        let oldY;
 
 
         function handleTouchEvent(e){
