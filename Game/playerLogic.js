@@ -21,6 +21,13 @@ let Player = {
     ultraLaserSpeed: 0
 }
 
+/*
+function deletePlayerLaser(a){
+    Laser.splice(a,1)
+}
+
+ */
+
 function MovePlayer(){
 
 
@@ -156,7 +163,6 @@ function nukeTheMap(){
             BossFire = [];
             EnemyFire = [];
 
-
             if (Level % waveTillBoss === 0) {
                 Boss.isDamaged = true;
                 Boss.Health -= 10;
@@ -167,27 +173,10 @@ function nukeTheMap(){
             } else {
 
                 for (let i in Enemy) {
-                    if (Enemy.hasOwnProperty(i)) {
-                        if ((Enemy[i].Health <= 1 && Enemy[i].isDead === false) || (difficulty === 1 && Enemy[i].isDead === false)) {
-
-                            createExplosion(i);
-                            Enemy[i].isDead = true;
-                            points += 100 * scoreMultiplier;
-
-
-                            enemyExplode[i % 5].currentTime = 0;
-                            enemyExplode[i % 5].play();
-                            if (Math.ceil(Math.random() * chanceOfPower) <= 10) {
-                                generatePower(i, false);
-                            }
-                        } else {
-                            Enemy[i].Health--;
-                            Enemy[i].isDamaged = true;
-                            enemyHurtSound[i % 5].currentTime = 0;
-                            enemyHurtSound[i % 5].play();
-                        }
-
-                    }
+                        Enemy[i].Health--;
+                        Enemy[i].isDamaged = true;
+                        enemyHurtSound[i % 5].currentTime = 0;
+                        enemyHurtSound[i % 5].play();
                 }
 
             }
@@ -200,7 +189,7 @@ let CoolDown = false;
 let Laser = [];
 let SoundCounter = 0;
 
-function LaserConstructor(w,h,x,y,speedY,speedX,Active,Health,sx=1,sy=0,sw=50,sh=75,img=laser){
+function LaserConstructor(w,h,x,y,speedY,speedX,Active,Health,sx=1,sy=0,sw=50,sh=75,img=laser/*,xo = 0, yo = 0*/){
     this.w =  w;
     this.h = h;
     this.x = x;
@@ -214,6 +203,8 @@ function LaserConstructor(w,h,x,y,speedY,speedX,Active,Health,sx=1,sy=0,sw=50,sh
     this.sw = sw;
     this.sh = sh;
     this.img = img;
+    //this.xo = xo;
+    //this.yo = yo;
 }
 
 function Shoot(){
@@ -466,7 +457,6 @@ function drawLaser(){
 
     CoolDown = count >= Player.amountOfShots;
 
-
 }
 
 function newLaserPosition(){
@@ -477,6 +467,7 @@ function newLaserPosition(){
         }
     }
 }
+
 let rememberSpeed;
 let flagSpeed=false;
 let hacks1 = false;
@@ -558,9 +549,7 @@ function keyPressActions(){
 
                         if (Level%waveTillBoss !== 0){
                             for (let i in Enemy){
-                                if (Enemy[i].isDead===false){
-                                    Enemy[i].isDead = true;
-                                }
+                                deleteEnemy(i);
                             }
                         }
 

@@ -103,12 +103,14 @@
         }
 
         if (Player.unkillable === true){
-
+/*
             ctx.lineWidth = "5";
             ctx.strokeStyle = '#740373';
             ctx.beginPath();
             ctx.rect(0, 500, 500 , 10);
             ctx.stroke();
+
+ */
 
             ctx.lineWidth = "5";
             ctx.strokeStyle = color;
@@ -595,6 +597,7 @@ function secret(){
     function quit(){
         if (isGamePaused === false) {
 
+            ShootInterval = false;
             if (mouseMode === true){
                 mousecontrolsDisabled = true;
                 canvas.style.cursor = "auto";
@@ -625,7 +628,6 @@ function secret(){
             },50);
         }
     }
-
 
     function PauseResume(goingFullScreen = false){
 
@@ -888,14 +890,10 @@ function secret(){
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            ctx.drawImage(Background.img, 0,0,50, 500, 0, 0,500,500);
+
+            ctx.drawImage(Background.img, 0,0,300,30, 0, 0,500,50);
             BackgroundScroll();
             checkHighscore(points, Level, difficulty);
-            drawBoom();
-            drawPower();
-            drawLaser();
-            newLaserPosition();
-
 
             if (printing1 === true) {
                 if (printing3 === true) {
@@ -980,7 +978,6 @@ function secret(){
                 }
 
             }
-
             else {
                 if (Level % waveTillBoss === 0) {
                     BossLogic();
@@ -989,6 +986,11 @@ function secret(){
                     EnemyLogic();
                 }
             }
+
+            drawBoom();
+            drawPower();
+            drawLaser();
+            newLaserPosition();
 
             if (isGameRunning === true) {
                 isPowerUP();
@@ -1019,13 +1021,7 @@ function secret(){
             }
 
             scoreboard();
-
-
-
-                requestAnimationFrame(update);
-
-
-
+            requestAnimationFrame(update);
 
         }
 
