@@ -563,7 +563,7 @@ function drawEnemyLaser(){
 
 function Death(Enemy, i){
 
-    if (Enemy[i].Health < 1 || difficulty === 1) {
+    if (Enemy[i].Health < 1) {
 
         createExplosion(i);
         points += 100 * scoreMultiplier;
@@ -577,8 +577,6 @@ function Death(Enemy, i){
     }
 
 }
-
-
 
 
 function isPlayerHIT() {
