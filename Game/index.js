@@ -781,6 +781,7 @@ function secret(){
             Player.bulletCount = 1;
             Player.typeShip =  1 ;
             levelEnemyMixer = 1;
+            levelBossMixer = 1;
             Player.sx = Player2.sx = 0;
             Background.type = 0
             Background2.type = 0;

@@ -191,6 +191,12 @@ function drawEnemy(){
                         Enemy[i].shieldMode = false;
                     }, 1500);
                 }
+                if (Enemy[i].typeEnemy === 6 &&  Enemy[i].shieldMode === true){
+                    setTimeout(function () {
+                        Enemy[i].shieldMode = false;
+                    }, 1200);
+                }
+
 /*
                 if (Enemy[i].typeEnemy === 1  &&  Enemy[i].y <= 600 && Enemy[i].attackMode === false &&  Enemy[i].retreatMode === false && Math.ceil(Math.random() * 3000) === 1){
                     Enemy[i].shadowy =  Enemy[i].y;
@@ -268,6 +274,15 @@ function newEnemyPosition(){
                 }
                 Enemy[i].y += speedUp;
                 Enemy[i].x += Enemy[i].xd;
+                if (Enemy[i].xd > 0){
+                    setTimeout(function (){
+                        Enemy[i].xd -= 0.2;
+                        if (Enemy[i].xd < 0){
+                            Enemy[i].xd = 0;
+                        }
+                    },200);
+                }
+
             }
             else{
                 Enemy[i].y += 5;
@@ -753,7 +768,15 @@ function isHIT() {
                             //Deal damage
                             Enemy[i].Health--;
                             Enemy[i].isDamaged = true;
-
+                            if (Enemy[i].typeEnemy === 7) {
+                                if (Laser[j].x + Laser[j].w >=  Enemy[i].x + Enemy[i].w/2  ){
+                                    Enemy[i].xd = -1;
+                                }
+                                else{
+                                    Enemy[i].xd = 1;
+                                }
+                                Enemy[i].y -= 5;
+                            }
 
                             enemyHurtSound[j % 5].currentTime = 0;
                             enemyHurtSound[j % 5].play();
