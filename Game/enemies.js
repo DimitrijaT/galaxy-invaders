@@ -802,7 +802,7 @@ function ifLevelBeaten(ForceBoss = false){
     if (checkIfAllDead === 0 || ForceBoss === true) {
 
         if (noHitChallenge === false){
-            points = 125 * numOfEnemies * scoreMultiplier
+            points += 125 * numOfEnemies * scoreMultiplier
 
         }
         else{
